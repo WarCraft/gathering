@@ -2,6 +2,12 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="gathering-api_main" target="1.8" />
+      <module name="gathering-api_test" target="1.8" />
+      <module name="gathering-app_main" target="1.8" />
+      <module name="gathering-app_test" target="1.8" />
+      <module name="gathering-spigot_main" target="1.8" />
+      <module name="gathering-spigot_test" target="1.8" />
       <module name="Gathering_main" target="1.10" />
       <module name="Gathering_test" target="1.10" />
     </bytecodeTargetLevel>
