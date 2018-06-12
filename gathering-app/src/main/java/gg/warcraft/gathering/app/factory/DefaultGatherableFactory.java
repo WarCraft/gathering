@@ -3,13 +3,13 @@ package gg.warcraft.gathering.app.factory;
 import gg.warcraft.gathering.api.BlockGatherable;
 import gg.warcraft.gathering.api.EntityGatherable;
 import gg.warcraft.gathering.api.factory.GatherableFactory;
+import gg.warcraft.gathering.app.SimpleBlockGatherable;
+import gg.warcraft.gathering.app.SimpleEntityGatherable;
 import gg.warcraft.monolith.api.entity.EntityType;
 import gg.warcraft.monolith.api.util.Duration;
 import gg.warcraft.monolith.api.world.ItemType;
 import gg.warcraft.monolith.api.world.Location;
 import gg.warcraft.monolith.api.world.block.BlockType;
-import gg.warcraft.monolith.app.gathering.SimpleBlockGatherable;
-import gg.warcraft.monolith.app.gathering.SimpleEntityGatherable;
 
 import java.util.Collections;
 import java.util.List;
