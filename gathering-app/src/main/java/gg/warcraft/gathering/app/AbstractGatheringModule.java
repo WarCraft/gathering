@@ -15,7 +15,7 @@ import gg.warcraft.gathering.app.service.DefaultGatheringSpotQueryService;
 import gg.warcraft.gathering.app.service.DefaultGatheringSpotRepository;
 import gg.warcraft.monolith.api.MonolithModule;
 
-public class AbstractGatheringModule extends MonolithModule {
+public abstract class AbstractGatheringModule extends MonolithModule {
 
     @Override
     protected void configure() {
