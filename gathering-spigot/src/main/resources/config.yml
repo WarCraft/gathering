@@ -1,0 +1,72 @@
+configurationFileName: relative/path/to/config.yml
+
+# GATHERING CONFIGURATION
+# ------------------------------------------------------------
+# Everything below this line is part of the chat configuration.
+# If you are using a non-LOCAL configuration service in your
+# Monolith configuration you have to copy paste this to your
+# configuration file storage in a file with name identical to
+# the 'configurationFileName' as configured above. This file
+# name should be the relative path from the root of your file
+# storage as configured in the Monolith configuration.
+#
+# Even if you are using a non-LOCAL configuration service this
+# local configuration file has to be present for the plugin to
+# read the name of the file it should ask Monolith for.
+#
+# If you are using a LOCAL configuration service you can ignore
+# the 'configurationFileName' setting. The plugin will use what
+# is configured in this file instead.
+
+# GATHERING SPOTS
+# World options: [OVERWORLD, THE_NETHER, THE_END]
+# BlockType options: http://warcraft.gg/blocktypes
+# CooldownType options: http://warcraft.gg/blocktypes
+# DropType options: http://warcraft.gg/blocktypes
+# ------------------------------------------------------------
+#
+blockGatheringSpots:
+  - minimumCorner:
+      world: OVERWORLD
+      x: 0
+      y: 0
+      z: 0
+    maximumCorner:
+      world: OVERWORLD
+      x: 0
+      y: 0
+      z: 0
+    blockTypes: [STONE]
+    cooldownType: BEDROCK
+    drops:
+      - type: STONE
+        name: Stone
+        chance: 100
+    cooldownInSeconds: 10
+    cooldownDeviationPercentage: 20
+
+entityGatheringSpots:
+  - minimumCorner:
+      world: OVERWORLD
+      x: 0
+      y: 0
+      z: 0
+    maximumCorner:
+      world: OVERWORLD
+      x: 0
+      y: 0
+      z: 0
+    entityType: PIG
+    entityCount: 10
+    spawnLocation:
+      world: OVERWORLD
+      x: 0
+      y: 0
+      z: 0
+    spawnRadius: 5
+    drops:
+      - type: PORKCHOP
+        name: Meat
+        chance: 100
+    cooldownInSeconds: 10
+    cooldownDeviationPercentage: 20
