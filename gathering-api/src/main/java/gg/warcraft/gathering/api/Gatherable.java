@@ -1,7 +1,7 @@
 package gg.warcraft.gathering.api;
 
+import gg.warcraft.monolith.api.item.Item;
 import gg.warcraft.monolith.api.util.Duration;
-import gg.warcraft.monolith.api.world.ItemType;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface Gatherable {
      *
      * @return the generated drops
      */
-    List<ItemType> generateDrops();
+    List<Item> generateDrops();
 
     /**
      * Generates a cooldown for this gatherable. This method could return different durations based on chance rather

@@ -2,8 +2,8 @@ package gg.warcraft.gathering.app;
 
 import gg.warcraft.gathering.api.EntityGatherable;
 import gg.warcraft.monolith.api.entity.EntityType;
+import gg.warcraft.monolith.api.item.Item;
 import gg.warcraft.monolith.api.util.Duration;
-import gg.warcraft.monolith.api.world.ItemType;
 import gg.warcraft.monolith.api.world.Location;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class SimpleEntityGatherable extends AbstractGatherable implements Entity
     private final Supplier<Location> spawnLocationSupplier;
 
     public SimpleEntityGatherable(EntityType entityType, int entityCount, Supplier<Location> spawnLocationSupplier,
-                                  Supplier<List<ItemType>> dropsSupplier, Supplier<Duration> durationSupplier) {
+                                  Supplier<List<Item>> dropsSupplier, Supplier<Duration> durationSupplier) {
         super(dropsSupplier, durationSupplier);
         this.entityType = entityType;
         this.entityCount = entityCount;

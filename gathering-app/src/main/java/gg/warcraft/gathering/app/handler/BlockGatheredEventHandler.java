@@ -6,9 +6,9 @@ import gg.warcraft.gathering.api.BlockGatherable;
 import gg.warcraft.gathering.api.Gatherable;
 import gg.warcraft.gathering.api.service.GatheringSpotQueryService;
 import gg.warcraft.monolith.api.core.TaskService;
+import gg.warcraft.monolith.api.item.Item;
 import gg.warcraft.monolith.api.util.Duration;
 import gg.warcraft.monolith.api.world.BlockLocation;
-import gg.warcraft.monolith.api.world.ItemType;
 import gg.warcraft.monolith.api.world.Location;
 import gg.warcraft.monolith.api.world.block.Block;
 import gg.warcraft.monolith.api.world.block.BlockType;
@@ -43,7 +43,7 @@ public class BlockGatheredEventHandler {
     private void spawnDrops(Gatherable gatherable, BlockLocation blockLocation) {
         Location dropLocation = worldQueryService.getLocation(blockLocation.getWorld().getType(),
                 blockLocation.getX() + DROP_OFFSET, blockLocation.getY(), blockLocation.getZ() + DROP_OFFSET);
-        List<ItemType> drops = gatherable.generateDrops();
+        List<Item> drops = gatherable.generateDrops();
         worldCommandService.dropItemsAt(drops, dropLocation);
     }
 
