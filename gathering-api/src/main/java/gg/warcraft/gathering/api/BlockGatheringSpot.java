@@ -5,20 +5,18 @@ import gg.warcraft.monolith.api.world.block.Block;
 import java.util.List;
 
 /**
- * A block gathering spot is a spot on the map that contains gatherable blocks
+ * A BlockGatheringSpot represents a collection of {@code BlockGatherable}s.
  */
 public interface BlockGatheringSpot {
 
     /**
-     * @return the block gatherables of this gathering spot
+     * @return The gatherables of this spot. Never null, but can be empty. Items are never null.
      */
     List<BlockGatherable> getBlockGatherables();
 
     /**
-     * Checks whether a block belongs to this block gathering spot.
-     *
-     * @param block the block to check
-     * @return true if this block belongs to this block gathering spot, false otherwise
+     * @param block The block.
+     * @return True if the block belongs to this spot, false otherwise.
      */
     boolean containsBlock(Block block);
 }

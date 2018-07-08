@@ -3,20 +3,19 @@ package gg.warcraft.gathering.api;
 import gg.warcraft.monolith.api.world.block.BlockType;
 
 /**
- * An block gatherable is a block that is specified as a gatherable object.
+ * A BlockGatherable represents a block that can be harvested for resources such as a STONE block in a mine or a WOOD
+ * block in a forest. Gatherables respawn after a cooldown.
  */
 public interface BlockGatherable extends Gatherable {
 
     /**
-     * @return the material data this gatherable will appear as while it is on cooldown
+     * @return The type this gatherable appears as while on cooldown. Never null.
      */
     BlockType getCooldownBlockType();
 
     /**
-     * Checks whether a material data belongs to this block gatherable.
-     *
-     * @param blockType the material data to check
-     * @return true if this material data belongs to this block gatherable, false otherwise
+     * @param blockType The type. Can not be null.
+     * @return True if this gatherable contains the type, false otherwise.
      */
     boolean containsBlockType(BlockType blockType);
 }

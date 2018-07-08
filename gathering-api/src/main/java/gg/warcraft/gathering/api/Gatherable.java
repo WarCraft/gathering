@@ -6,7 +6,8 @@ import gg.warcraft.monolith.api.util.Duration;
 import java.util.List;
 
 /**
- * A specified gatherable object that is respawnable
+ * A Gatherable represents a block or entity that can be harvested for resources such as a STONE block in a mine, a
+ * WOOD block in a forest, or a PIG on a farm. Gatherables respawn after a cooldown.
  */
 public interface Gatherable {
 

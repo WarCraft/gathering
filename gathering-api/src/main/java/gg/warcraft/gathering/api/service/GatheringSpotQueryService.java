@@ -6,21 +6,23 @@ import gg.warcraft.gathering.api.EntityGatheringSpot;
 import java.util.List;
 
 /**
- * Query service for getting gathering spots for either block gathering spots or entity gathering spots
+ * This service is injectable.
+ * <p>
+ * The GatheringSpotQueryService serves as a point of entry into the gathering implementation. It provides methods to
+ * query the Monolith domain for all currently active {@code BlockGatheringSpot} and
+ * {@code EntityGatheringSpot}s.
  */
 public interface GatheringSpotQueryService {
 
     /**
-     * Gets all of the block gathering spots
-     *
-     * @return the list of all block gathering spots
+     * @return A list with all currently active block gathering spots. Never null, but can be empty. Items are never
+     * null.
      */
     List<BlockGatheringSpot> getAllBlockGatheringSpots();
 
     /**
-     * Gets all of the entity gathering spots
-     *
-     * @return the list of all entity gathering spots
+     * @return A list with all currently active entity gathering spots. Never null, but can be empty. Items are never
+     * null.
      */
     List<EntityGatheringSpot> getAllEntityGatheringSpots();
 }

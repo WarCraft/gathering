@@ -19,26 +19,6 @@ public class DefaultGatheringSpotRepository implements GatheringSpotRepository {
     }
 
     @Override
-    public void save(BlockGatheringSpot blockGatheringSpot) {
-        blockGatheringSpots.add(blockGatheringSpot);
-    }
-
-    @Override
-    public void save(EntityGatheringSpot entityGatheringSpot) {
-        entityGatheringSpots.add(entityGatheringSpot);
-    }
-
-    @Override
-    public void delete(BlockGatheringSpot blockGatheringSpot) {
-        blockGatheringSpots.remove(blockGatheringSpot);
-    }
-
-    @Override
-    public void delete(EntityGatheringSpot entityGatheringSpot) {
-        entityGatheringSpots.remove(entityGatheringSpot);
-    }
-
-    @Override
     public List<BlockGatheringSpot> getAllBlockGatheringSpots() {
         return new ArrayList<>(blockGatheringSpots);
     }
@@ -46,5 +26,15 @@ public class DefaultGatheringSpotRepository implements GatheringSpotRepository {
     @Override
     public List<EntityGatheringSpot> getAllEntityGatheringSpots() {
         return new ArrayList<>(entityGatheringSpots);
+    }
+
+    @Override
+    public void save(BlockGatheringSpot blockGatheringSpot) {
+        blockGatheringSpots.add(blockGatheringSpot);
+    }
+
+    @Override
+    public void save(EntityGatheringSpot entityGatheringSpot) {
+        entityGatheringSpots.add(entityGatheringSpot);
     }
 }

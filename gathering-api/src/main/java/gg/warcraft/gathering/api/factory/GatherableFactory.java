@@ -13,20 +13,23 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
- * A factory interface to create a {@link BlockGatherable} and {@link EntityGatherable} easily for you
+ * This factory is injectable.
+ * <p>
+ * GatherableFactory serves as a point of entry into the gathering implementation. It allows for easy creation of
+ * {@code BlockGatherable} and {@code EntityGatherable} objects.
  */
 public interface GatherableFactory {
 
     /**
-     * Creates a new block gatherable.
-     *
-     * @param containsBlockType the predicate to check whether a material data belongs to the block gatherable
-     * @param cooldownBlockType the material data the gatherable will appear as while on cooldown
-     * @param dropsSupplier     the drops supplier that will be called every time the block gatherable is gathered,
-     *                          it allows for dynamic drop lists
-     * @param cooldownSupplier  the cooldown supplier that will be called every time the block gatherable is
-     *                          gathered, it allows for cooldown randomization
-     * @return the newly created block gatherable
+     * @param containsBlockType The predicate to check whether a block type belongs to the gatherable. Can not be null.
+     * @param cooldownBlockType The block type this gatherable will be set to while on cooldown. Can not be null.
+     * @param dropsSupplier     The item supplier that will be called every time the gatherable is gathered, it allows
+     *                          for dynamic drop lists. Can not be null. The return value of the supplier can not be
+     *                          null, but can be empty. Items can not be null.
+     * @param cooldownSupplier  The cooldown supplier that will be called every time the gatherable is gathered, it
+     *                          allows for cooldown randomization. Can not be null. The return value of the supplier can
+     *                          not be null.
+     * @return A new block gatherable. Never null.
      */
     BlockGatherable createBlockGatherable(Predicate<BlockType> containsBlockType,
                                           BlockType cooldownBlockType,
@@ -34,16 +37,17 @@ public interface GatherableFactory {
                                           Supplier<Duration> cooldownSupplier);
 
     /**
-     * Creates a new entity gatherable.
-     *
-     * @param entityType            the entity type of the entity gatherable
-     * @param entityCount           the number of entities the entity gatherable provides
-     * @param spawnLocationSupplier the spawn location supplier that will be called every time an entity spawns
-     * @param dropsSupplier         the drops supplier that will be called every time the entity gatherable is gathered,
-     *                              it allows for dynamic drop lists
-     * @param cooldownSupplier      the cooldown supplier that will be called every time the entity gatherable is
-     *                              gathered, it allows for cooldown randomization
-     * @return the newly created entity gatherable
+     * @param entityType            The entity type this gatherable represents. Can not be null.
+     * @param entityCount           The maximum number of entities this gatherable should produce.
+     * @param spawnLocationSupplier The spawn location supplier that will be called every time a new entity is spawned.
+     *                              Can not be null. The return value of the supplier can not be null.
+     * @param dropsSupplier         The item supplier that will be called every time the gatherable is gathered, it
+     *                              allows for dynamic drop lists. Can not be null. The return value of the supplier can
+     *                              not be null, but can be empty. Items can not be null.
+     * @param cooldownSupplier      The cooldown supplier that will be called every time the gatherable is gathered, it
+     *                              allows for cooldown randomization. Can not be null. The return value of the supplier
+     *                              can not be null.
+     * @return A new entity gatherable. Never null.
      */
     EntityGatherable createEntityGatherable(EntityType entityType,
                                             int entityCount,

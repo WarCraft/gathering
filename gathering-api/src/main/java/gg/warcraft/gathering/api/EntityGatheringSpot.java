@@ -4,20 +4,18 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * An entity gathering spot is a spot on the map that contains gatherable entities
+ * A EntityGatheringSpot represents a collection of {@code EntityGatherable}s.
  */
 public interface EntityGatheringSpot {
 
     /**
-     * @return the entity gatherables of this gathering spot
+     * @return The gatherables of this spot. Never null, but can be empty. Items are never null.
      */
     List<EntityGatherable> getEntityGatherables();
 
     /**
-     * Checks whether an entity belongs to this entity gathering spot.
-     *
-     * @param entityId the entity to check
-     * @return true if this entity belongs to this entity gathering spot, false otherwise
+     * @param entityId The id of the entity.
+     * @return True if the entity belongs to this spot, false otherwise.
      */
     boolean containsEntity(UUID entityId);
 }
