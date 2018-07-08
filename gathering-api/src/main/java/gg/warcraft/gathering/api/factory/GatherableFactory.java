@@ -1,9 +1,11 @@
 package gg.warcraft.gathering.api.factory;
 
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.name.Named;
 import gg.warcraft.gathering.api.BlockGatherable;
 import gg.warcraft.gathering.api.EntityGatherable;
 import gg.warcraft.monolith.api.entity.EntityType;
-import gg.warcraft.monolith.api.item.ItemType;
+import gg.warcraft.monolith.api.item.Item;
 import gg.warcraft.monolith.api.util.Duration;
 import gg.warcraft.monolith.api.world.Location;
 import gg.warcraft.monolith.api.world.block.BlockType;
@@ -31,10 +33,11 @@ public interface GatherableFactory {
      *                          not be null.
      * @return A new block gatherable. Never null.
      */
+    @Named("block")
     BlockGatherable createBlockGatherable(Predicate<BlockType> containsBlockType,
                                           BlockType cooldownBlockType,
-                                          Supplier<List<ItemType>> dropsSupplier,
-                                          Supplier<Duration> cooldownSupplier);
+                                          @Assisted Supplier<List<Item>> dropsSupplier,
+                                          @Assisted Supplier<Duration> cooldownSupplier);
 
     /**
      * @param entityType            The entity type this gatherable represents. Can not be null.
@@ -49,9 +52,10 @@ public interface GatherableFactory {
      *                              can not be null.
      * @return A new entity gatherable. Never null.
      */
+    @Named("entity")
     EntityGatherable createEntityGatherable(EntityType entityType,
                                             int entityCount,
-                                            Supplier<Location> spawnLocationSupplier,
-                                            Supplier<List<ItemType>> dropsSupplier,
-                                            Supplier<Duration> cooldownSupplier);
+                                            @Assisted Supplier<Location> spawnLocationSupplier,
+                                            @Assisted Supplier<List<Item>> dropsSupplier,
+                                            @Assisted Supplier<Duration> cooldownSupplier);
 }

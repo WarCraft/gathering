@@ -2,6 +2,7 @@ package gg.warcraft.gathering.app;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+import com.google.inject.name.Names;
 import gg.warcraft.gathering.api.BlockGatherable;
 import gg.warcraft.gathering.api.EntityGatherable;
 import gg.warcraft.gathering.api.factory.GatherableFactory;
@@ -21,8 +22,8 @@ public abstract class AbstractGatheringModule extends AbstractModule {
         bind(GatheringSpotRepository.class).to(DefaultGatheringSpotRepository.class);
 
         install(new FactoryModuleBuilder()
-                .implement(BlockGatherable.class, SimpleBlockGatherable.class)
-                .implement(EntityGatherable.class, SimpleEntityGatherable.class)
+                .implement(BlockGatherable.class, Names.named("block"), SimpleBlockGatherable.class)
+                .implement(EntityGatherable.class, Names.named("entity"), SimpleEntityGatherable.class)
                 .build(GatherableFactory.class));
     }
 }

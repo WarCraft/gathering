@@ -1,5 +1,7 @@
 package gg.warcraft.gathering.app;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import gg.warcraft.gathering.api.BlockGatherable;
 import gg.warcraft.monolith.api.item.Item;
 import gg.warcraft.monolith.api.util.Duration;
@@ -13,8 +15,11 @@ public class SimpleBlockGatherable extends AbstractGatherable implements BlockGa
     private final Predicate<BlockType> containsBlockType;
     private final BlockType cooldownBlockType;
 
-    public SimpleBlockGatherable(Predicate<BlockType> containsBlockType, BlockType cooldownBlockType,
-                                 Supplier<List<Item>> dropsSupplier, Supplier<Duration> cooldownSupplier) {
+    @Inject
+    public SimpleBlockGatherable(@Assisted Predicate<BlockType> containsBlockType,
+                                 @Assisted BlockType cooldownBlockType,
+                                 @Assisted Supplier<List<Item>> dropsSupplier,
+                                 @Assisted Supplier<Duration> cooldownSupplier) {
         super(dropsSupplier, cooldownSupplier);
         this.containsBlockType = containsBlockType;
         this.cooldownBlockType = cooldownBlockType;
