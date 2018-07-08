@@ -15,8 +15,8 @@ public class SimpleEntityGatherable extends AbstractGatherable implements Entity
     private final Supplier<Location> spawnLocationSupplier;
 
     public SimpleEntityGatherable(EntityType entityType, int entityCount, Supplier<Location> spawnLocationSupplier,
-                                  Supplier<List<Item>> dropsSupplier, Supplier<Duration> durationSupplier) {
-        super(dropsSupplier, durationSupplier);
+                                  Supplier<List<Item>> dropsSupplier, Supplier<Duration> cooldownSupplier) {
+        super(dropsSupplier, cooldownSupplier);
         this.entityType = entityType;
         this.entityCount = entityCount;
         this.spawnLocationSupplier = spawnLocationSupplier;
