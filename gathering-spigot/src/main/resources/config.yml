@@ -1,22 +1,34 @@
+# CONFIGURATION
+# Options: [LOCAL, REMOTE]
+# ------------------------------------------------------------
+# If set to LOCAL the Gathering plugin will only consider this
+# config file for its configuration. Even if your Monolith
+# configuration is set to use a non-LOCAL configuration service.
+# If set to REMOTE the Gathering plugin will consider this
+# config file for its meta-configuration (everything above the
+# uppercase separator in the middle of the file) and will
+# attempt to retrieve a remote file for the remainder of its
+# configuration.
+# If Monolith itself is configured to use LOCAL configuration
+# or retrieving the REMOTE file fails it will fallback to
+# LOCAL and use this file for all of its configuration.
+configurationType: LOCAL
+
+# The following value only matters if you are configuring a
+# REMOTE configuration and will be ignored otherwise. This
+# value should be the file name relative to the root of your
+# remote configuration service store and contain all of the
+# configuration below the uppercase separator in the middle
+# of this file.
 configurationFileName: relative/path/to/config.yml
 
-# GATHERING CONFIGURATION
+
 # ------------------------------------------------------------
-# Everything below this line is part of the chat configuration.
-# If you are using a non-LOCAL configuration service in your
-# Monolith configuration you have to copy paste this to your
-# configuration file storage in a file with name identical to
-# the 'configurationFileName' as configured above. This file
-# name should be the relative path from the root of your file
-# storage as configured in the Monolith configuration.
-#
-# Even if you are using a non-LOCAL configuration service this
-# local configuration file has to be present for the plugin to
-# read the name of the file it should ask Monolith for.
-#
-# If you are using a LOCAL configuration service you can ignore
-# the 'configurationFileName' setting. The plugin will use what
-# is configured in this file instead.
+# ALL CONFIGURATION ABOVE THIS LINE HAS TO BE DONE LOCALLY
+
+# ALL CONFIGURATION BELOW THIS LINE IS ELIGIBLE FOR REMOTE
+# ------------------------------------------------------------
+
 
 # GATHERING SPOTS
 # World options: [OVERWORLD, THE_NETHER, THE_END]
@@ -39,11 +51,9 @@ blockGatheringSpots:
     blockTypes: [STONE]
     cooldownType: BEDROCK
     drops:
-      - type: STONE
-        name: Stone
-        chance: 100
+      type: STONE
+      name: Stone
     cooldownInSeconds: 10
-    cooldownDeviationPercentage: 20
 
 entityGatheringSpots:
   - minimumCorner:
@@ -63,10 +73,8 @@ entityGatheringSpots:
       x: 0
       y: 0
       z: 0
-    spawnRadius: 5
+      spawnRadius: 5
     drops:
-      - type: PORKCHOP
-        name: Meat
-        chance: 100
+      type: PORKCHOP
+      name: Meat
     cooldownInSeconds: 10
-    cooldownDeviationPercentage: 20
