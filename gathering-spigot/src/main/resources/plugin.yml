@@ -6,5 +6,3 @@ website: http://warcraft.gg
 
 main: gg.warcraft.gathering.spigot.GatheringPlugin
 depend: ["WarCraft_Monolith"]
-
-commands: []
