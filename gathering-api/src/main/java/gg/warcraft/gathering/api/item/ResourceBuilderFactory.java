@@ -4,5 +4,5 @@ import gg.warcraft.monolith.api.item.ItemType;
 
 public interface ResourceBuilderFactory {
 
-    ResourceBuilder createEquipmentBuilder(ItemType type, String name);
+    ResourceBuilder createResourceBuilder(ItemType type, String name);
 }
