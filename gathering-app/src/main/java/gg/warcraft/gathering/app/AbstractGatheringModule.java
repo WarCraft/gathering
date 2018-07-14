@@ -6,6 +6,7 @@ import com.google.inject.name.Names;
 import gg.warcraft.gathering.api.gatherable.BlockGatherable;
 import gg.warcraft.gathering.api.gatherable.EntityGatherable;
 import gg.warcraft.gathering.api.gatherable.GatherableFactory;
+import gg.warcraft.gathering.api.gatherable.service.BlockGatherableCommandService;
 import gg.warcraft.gathering.api.gatherable.service.EntityGatherableCommandService;
 import gg.warcraft.gathering.api.gatherable.service.EntityGatherableQueryService;
 import gg.warcraft.gathering.api.gatherable.service.EntityGatherableRepository;
@@ -16,6 +17,7 @@ import gg.warcraft.gathering.api.spot.service.GatheringSpotQueryService;
 import gg.warcraft.gathering.api.spot.service.GatheringSpotRepository;
 import gg.warcraft.gathering.app.gatherable.SimpleBlockGatherable;
 import gg.warcraft.gathering.app.gatherable.SimpleEntityGatherable;
+import gg.warcraft.gathering.app.gatherable.service.DefaultBlockGatherableCommandService;
 import gg.warcraft.gathering.app.gatherable.service.DefaultEntityGatherableCommandService;
 import gg.warcraft.gathering.app.gatherable.service.DefaultEntityGatherableQueryService;
 import gg.warcraft.gathering.app.gatherable.service.DefaultEntityGatherableRepository;
@@ -31,6 +33,8 @@ public abstract class AbstractGatheringModule extends AbstractModule {
         bind(GatheringSpotCommandService.class).to(DefaultGatheringSpotCommandService.class);
         bind(GatheringSpotQueryService.class).to(DefaultGatheringSpotQueryService.class);
         bind(GatheringSpotRepository.class).to(DefaultGatheringSpotRepository.class);
+
+        bind(BlockGatherableCommandService.class).to(DefaultBlockGatherableCommandService.class);
 
         bind(EntityGatherableCommandService.class).to(DefaultEntityGatherableCommandService.class);
         bind(EntityGatherableQueryService.class).to(DefaultEntityGatherableQueryService.class);
