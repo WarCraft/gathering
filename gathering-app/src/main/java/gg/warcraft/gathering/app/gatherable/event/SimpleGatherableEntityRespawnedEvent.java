@@ -1,14 +1,14 @@
 package gg.warcraft.gathering.app.gatherable.event;
 
-import gg.warcraft.gathering.api.gatherable.event.GatherableEntitySpawnedEvent;
+import gg.warcraft.gathering.api.gatherable.event.GatherableEntityRespawnedEvent;
 
 import java.util.UUID;
 
-public class SimpleGatherableEntitySpawnedEvent implements GatherableEntitySpawnedEvent {
+public class SimpleGatherableEntityRespawnedEvent implements GatherableEntityRespawnedEvent {
     private final UUID entityId;
     private final UUID gatheringSpotId;
 
-    public SimpleGatherableEntitySpawnedEvent(UUID entityId, UUID gatheringSpotId) {
+    public SimpleGatherableEntityRespawnedEvent(UUID entityId, UUID gatheringSpotId) {
         this.entityId = entityId;
         this.gatheringSpotId = gatheringSpotId;
     }

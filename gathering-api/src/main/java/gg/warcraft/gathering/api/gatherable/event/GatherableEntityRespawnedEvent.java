@@ -4,7 +4,7 @@ import gg.warcraft.monolith.api.core.Event;
 
 import java.util.UUID;
 
-public interface GatherableEntitySpawnedEvent extends Event {
+public interface GatherableEntityRespawnedEvent extends Event {
 
     UUID getEntityId();
 

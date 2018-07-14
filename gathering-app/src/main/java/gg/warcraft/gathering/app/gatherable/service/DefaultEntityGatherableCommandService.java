@@ -2,10 +2,10 @@ package gg.warcraft.gathering.app.gatherable.service;
 
 import com.google.inject.Inject;
 import gg.warcraft.gathering.api.gatherable.EntityGatherable;
-import gg.warcraft.gathering.api.gatherable.event.GatherableEntitySpawnedEvent;
+import gg.warcraft.gathering.api.gatherable.event.GatherableEntityRespawnedEvent;
 import gg.warcraft.gathering.api.gatherable.service.EntityGatherableCommandService;
 import gg.warcraft.gathering.api.gatherable.service.EntityGatherableRepository;
-import gg.warcraft.gathering.app.gatherable.event.SimpleGatherableEntitySpawnedEvent;
+import gg.warcraft.gathering.app.gatherable.event.SimpleGatherableEntityRespawnedEvent;
 import gg.warcraft.monolith.api.core.EventService;
 import gg.warcraft.monolith.api.core.TaskService;
 import gg.warcraft.monolith.api.entity.Entity;
@@ -44,24 +44,15 @@ public class DefaultEntityGatherableCommandService implements EntityGatherableCo
 
     void spawnDrops(EntityGatherable gatherable, Entity entity) {
         List<Item> drops = gatherable.generateDrops();
-        Location spawnLocation = entity.getLocation();
-        worldCommandService.dropItemsAt(drops, spawnLocation);
+        Location dropLocation = entity.getLocation();
+        worldCommandService.dropItemsAt(drops, dropLocation);
     }
 
     @Override
-    public EntityGatherable gatherEntity(List<EntityGatherable> gatherables, UUID entityId) {
+    public void gatherEntity(EntityGatherable gatherable, UUID entityId) {
         Entity entity = entityQueryService.getEntity(entityId);
-        EntityGatherable entityGatherable = gatherables.stream()
-                .filter(gatherable -> gatherable.getEntityType() == entity.getType())
-                .findAny()
-                .orElse(null);
-        if (entityGatherable == null) {
-            return null;
-        }
-
-        spawnDrops(entityGatherable, entity);
+        spawnDrops(gatherable, entity);
         entityGatherableRepository.deleteEntity(entityId);
-        return entityGatherable;
     }
 
     @Override
@@ -73,9 +64,9 @@ public class DefaultEntityGatherableCommandService implements EntityGatherableCo
             UUID entityId = entityCommandService.spawnEntity(type, respawnLocation);
             entityGatherableRepository.saveEntity(entityId);
 
-            GatherableEntitySpawnedEvent gatherableEntitySpawnedEvent =
-                    new SimpleGatherableEntitySpawnedEvent(entityId, gatheringSpotId);
-            eventService.publish(gatherableEntitySpawnedEvent);
+            GatherableEntityRespawnedEvent gatherableEntityRespawnedEvent =
+                    new SimpleGatherableEntityRespawnedEvent(entityId, gatheringSpotId);
+            eventService.publish(gatherableEntityRespawnedEvent);
         }, cooldown);
     }
 
