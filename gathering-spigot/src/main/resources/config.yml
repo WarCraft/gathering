@@ -38,43 +38,33 @@ configurationFileName: relative/path/to/config.yml
 # ------------------------------------------------------------
 #
 blockGatheringSpots:
-  - minimumCorner:
-      world: OVERWORLD
-      x: 0
-      y: 0
-      z: 0
-    maximumCorner:
-      world: OVERWORLD
-      x: 0
-      y: 0
-      z: 0
-    blockTypes: [STONE]
-    cooldownType: BEDROCK
-    drops:
-      type: STONE
-      name: Stone
-    cooldownInSeconds: 10
+#  - boundingBox:
+#      world: OVERWORLD
+#      minimumCorner:
+#        x: 0
+#        y: 0
+#        z: 0
+#      maximumCorner:
+#        x: 0
+#        y: 0
+#        z: 0
+#    blockType: STONE
+#    cooldownType: BEDROCK
+#    drop:
+#      type: STONE
+#      name: Stone
+#    cooldownInSeconds: 10
 
 entityGatheringSpots:
-  - minimumCorner:
-      world: OVERWORLD
-      x: 0
-      y: 0
-      z: 0
-    maximumCorner:
-      world: OVERWORLD
-      x: 0
-      y: 0
-      z: 0
-    entityType: PIG
-    entityCount: 10
-    spawnLocation:
-      world: OVERWORLD
-      x: 0
-      y: 0
-      z: 0
-      spawnRadius: 5
-    drops:
-      type: PORKCHOP
-      name: Meat
-    cooldownInSeconds: 10
+#  - spawnLocation:
+#      world: OVERWORLD
+#      x: 0
+#      y: 0
+#      z: 0
+#    spawnRadius: 5
+#    entityType: PIG
+#    entityCount: 10
+#    drop:
+#      type: PORKCHOP
+#      name: Meat
+#    cooldownInSeconds: 10
