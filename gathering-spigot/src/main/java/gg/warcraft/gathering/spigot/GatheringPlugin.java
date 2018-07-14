@@ -9,6 +9,7 @@ import gg.warcraft.gathering.api.config.GatheringConfiguration;
 import gg.warcraft.gathering.api.gatherable.BlockGatherable;
 import gg.warcraft.gathering.api.gatherable.EntityGatherable;
 import gg.warcraft.gathering.api.gatherable.GatherableFactory;
+import gg.warcraft.gathering.api.gatherable.service.GatherableCommandService;
 import gg.warcraft.gathering.api.item.ResourceBuilder;
 import gg.warcraft.gathering.api.item.ResourceBuilderFactory;
 import gg.warcraft.gathering.api.spot.service.GatheringSpotCommandService;
@@ -36,6 +37,12 @@ import java.util.Collections;
 import java.util.logging.Logger;
 
 public class GatheringPlugin extends JavaPlugin {
+
+    void removeExistingEntityGatherables(Injector injector) {
+        GatherableCommandService gatherableCommandService =
+                injector.getInstance(GatherableCommandService.class);
+        gatherableCommandService.removeAllEntities();
+    }
 
     GatheringConfiguration loadLocalGatheringConfiguration(FileConfiguration localConfig, ObjectMapper yamlMapper) {
         try {
@@ -136,9 +143,7 @@ public class GatheringPlugin extends JavaPlugin {
                         return Collections.singletonList(builder.build());
                     },
                     () -> timeUtils.createDurationInSeconds(entityGatheringSpotConfiguration.getCooldownInSeconds()));
-            gatheringSpotCommandService.createEntityGatheringSpot(
-                    uuid -> false, // TODO this needs fixing
-                    Collections.singletonList(gatherable));
+            gatheringSpotCommandService.createEntityGatheringSpot(Collections.singletonList(gatherable));
         });
     }
 
@@ -161,8 +166,12 @@ public class GatheringPlugin extends JavaPlugin {
     public void onEnable() {
         FileConfiguration localConfig = getConfig();
         Injector injector = Monolith.getInstance().getInjector();
+
+        removeExistingEntityGatherables(injector);
+
         GatheringConfiguration gatheringConfiguration = loadGatheringConfiguration(localConfig, injector);
         readGatheringConfiguration(gatheringConfiguration, injector);
+
         initializeMonolithEventHandlers(injector);
     }
 }
