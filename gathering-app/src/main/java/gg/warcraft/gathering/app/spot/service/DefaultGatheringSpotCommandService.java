@@ -43,7 +43,7 @@ public class DefaultGatheringSpotCommandService implements GatheringSpotCommandS
         gatherables.forEach(gatherable -> {
             int entityCount = gatherable.getEntityCount();
             for (int i = 0; i < entityCount; i += 1) {
-                gatherableCommandService.spawnEntity(gatherable, gatheringSpotId);
+                gatherableCommandService.respawnEntity(gatherable, gatheringSpotId);
             }
         });
 

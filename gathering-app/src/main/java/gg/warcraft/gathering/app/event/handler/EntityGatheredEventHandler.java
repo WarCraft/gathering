@@ -41,7 +41,7 @@ public class EntityGatheredEventHandler {
                     List<EntityGatherable> gatherables = gatheringSpot.getEntityGatherables();
                     EntityGatherable gatherable = gatherableCommandService.gatherEntity(gatherables, entityId);
                     if (gatherable != null) {
-                        gatherableCommandService.spawnEntity(gatherable, gatheringSpot.getId());
+                        gatherableCommandService.respawnEntity(gatherable, gatheringSpot.getId());
                     }
                 });
     }

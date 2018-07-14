@@ -42,7 +42,7 @@ public class DefaultGatherableCommandService implements GatherableCommandService
         this.taskService = taskService;
     }
 
-    void spawnDrops(EntityGatherable gatherable, Entity entity) {
+    void spawnEntityDrops(EntityGatherable gatherable, Entity entity) {
         List<Item> drops = gatherable.generateDrops();
         Location spawnLocation = entity.getLocation();
         worldCommandService.dropItemsAt(drops, spawnLocation);
@@ -59,13 +59,13 @@ public class DefaultGatherableCommandService implements GatherableCommandService
             return null;
         }
 
-        spawnDrops(entityGatherable, entity);
+        spawnEntityDrops(entityGatherable, entity);
         gatherableRepository.deleteEntity(entityId);
         return entityGatherable;
     }
 
     @Override
-    public void spawnEntity(EntityGatherable gatherable, UUID gatheringSpotId) {
+    public void respawnEntity(EntityGatherable gatherable, UUID gatheringSpotId) {
         Location respawnLocation = gatherable.generateSpawnLocation();
         Duration cooldown = gatherable.generateCooldown();
         taskService.runLater(() -> {

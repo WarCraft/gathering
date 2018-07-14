@@ -9,7 +9,7 @@ public interface GatherableCommandService {
 
     EntityGatherable gatherEntity(List<EntityGatherable> gatherables, UUID entityId);
 
-    void spawnEntity(EntityGatherable gatherable, UUID gatheringSpotId);
+    void respawnEntity(EntityGatherable gatherable, UUID gatheringSpotId);
 
     void removeAllEntities();
 }
