@@ -1,10 +1,10 @@
-package gg.warcraft.gathering.app.handler;
+package gg.warcraft.gathering.app.event.handler;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import gg.warcraft.gathering.api.BlockGatherable;
-import gg.warcraft.gathering.api.Gatherable;
-import gg.warcraft.gathering.api.service.GatheringSpotQueryService;
+import gg.warcraft.gathering.api.gatherable.BlockGatherable;
+import gg.warcraft.gathering.api.gatherable.Gatherable;
+import gg.warcraft.gathering.api.spot.service.GatheringSpotQueryService;
 import gg.warcraft.monolith.api.core.TaskService;
 import gg.warcraft.monolith.api.item.Item;
 import gg.warcraft.monolith.api.util.Duration;
@@ -13,10 +13,11 @@ import gg.warcraft.monolith.api.world.Location;
 import gg.warcraft.monolith.api.world.block.Block;
 import gg.warcraft.monolith.api.world.block.BlockType;
 import gg.warcraft.monolith.api.world.block.backup.service.BlockBackupCommandService;
-import gg.warcraft.monolith.api.world.event.BlockBreakEvent;
+import gg.warcraft.monolith.api.world.block.event.BlockPreBreakEvent;
 import gg.warcraft.monolith.api.world.service.WorldCommandService;
 import gg.warcraft.monolith.api.world.service.WorldQueryService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,8 +42,10 @@ public class BlockGatheredEventHandler {
     }
 
     private void spawnDrops(Gatherable gatherable, BlockLocation blockLocation) {
-        Location dropLocation = worldQueryService.getLocation(blockLocation.getWorld().getType(),
-                blockLocation.getX() + DROP_OFFSET, blockLocation.getY(), blockLocation.getZ() + DROP_OFFSET);
+        float x = blockLocation.getX() + DROP_OFFSET;
+        float y = blockLocation.getY() + DROP_OFFSET;
+        float z = blockLocation.getZ() + DROP_OFFSET;
+        Location dropLocation = worldQueryService.getLocation(blockLocation.getWorld().getType(), x, y, z);
         List<Item> drops = gatherable.generateDrops();
         worldCommandService.dropItemsAt(drops, dropLocation);
     }
@@ -59,14 +62,15 @@ public class BlockGatheredEventHandler {
     }
 
     @Subscribe
-    public void onBlockBreak(BlockBreakEvent event) {
+    public void onBlockPreBreakEvent(BlockPreBreakEvent event) {
         Block block = event.getBlock();
-        gatheringSpotQueryService.getAllBlockGatheringSpots().stream()
+        gatheringSpotQueryService.getBlockGatheringSpots().stream()
                 .filter(spot -> spot.containsBlock(block))
                 .forEach(spot -> spot.getBlockGatherables().stream()
                         .filter(gatherable -> gatherable.containsBlockType(block.getType()))
                         .forEach(gatherable -> {
-                            event.setDropItems(false);
+                            event.explicitlyAllow();
+                            event.setAlternativeDrops(new ArrayList<>());
                             spawnDrops(gatherable, block.getLocation());
                             queueBlockRestoration(gatherable, block);
                             queueBlockCooldownState(gatherable, block);
