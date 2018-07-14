@@ -1,9 +1,7 @@
-package gg.warcraft.gathering.api.factory;
+package gg.warcraft.gathering.api.gatherable;
 
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.name.Named;
-import gg.warcraft.gathering.api.BlockGatherable;
-import gg.warcraft.gathering.api.EntityGatherable;
 import gg.warcraft.monolith.api.entity.EntityType;
 import gg.warcraft.monolith.api.item.Item;
 import gg.warcraft.monolith.api.util.Duration;

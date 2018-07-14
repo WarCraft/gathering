@@ -1,14 +1,14 @@
-package gg.warcraft.gathering.app.service;
+package gg.warcraft.gathering.app.spot.service;
 
 import com.google.inject.Inject;
-import gg.warcraft.gathering.api.BlockGatherable;
-import gg.warcraft.gathering.api.BlockGatheringSpot;
-import gg.warcraft.gathering.api.EntityGatherable;
-import gg.warcraft.gathering.api.EntityGatheringSpot;
-import gg.warcraft.gathering.api.service.GatheringSpotCommandService;
-import gg.warcraft.gathering.api.service.GatheringSpotRepository;
-import gg.warcraft.gathering.app.SimpleBlockGatheringSpot;
-import gg.warcraft.gathering.app.SimpleEntityGatheringSpot;
+import gg.warcraft.gathering.api.gatherable.BlockGatherable;
+import gg.warcraft.gathering.api.gatherable.EntityGatherable;
+import gg.warcraft.gathering.api.spot.BlockGatheringSpot;
+import gg.warcraft.gathering.api.spot.EntityGatheringSpot;
+import gg.warcraft.gathering.api.spot.service.GatheringSpotCommandService;
+import gg.warcraft.gathering.api.spot.service.GatheringSpotRepository;
+import gg.warcraft.gathering.app.spot.SimpleBlockGatheringSpot;
+import gg.warcraft.gathering.app.spot.SimpleEntityGatheringSpot;
 import gg.warcraft.monolith.api.world.block.Block;
 
 import java.util.List;

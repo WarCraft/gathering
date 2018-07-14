@@ -1,6 +1,6 @@
-package gg.warcraft.gathering.app;
+package gg.warcraft.gathering.app.gatherable;
 
-import gg.warcraft.gathering.api.Gatherable;
+import gg.warcraft.gathering.api.gatherable.Gatherable;
 import gg.warcraft.monolith.api.item.Item;
 import gg.warcraft.monolith.api.util.Duration;
 

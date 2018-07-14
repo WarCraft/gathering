@@ -1,10 +1,10 @@
-package gg.warcraft.gathering.app.service;
+package gg.warcraft.gathering.app.spot.service;
 
 import com.google.inject.Inject;
-import gg.warcraft.gathering.api.BlockGatheringSpot;
-import gg.warcraft.gathering.api.EntityGatheringSpot;
-import gg.warcraft.gathering.api.service.GatheringSpotQueryService;
-import gg.warcraft.gathering.api.service.GatheringSpotRepository;
+import gg.warcraft.gathering.api.spot.BlockGatheringSpot;
+import gg.warcraft.gathering.api.spot.EntityGatheringSpot;
+import gg.warcraft.gathering.api.spot.service.GatheringSpotQueryService;
+import gg.warcraft.gathering.api.spot.service.GatheringSpotRepository;
 
 import java.util.List;
 

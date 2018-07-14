@@ -1,7 +1,7 @@
-package gg.warcraft.gathering.api.service;
+package gg.warcraft.gathering.api.spot.service;
 
-import gg.warcraft.gathering.api.BlockGatherable;
-import gg.warcraft.gathering.api.EntityGatherable;
+import gg.warcraft.gathering.api.gatherable.BlockGatherable;
+import gg.warcraft.gathering.api.gatherable.EntityGatherable;
 import gg.warcraft.monolith.api.world.block.Block;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package gg.warcraft.gathering.api;
+package gg.warcraft.gathering.api.gatherable;
 
 import gg.warcraft.monolith.api.world.block.BlockType;
 

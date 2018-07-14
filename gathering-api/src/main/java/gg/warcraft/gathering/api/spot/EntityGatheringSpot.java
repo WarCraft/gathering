@@ -1,4 +1,6 @@
-package gg.warcraft.gathering.api;
+package gg.warcraft.gathering.api.spot;
+
+import gg.warcraft.gathering.api.gatherable.EntityGatherable;
 
 import java.util.List;
 import java.util.UUID;
