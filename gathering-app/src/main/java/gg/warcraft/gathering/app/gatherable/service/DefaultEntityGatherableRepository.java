@@ -2,7 +2,7 @@ package gg.warcraft.gathering.app.gatherable.service;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import gg.warcraft.gathering.api.gatherable.service.GatherableRepository;
+import gg.warcraft.gathering.api.gatherable.service.EntityGatherableRepository;
 import gg.warcraft.monolith.api.persistence.PersistenceService;
 
 import java.util.Collections;
@@ -12,13 +12,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Singleton
-public class DefaultGatherableRepository implements GatherableRepository {
+public class DefaultEntityGatherableRepository implements EntityGatherableRepository {
     private static final String GATHERING_ENTITY_IDS_KEY = "gathering:readonly:entityids";
 
     private final PersistenceService persistenceService;
 
     @Inject
-    public DefaultGatherableRepository(PersistenceService persistenceService) {
+    public DefaultEntityGatherableRepository(PersistenceService persistenceService) {
         this.persistenceService = persistenceService;
     }
 

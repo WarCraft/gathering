@@ -3,8 +3,8 @@ package gg.warcraft.gathering.app.gatherable.service;
 import com.google.inject.Inject;
 import gg.warcraft.gathering.api.gatherable.EntityGatherable;
 import gg.warcraft.gathering.api.gatherable.event.GatherableEntitySpawnedEvent;
-import gg.warcraft.gathering.api.gatherable.service.GatherableCommandService;
-import gg.warcraft.gathering.api.gatherable.service.GatherableRepository;
+import gg.warcraft.gathering.api.gatherable.service.EntityGatherableCommandService;
+import gg.warcraft.gathering.api.gatherable.service.EntityGatherableRepository;
 import gg.warcraft.gathering.app.gatherable.event.SimpleGatherableEntitySpawnedEvent;
 import gg.warcraft.monolith.api.core.EventService;
 import gg.warcraft.monolith.api.core.TaskService;
@@ -20,8 +20,8 @@ import gg.warcraft.monolith.api.world.service.WorldCommandService;
 import java.util.List;
 import java.util.UUID;
 
-public class DefaultGatherableCommandService implements GatherableCommandService {
-    private final GatherableRepository gatherableRepository;
+public class DefaultEntityGatherableCommandService implements EntityGatherableCommandService {
+    private final EntityGatherableRepository entityGatherableRepository;
     private final EntityQueryService entityQueryService;
     private final EntityCommandService entityCommandService;
     private final WorldCommandService worldCommandService;
@@ -29,12 +29,12 @@ public class DefaultGatherableCommandService implements GatherableCommandService
     private final TaskService taskService;
 
     @Inject
-    public DefaultGatherableCommandService(GatherableRepository gatherableRepository,
-                                           EntityQueryService entityQueryService,
-                                           EntityCommandService entityCommandService,
-                                           WorldCommandService worldCommandService,
-                                           EventService eventService, TaskService taskService) {
-        this.gatherableRepository = gatherableRepository;
+    public DefaultEntityGatherableCommandService(EntityGatherableRepository entityGatherableRepository,
+                                                 EntityQueryService entityQueryService,
+                                                 EntityCommandService entityCommandService,
+                                                 WorldCommandService worldCommandService,
+                                                 EventService eventService, TaskService taskService) {
+        this.entityGatherableRepository = entityGatherableRepository;
         this.entityQueryService = entityQueryService;
         this.entityCommandService = entityCommandService;
         this.worldCommandService = worldCommandService;
@@ -42,7 +42,7 @@ public class DefaultGatherableCommandService implements GatherableCommandService
         this.taskService = taskService;
     }
 
-    void spawnEntityDrops(EntityGatherable gatherable, Entity entity) {
+    void spawnDrops(EntityGatherable gatherable, Entity entity) {
         List<Item> drops = gatherable.generateDrops();
         Location spawnLocation = entity.getLocation();
         worldCommandService.dropItemsAt(drops, spawnLocation);
@@ -59,8 +59,8 @@ public class DefaultGatherableCommandService implements GatherableCommandService
             return null;
         }
 
-        spawnEntityDrops(entityGatherable, entity);
-        gatherableRepository.deleteEntity(entityId);
+        spawnDrops(entityGatherable, entity);
+        entityGatherableRepository.deleteEntity(entityId);
         return entityGatherable;
     }
 
@@ -71,7 +71,7 @@ public class DefaultGatherableCommandService implements GatherableCommandService
         taskService.runLater(() -> {
             EntityType type = gatherable.getEntityType();
             UUID entityId = entityCommandService.spawnEntity(type, respawnLocation);
-            gatherableRepository.saveEntity(entityId);
+            entityGatherableRepository.saveEntity(entityId);
 
             GatherableEntitySpawnedEvent gatherableEntitySpawnedEvent =
                     new SimpleGatherableEntitySpawnedEvent(entityId, gatheringSpotId);
@@ -81,9 +81,9 @@ public class DefaultGatherableCommandService implements GatherableCommandService
 
     @Override
     public void removeAllEntities() {
-        gatherableRepository.getSpawnedEntityIds().forEach(entityId -> {
+        entityGatherableRepository.getSpawnedEntityIds().forEach(entityId -> {
             entityCommandService.removeEntity(entityId);
-            gatherableRepository.deleteEntity(entityId);
+            entityGatherableRepository.deleteEntity(entityId);
         });
     }
 }

@@ -9,7 +9,7 @@ import gg.warcraft.gathering.api.config.GatheringConfiguration;
 import gg.warcraft.gathering.api.gatherable.BlockGatherable;
 import gg.warcraft.gathering.api.gatherable.EntityGatherable;
 import gg.warcraft.gathering.api.gatherable.GatherableFactory;
-import gg.warcraft.gathering.api.gatherable.service.GatherableCommandService;
+import gg.warcraft.gathering.api.gatherable.service.EntityGatherableCommandService;
 import gg.warcraft.gathering.api.item.ResourceBuilder;
 import gg.warcraft.gathering.api.item.ResourceBuilderFactory;
 import gg.warcraft.gathering.api.spot.service.GatheringSpotCommandService;
@@ -39,9 +39,9 @@ import java.util.logging.Logger;
 public class GatheringPlugin extends JavaPlugin {
 
     void removeExistingEntityGatherables(Injector injector) {
-        GatherableCommandService gatherableCommandService =
-                injector.getInstance(GatherableCommandService.class);
-        gatherableCommandService.removeAllEntities();
+        EntityGatherableCommandService entityGatherableCommandService =
+                injector.getInstance(EntityGatherableCommandService.class);
+        entityGatherableCommandService.removeAllEntities();
     }
 
     GatheringConfiguration loadLocalGatheringConfiguration(FileConfiguration localConfig, ObjectMapper yamlMapper) {

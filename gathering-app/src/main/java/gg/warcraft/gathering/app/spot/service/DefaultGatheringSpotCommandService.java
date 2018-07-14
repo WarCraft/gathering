@@ -3,7 +3,7 @@ package gg.warcraft.gathering.app.spot.service;
 import com.google.inject.Inject;
 import gg.warcraft.gathering.api.gatherable.BlockGatherable;
 import gg.warcraft.gathering.api.gatherable.EntityGatherable;
-import gg.warcraft.gathering.api.gatherable.service.GatherableCommandService;
+import gg.warcraft.gathering.api.gatherable.service.EntityGatherableCommandService;
 import gg.warcraft.gathering.api.spot.BlockGatheringSpot;
 import gg.warcraft.gathering.api.spot.EntityGatheringSpot;
 import gg.warcraft.gathering.api.spot.service.GatheringSpotCommandService;
@@ -20,13 +20,13 @@ import java.util.function.Predicate;
 
 public class DefaultGatheringSpotCommandService implements GatheringSpotCommandService {
     private final GatheringSpotRepository gatheringSpotRepository;
-    private final GatherableCommandService gatherableCommandService;
+    private final EntityGatherableCommandService entityGatherableCommandService;
 
     @Inject
     public DefaultGatheringSpotCommandService(GatheringSpotRepository gatheringSpotRepository,
-                                              GatherableCommandService gatherableCommandService) {
+                                              EntityGatherableCommandService entityGatherableCommandService) {
         this.gatheringSpotRepository = gatheringSpotRepository;
-        this.gatherableCommandService = gatherableCommandService;
+        this.entityGatherableCommandService = entityGatherableCommandService;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class DefaultGatheringSpotCommandService implements GatheringSpotCommandS
         gatherables.forEach(gatherable -> {
             int entityCount = gatherable.getEntityCount();
             for (int i = 0; i < entityCount; i += 1) {
-                gatherableCommandService.respawnEntity(gatherable, gatheringSpotId);
+                entityGatherableCommandService.respawnEntity(gatherable, gatheringSpotId);
             }
         });
 
