@@ -4,6 +4,7 @@ import gg.warcraft.gathering.api.spot.BlockGatheringSpot;
 import gg.warcraft.gathering.api.spot.EntityGatheringSpot;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * This repository is injectable, however you generally have no need for it. Use the command and query services instead.
@@ -15,14 +16,20 @@ import java.util.List;
 public interface GatheringSpotRepository {
 
     /**
+     * @param id The id. Can not be null.
+     * @return The entity gathering spot with id. Can be null.
+     */
+    EntityGatheringSpot getEntityGatheringSpot(UUID id);
+
+    /**
      * @return A list of all saved block gathering spots.
      */
-    List<BlockGatheringSpot> getAllBlockGatheringSpots();
+    List<BlockGatheringSpot> getBlockGatheringSpots();
 
     /**
      * @return A list of all saved entity gathering spots.
      */
-    List<EntityGatheringSpot> getAllEntityGatheringSpots();
+    List<EntityGatheringSpot> getEntityGatheringSpots();
 
     /**
      * @param blockGatheringSpot The gathering spot to save.

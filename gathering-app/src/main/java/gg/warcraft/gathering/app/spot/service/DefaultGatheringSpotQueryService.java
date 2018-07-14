@@ -17,12 +17,12 @@ public class DefaultGatheringSpotQueryService implements GatheringSpotQueryServi
     }
 
     @Override
-    public List<BlockGatheringSpot> getAllBlockGatheringSpots() {
-        return gatheringSpotRepository.getAllBlockGatheringSpots();
+    public List<BlockGatheringSpot> getBlockGatheringSpots() {
+        return gatheringSpotRepository.getBlockGatheringSpots();
     }
 
     @Override
-    public List<EntityGatheringSpot> getAllEntityGatheringSpots() {
-        return gatheringSpotRepository.getAllEntityGatheringSpots();
+    public List<EntityGatheringSpot> getEntityGatheringSpots() {
+        return gatheringSpotRepository.getEntityGatheringSpots();
     }
 }

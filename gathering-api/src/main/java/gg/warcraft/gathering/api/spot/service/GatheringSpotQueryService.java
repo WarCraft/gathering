@@ -18,11 +18,11 @@ public interface GatheringSpotQueryService {
      * @return A list with all currently active block gathering spots. Never null, but can be empty. Items are never
      * null.
      */
-    List<BlockGatheringSpot> getAllBlockGatheringSpots();
+    List<BlockGatheringSpot> getBlockGatheringSpots();
 
     /**
      * @return A list with all currently active entity gathering spots. Never null, but can be empty. Items are never
      * null.
      */
-    List<EntityGatheringSpot> getAllEntityGatheringSpots();
+    List<EntityGatheringSpot> getEntityGatheringSpots();
 }

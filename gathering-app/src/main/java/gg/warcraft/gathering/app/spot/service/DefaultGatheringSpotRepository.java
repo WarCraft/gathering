@@ -6,26 +6,34 @@ import gg.warcraft.gathering.api.spot.EntityGatheringSpot;
 import gg.warcraft.gathering.api.spot.service.GatheringSpotRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Singleton
 public class DefaultGatheringSpotRepository implements GatheringSpotRepository {
     final List<BlockGatheringSpot> blockGatheringSpots;
-    final List<EntityGatheringSpot> entityGatheringSpots;
+    final Map<UUID, EntityGatheringSpot> entityGatheringSpots;
 
     public DefaultGatheringSpotRepository() {
         this.blockGatheringSpots = new ArrayList<>();
-        this.entityGatheringSpots = new ArrayList<>();
+        this.entityGatheringSpots = new HashMap<>();
     }
 
     @Override
-    public List<BlockGatheringSpot> getAllBlockGatheringSpots() {
+    public EntityGatheringSpot getEntityGatheringSpot(UUID id) {
+        return entityGatheringSpots.get(id);
+    }
+
+    @Override
+    public List<BlockGatheringSpot> getBlockGatheringSpots() {
         return new ArrayList<>(blockGatheringSpots);
     }
 
     @Override
-    public List<EntityGatheringSpot> getAllEntityGatheringSpots() {
-        return new ArrayList<>(entityGatheringSpots);
+    public List<EntityGatheringSpot> getEntityGatheringSpots() {
+        return new ArrayList<>(entityGatheringSpots.values());
     }
 
     @Override
@@ -35,6 +43,6 @@ public class DefaultGatheringSpotRepository implements GatheringSpotRepository {
 
     @Override
     public void save(EntityGatheringSpot entityGatheringSpot) {
-        entityGatheringSpots.add(entityGatheringSpot);
+        entityGatheringSpots.put(entityGatheringSpot.getId(), entityGatheringSpot);
     }
 }

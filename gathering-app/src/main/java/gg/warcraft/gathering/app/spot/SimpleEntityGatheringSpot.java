@@ -4,17 +4,19 @@ import gg.warcraft.gathering.api.gatherable.EntityGatherable;
 import gg.warcraft.gathering.api.spot.EntityGatheringSpot;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
-import java.util.function.Predicate;
 
-public class SimpleEntityGatheringSpot implements EntityGatheringSpot {
-    private final Predicate<UUID> containsEntity;
+public class SimpleEntityGatheringSpot extends SimpleGatheringSpot implements EntityGatheringSpot {
     private final List<EntityGatherable> gatherables;
+    private final Set<UUID> entityIds;
 
-    public SimpleEntityGatheringSpot(Predicate<UUID> containsEntity, List<EntityGatherable> gatherables) {
-        this.containsEntity = containsEntity;
+    public SimpleEntityGatheringSpot(UUID id, List<EntityGatherable> gatherables, Set<UUID> entityIds) {
+        super(id);
         this.gatherables = gatherables;
+        this.entityIds = entityIds;
     }
 
     @Override
@@ -23,7 +25,7 @@ public class SimpleEntityGatheringSpot implements EntityGatheringSpot {
     }
 
     @Override
-    public boolean containsEntity(UUID entityId) {
-        return containsEntity.test(entityId);
+    public Set<UUID> getEntityIds() {
+        return new HashSet<>(entityIds);
     }
 }

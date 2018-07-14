@@ -6,6 +6,9 @@ import com.google.inject.name.Names;
 import gg.warcraft.gathering.api.gatherable.BlockGatherable;
 import gg.warcraft.gathering.api.gatherable.EntityGatherable;
 import gg.warcraft.gathering.api.gatherable.GatherableFactory;
+import gg.warcraft.gathering.api.gatherable.service.GatherableCommandService;
+import gg.warcraft.gathering.api.gatherable.service.GatherableQueryService;
+import gg.warcraft.gathering.api.gatherable.service.GatherableRepository;
 import gg.warcraft.gathering.api.item.ResourceBuilder;
 import gg.warcraft.gathering.api.item.ResourceBuilderFactory;
 import gg.warcraft.gathering.api.spot.service.GatheringSpotCommandService;
@@ -13,6 +16,9 @@ import gg.warcraft.gathering.api.spot.service.GatheringSpotQueryService;
 import gg.warcraft.gathering.api.spot.service.GatheringSpotRepository;
 import gg.warcraft.gathering.app.gatherable.SimpleBlockGatherable;
 import gg.warcraft.gathering.app.gatherable.SimpleEntityGatherable;
+import gg.warcraft.gathering.app.gatherable.service.DefaultGatherableCommandService;
+import gg.warcraft.gathering.app.gatherable.service.DefaultGatherableQueryService;
+import gg.warcraft.gathering.app.gatherable.service.DefaultGatherableRepository;
 import gg.warcraft.gathering.app.item.SimpleResourceBuilder;
 import gg.warcraft.gathering.app.spot.service.DefaultGatheringSpotCommandService;
 import gg.warcraft.gathering.app.spot.service.DefaultGatheringSpotQueryService;
@@ -25,6 +31,10 @@ public abstract class AbstractGatheringModule extends AbstractModule {
         bind(GatheringSpotCommandService.class).to(DefaultGatheringSpotCommandService.class);
         bind(GatheringSpotQueryService.class).to(DefaultGatheringSpotQueryService.class);
         bind(GatheringSpotRepository.class).to(DefaultGatheringSpotRepository.class);
+
+        bind(GatherableCommandService.class).to(DefaultGatherableCommandService.class);
+        bind(GatherableQueryService.class).to(DefaultGatherableQueryService.class);
+        bind(GatherableRepository.class).to(DefaultGatherableRepository.class);
 
         install(new FactoryModuleBuilder()
                 .implement(BlockGatherable.class, Names.named("block"), SimpleBlockGatherable.class)

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * A BlockGatheringSpot represents a collection of {@code BlockGatherable}s.
  */
-public interface BlockGatheringSpot {
+public interface BlockGatheringSpot extends GatheringSpot {
 
     /**
      * @return The gatherables of this spot. Never null, but can be empty. Items are never null.

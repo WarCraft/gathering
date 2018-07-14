@@ -3,12 +3,13 @@ package gg.warcraft.gathering.api.spot;
 import gg.warcraft.gathering.api.gatherable.EntityGatherable;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
  * A EntityGatheringSpot represents a collection of {@code EntityGatherable}s.
  */
-public interface EntityGatheringSpot {
+public interface EntityGatheringSpot extends GatheringSpot {
 
     /**
      * @return The gatherables of this spot. Never null, but can be empty. Items are never null.
@@ -16,8 +17,7 @@ public interface EntityGatheringSpot {
     List<EntityGatherable> getEntityGatherables();
 
     /**
-     * @param entityId The id of the entity.
-     * @return True if the entity belongs to this spot, false otherwise.
+     * @return A set of entity ids that belong to this spot. Never null, but can be empty. Items are never null.
      */
-    boolean containsEntity(UUID entityId);
+    Set<UUID> getEntityIds();
 }
