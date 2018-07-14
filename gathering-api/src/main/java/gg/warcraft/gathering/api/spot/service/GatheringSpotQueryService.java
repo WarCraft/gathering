@@ -4,6 +4,7 @@ import gg.warcraft.gathering.api.spot.BlockGatheringSpot;
 import gg.warcraft.gathering.api.spot.EntityGatheringSpot;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * This service is injectable.
@@ -13,6 +14,18 @@ import java.util.List;
  * {@code EntityGatheringSpot}s.
  */
 public interface GatheringSpotQueryService {
+
+    /**
+     * @param id The id. Can not be null.
+     * @return The block gathering spot with id. Can be null.
+     */
+    BlockGatheringSpot getBlockGatheringSpot(UUID id);
+
+    /**
+     * @param id The id. Can not be null.
+     * @return The entity gathering spot with id. Can be null.
+     */
+    EntityGatheringSpot getEntityGatheringSpot(UUID id);
 
     /**
      * @return A list with all currently active block gathering spots. Never null, but can be empty. Items are never
