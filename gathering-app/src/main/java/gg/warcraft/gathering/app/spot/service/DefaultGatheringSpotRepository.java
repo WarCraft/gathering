@@ -13,12 +13,17 @@ import java.util.UUID;
 
 @Singleton
 public class DefaultGatheringSpotRepository implements GatheringSpotRepository {
-    final List<BlockGatheringSpot> blockGatheringSpots;
+    final Map<UUID, BlockGatheringSpot> blockGatheringSpots;
     final Map<UUID, EntityGatheringSpot> entityGatheringSpots;
 
     public DefaultGatheringSpotRepository() {
-        this.blockGatheringSpots = new ArrayList<>();
+        this.blockGatheringSpots = new HashMap<>();
         this.entityGatheringSpots = new HashMap<>();
+    }
+
+    @Override
+    public BlockGatheringSpot getBlockGatheringSpot(UUID id) {
+        return blockGatheringSpots.get(id);
     }
 
     @Override
@@ -28,7 +33,7 @@ public class DefaultGatheringSpotRepository implements GatheringSpotRepository {
 
     @Override
     public List<BlockGatheringSpot> getBlockGatheringSpots() {
-        return new ArrayList<>(blockGatheringSpots);
+        return new ArrayList<>(blockGatheringSpots.values());
     }
 
     @Override
@@ -38,7 +43,7 @@ public class DefaultGatheringSpotRepository implements GatheringSpotRepository {
 
     @Override
     public void save(BlockGatheringSpot blockGatheringSpot) {
-        blockGatheringSpots.add(blockGatheringSpot);
+        blockGatheringSpots.put(blockGatheringSpot.getId(), blockGatheringSpot);
     }
 
     @Override

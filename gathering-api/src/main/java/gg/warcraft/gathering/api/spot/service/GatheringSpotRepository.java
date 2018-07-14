@@ -17,6 +17,12 @@ public interface GatheringSpotRepository {
 
     /**
      * @param id The id. Can not be null.
+     * @return The block gathering spot with id. Can be null.
+     */
+    BlockGatheringSpot getBlockGatheringSpot(UUID id);
+
+    /**
+     * @param id The id. Can not be null.
      * @return The entity gathering spot with id. Can be null.
      */
     EntityGatheringSpot getEntityGatheringSpot(UUID id);
