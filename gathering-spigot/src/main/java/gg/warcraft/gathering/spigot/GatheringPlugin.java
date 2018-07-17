@@ -20,7 +20,7 @@ import gg.warcraft.monolith.api.Monolith;
 import gg.warcraft.monolith.api.config.service.ConfigurationCommandService;
 import gg.warcraft.monolith.api.config.service.ConfigurationQueryService;
 import gg.warcraft.monolith.api.core.EventService;
-import gg.warcraft.monolith.api.core.Yaml;
+import gg.warcraft.monolith.api.core.YamlMapper;
 import gg.warcraft.monolith.api.item.ItemType;
 import gg.warcraft.monolith.api.util.TimeUtils;
 import gg.warcraft.monolith.api.world.Location;
@@ -73,7 +73,7 @@ public class GatheringPlugin extends JavaPlugin {
     }
 
     GatheringConfiguration loadGatheringConfiguration(FileConfiguration localConfiguration, Injector injector) {
-        ObjectMapper yamlMapper = injector.getInstance(Key.get(ObjectMapper.class, Yaml.class));
+        ObjectMapper yamlMapper = injector.getInstance(Key.get(ObjectMapper.class, YamlMapper.class));
         SimpleModule gatheringMapperModule = new GatheringMapperModule();
         yamlMapper.registerModule(gatheringMapperModule);
 

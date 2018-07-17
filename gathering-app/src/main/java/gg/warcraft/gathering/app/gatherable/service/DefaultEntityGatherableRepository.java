@@ -3,7 +3,7 @@ package gg.warcraft.gathering.app.gatherable.service;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import gg.warcraft.gathering.api.gatherable.service.EntityGatherableRepository;
-import gg.warcraft.monolith.api.persistence.PersistenceService;
+import gg.warcraft.monolith.api.core.PersistenceService;
 
 import java.util.Collections;
 import java.util.List;
