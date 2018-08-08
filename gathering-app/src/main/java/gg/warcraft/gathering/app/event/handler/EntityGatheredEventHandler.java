@@ -7,7 +7,8 @@ import gg.warcraft.gathering.api.gatherable.service.EntityGatherableCommandServi
 import gg.warcraft.gathering.api.spot.service.GatheringSpotCommandService;
 import gg.warcraft.gathering.api.spot.service.GatheringSpotQueryService;
 import gg.warcraft.monolith.api.entity.Entity;
-import gg.warcraft.monolith.api.entity.event.EntityPreDeathEvent;
+import gg.warcraft.monolith.api.entity.event.EntityDeathEvent;
+import gg.warcraft.monolith.api.entity.event.EntityPreFatalDamageEvent;
 import gg.warcraft.monolith.api.entity.service.EntityQueryService;
 
 import java.util.ArrayList;
@@ -31,7 +32,22 @@ public class EntityGatheredEventHandler {
     }
 
     @Subscribe
-    public void onEntityPreDeathEvent(EntityPreDeathEvent event) {
+    public void onEntityPreFatalDamageEvent(EntityPreFatalDamageEvent event) {
+        UUID entityId = event.getEntityId();
+        gatheringSpotQueryService.getEntityGatheringSpots().stream()
+                .filter(gatheringSpot -> gatheringSpot.getEntityIds().contains(entityId))
+                .findAny()
+                .ifPresent(gatheringSpot -> {
+                    Entity entity = entityQueryService.getEntity(entityId);
+                    gatheringSpot.getEntityGatherables().stream()
+                            .filter(gatherable -> gatherable.getEntityType() == entity.getType())
+                            .findAny()
+                            .ifPresent(gatherable -> event.explicitlyAllow());
+                });
+    }
+
+    @Subscribe
+    public void onEntityDeathEvent(EntityDeathEvent event) {
         UUID entityId = event.getEntityId();
         gatheringSpotQueryService.getEntityGatheringSpots().stream()
                 .filter(gatheringSpot -> gatheringSpot.getEntityIds().contains(entityId))
@@ -42,7 +58,6 @@ public class EntityGatheredEventHandler {
                             .filter(gatherable -> gatherable.getEntityType() == entity.getType())
                             .findAny()
                             .ifPresent(gatherable -> {
-                                event.explicitlyAllow();
                                 event.setDrops(new ArrayList<>());
 
                                 UUID gatheringSpotId = gatheringSpot.getId();
