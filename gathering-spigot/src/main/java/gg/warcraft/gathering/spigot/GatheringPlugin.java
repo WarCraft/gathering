@@ -23,10 +23,10 @@ import gg.warcraft.monolith.api.core.EventService;
 import gg.warcraft.monolith.api.core.YamlMapper;
 import gg.warcraft.monolith.api.item.ItemType;
 import gg.warcraft.monolith.api.util.TimeUtils;
-import gg.warcraft.monolith.api.world.Location;
 import gg.warcraft.monolith.api.world.block.box.BoundingBlockBox;
 import gg.warcraft.monolith.api.world.block.box.BoundingBlockBoxFactory;
-import gg.warcraft.monolith.api.world.service.WorldQueryService;
+import gg.warcraft.monolith.api.world.location.Location;
+import gg.warcraft.monolith.api.world.location.LocationFactory;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -100,10 +100,10 @@ public class GatheringPlugin extends JavaPlugin {
 
     void readGatheringConfiguration(GatheringConfiguration configuration, Injector injector) {
         GatherableFactory gatherableFactory = injector.getInstance(GatherableFactory.class);
+        LocationFactory locationFactory = injector.getInstance(LocationFactory.class);
         BoundingBlockBoxFactory boundingBoxFactory = injector.getInstance(BoundingBlockBoxFactory.class);
         ResourceBuilderFactory resourceBuilderFactory = injector.getInstance(ResourceBuilderFactory.class);
         TimeUtils timeUtils = injector.getInstance(TimeUtils.class);
-        WorldQueryService worldQueryService = injector.getInstance(WorldQueryService.class);
         GatheringSpotCommandService gatheringSpotCommandService = injector.getInstance(GatheringSpotCommandService.class);
         configuration.getBlockGatheringSpots().forEach(blockGatheringSpotConfiguration -> {
             BoundingBlockBox boundingBox = boundingBoxFactory.createBoundingBlockBox(
@@ -127,7 +127,7 @@ public class GatheringPlugin extends JavaPlugin {
             gatheringSpotCommandService.createBlockGatheringSpot(boundingBox, Collections.singletonList(gatherable));
         });
         configuration.getEntityGatheringSpots().forEach(entityGatheringSpotConfiguration -> {
-            Location spawnLocation = worldQueryService.getLocation(
+            Location spawnLocation = locationFactory.createLocation(
                     entityGatheringSpotConfiguration.getSpawnLocation().getWorld(),
                     entityGatheringSpotConfiguration.getSpawnLocation().getX(),
                     entityGatheringSpotConfiguration.getSpawnLocation().getY(),

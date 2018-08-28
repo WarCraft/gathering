@@ -1,7 +1,7 @@
 package gg.warcraft.gathering.api.gatherable.service;
 
 import gg.warcraft.gathering.api.gatherable.BlockGatherable;
-import gg.warcraft.monolith.api.world.BlockLocation;
+import gg.warcraft.monolith.api.world.location.BlockLocation;
 
 public interface BlockGatherableCommandService {
 

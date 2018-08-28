@@ -4,9 +4,9 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import gg.warcraft.gathering.api.gatherable.service.BlockGatherableCommandService;
 import gg.warcraft.gathering.api.spot.service.GatheringSpotQueryService;
-import gg.warcraft.monolith.api.world.BlockLocation;
 import gg.warcraft.monolith.api.world.block.Block;
 import gg.warcraft.monolith.api.world.block.event.BlockPreBreakEvent;
+import gg.warcraft.monolith.api.world.location.BlockLocation;
 
 import java.util.ArrayList;
 
