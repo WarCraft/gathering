@@ -23,6 +23,7 @@ import gg.warcraft.monolith.api.core.EventService;
 import gg.warcraft.monolith.api.core.YamlMapper;
 import gg.warcraft.monolith.api.item.ItemType;
 import gg.warcraft.monolith.api.util.TimeUtils;
+import gg.warcraft.monolith.api.world.block.Block;
 import gg.warcraft.monolith.api.world.block.box.BoundingBlockBox;
 import gg.warcraft.monolith.api.world.block.box.BoundingBlockBoxFactory;
 import gg.warcraft.monolith.api.world.location.Location;
@@ -34,6 +35,7 @@ import org.joml.Vector3i;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 public class GatheringPlugin extends JavaPlugin {
@@ -124,7 +126,8 @@ public class GatheringPlugin extends JavaPlugin {
                         return Collections.singletonList(builder.build());
                     },
                     () -> timeUtils.createDurationInSeconds(blockGatheringSpotConfiguration.getCooldownInSeconds()));
-            gatheringSpotCommandService.createBlockGatheringSpot(boundingBox, Collections.singletonList(gatherable));
+            Predicate<Block> containsBlock = block -> boundingBox.test(block.getLocation());
+            gatheringSpotCommandService.createBlockGatheringSpot(containsBlock, Collections.singletonList(gatherable));
         });
         configuration.getEntityGatheringSpots().forEach(entityGatheringSpotConfiguration -> {
             Location spawnLocation = locationFactory.createLocation(
@@ -165,7 +168,9 @@ public class GatheringPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         FileConfiguration localConfig = getConfig();
-        Injector injector = Monolith.getInstance().getInjector();
+        Injector baseInjector = Monolith.getInstance().getInjector();
+        AbstractModule privateGatheringModule = new PrivateSpigotGatheringModule(this);
+        Injector injector = baseInjector.createChildInjector(privateGatheringModule);
 
         removeExistingEntityGatherables(injector);
 
