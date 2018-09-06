@@ -2,9 +2,9 @@ package gg.warcraft.gathering.spigot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Key;
+import com.google.inject.Module;
 import gg.warcraft.gathering.api.config.GatheringConfiguration;
 import gg.warcraft.gathering.api.gatherable.BlockGatherable;
 import gg.warcraft.gathering.api.gatherable.EntityGatherable;
@@ -161,16 +161,14 @@ public class GatheringPlugin extends JavaPlugin {
     @Override
     public void onLoad() {
         saveDefaultConfig();
-        AbstractModule spigotGatheringModule = new SpigotGatheringModule();
+        Module spigotGatheringModule = new SpigotGatheringModule(this);
         Monolith.registerModule(spigotGatheringModule);
     }
 
     @Override
     public void onEnable() {
         FileConfiguration localConfig = getConfig();
-        Injector baseInjector = Monolith.getInstance().getInjector();
-        AbstractModule privateGatheringModule = new PrivateSpigotGatheringModule(this);
-        Injector injector = baseInjector.createChildInjector(privateGatheringModule);
+        Injector injector = Monolith.getInstance().getInjector();
 
         removeExistingEntityGatherables(injector);
 

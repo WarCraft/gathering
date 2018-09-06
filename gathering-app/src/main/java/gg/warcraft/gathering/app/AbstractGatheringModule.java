@@ -1,6 +1,6 @@
 package gg.warcraft.gathering.app;
 
-import com.google.inject.AbstractModule;
+import com.google.inject.PrivateModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.name.Names;
 import gg.warcraft.gathering.api.gatherable.BlockGatherable;
@@ -26,27 +26,42 @@ import gg.warcraft.gathering.app.spot.service.DefaultGatheringSpotCommandService
 import gg.warcraft.gathering.app.spot.service.DefaultGatheringSpotQueryService;
 import gg.warcraft.gathering.app.spot.service.DefaultGatheringSpotRepository;
 
-public abstract class AbstractGatheringModule extends AbstractModule {
+public abstract class AbstractGatheringModule extends PrivateModule {
 
     @Override
     protected void configure() {
+        // Gathering spot bindings
         bind(GatheringSpotCommandService.class).to(DefaultGatheringSpotCommandService.class);
-        bind(GatheringSpotQueryService.class).to(DefaultGatheringSpotQueryService.class);
-        bind(GatheringSpotRepository.class).to(DefaultGatheringSpotRepository.class);
+        expose(GatheringSpotCommandService.class);
 
+        bind(GatheringSpotQueryService.class).to(DefaultGatheringSpotQueryService.class);
+        expose(GatheringSpotQueryService.class);
+
+        bind(GatheringSpotRepository.class).to(DefaultGatheringSpotRepository.class);
+        expose(GatheringSpotRepository.class);
+
+        // Gatherable bindings
         bind(BlockGatherableCommandService.class).to(DefaultBlockGatherableCommandService.class);
+        expose(BlockGatherableCommandService.class);
 
         bind(EntityGatherableCommandService.class).to(DefaultEntityGatherableCommandService.class);
+        expose(EntityGatherableCommandService.class);
+
         bind(EntityGatherableQueryService.class).to(DefaultEntityGatherableQueryService.class);
+        expose(EntityGatherableQueryService.class);
+
         bind(EntityGatherableRepository.class).to(DefaultEntityGatherableRepository.class);
+        expose(EntityGatherableRepository.class);
 
         install(new FactoryModuleBuilder()
                 .implement(BlockGatherable.class, Names.named("block"), SimpleBlockGatherable.class)
                 .implement(EntityGatherable.class, Names.named("entity"), SimpleEntityGatherable.class)
                 .build(GatherableFactory.class));
+        expose(GatherableFactory.class);
 
         install(new FactoryModuleBuilder()
                 .implement(ResourceBuilder.class, SimpleResourceBuilder.class)
                 .build(ResourceBuilderFactory.class));
+        expose(ResourceBuilderFactory.class);
     }
 }
