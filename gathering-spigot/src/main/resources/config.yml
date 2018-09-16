@@ -37,7 +37,7 @@ configurationFileName: relative/path/to/config.yml
 # DropType options: http://warcraft.gg/blocktypes
 # ------------------------------------------------------------
 #
-blockGatheringSpots:
+blockGatheringSpots: []
 #  - boundingBox:
 #      world: OVERWORLD
 #      minimumCorner:
@@ -55,7 +55,7 @@ blockGatheringSpots:
 #      name: Stone
 #    cooldownInSeconds: 10
 
-entityGatheringSpots:
+entityGatheringSpots: []
 #  - spawnLocation:
 #      world: OVERWORLD
 #      x: 0
