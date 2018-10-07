@@ -2,9 +2,13 @@ package gg.warcraft.gathering.app.gatherable.service;
 
 import com.google.inject.Inject;
 import gg.warcraft.gathering.api.gatherable.EntityGatherable;
+import gg.warcraft.gathering.api.gatherable.event.EntityGatheredEvent;
+import gg.warcraft.gathering.api.gatherable.event.EntityPreGatheredEvent;
 import gg.warcraft.gathering.api.gatherable.event.GatherableEntityRespawnedEvent;
 import gg.warcraft.gathering.api.gatherable.service.EntityGatherableCommandService;
 import gg.warcraft.gathering.api.gatherable.service.EntityGatherableRepository;
+import gg.warcraft.gathering.app.gatherable.event.SimpleEntityGatheredEvent;
+import gg.warcraft.gathering.app.gatherable.event.SimpleEntityPreGatheredEvent;
 import gg.warcraft.gathering.app.gatherable.event.SimpleGatherableEntityRespawnedEvent;
 import gg.warcraft.monolith.api.core.EventService;
 import gg.warcraft.monolith.api.core.TaskService;
@@ -51,8 +55,18 @@ public class DefaultEntityGatherableCommandService implements EntityGatherableCo
     @Override
     public void gatherEntity(EntityGatherable gatherable, UUID entityId) {
         Entity entity = entityQueryService.getEntity(entityId);
+        EntityPreGatheredEvent entityPreGatheredEvent = new SimpleEntityPreGatheredEvent(entityId, entity.getType(),
+                false);
+        eventService.publish(entityPreGatheredEvent);
+        if (entityPreGatheredEvent.isCancelled() && !entityPreGatheredEvent.isExplicitlyAllowed()) {
+            return;
+        }
+
         spawnDrops(gatherable, entity);
         entityGatherableRepository.deleteEntity(entityId);
+
+        EntityGatheredEvent entityGatheredEvent = new SimpleEntityGatheredEvent(entityId, entity.getType());
+        eventService.publish(entityGatheredEvent);
     }
 
     @Override
