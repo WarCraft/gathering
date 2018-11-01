@@ -57,7 +57,7 @@ public class DefaultBlockGatherableCommandService implements BlockGatherableComm
 
     void queueBlockRestoration(BlockGatherable blockGatherable, Block block) {
         Duration cooldown = blockGatherable.generateCooldown();
-        UUID blockBackupId = blockBackupCommandService.createBlockBackup(block);
+        UUID blockBackupId = blockBackupCommandService.createBlockBackup(block.getLocation());
         taskService.runLater(() -> blockBackupCommandService.restoreBlockBackup(blockBackupId), cooldown);
     }
 
