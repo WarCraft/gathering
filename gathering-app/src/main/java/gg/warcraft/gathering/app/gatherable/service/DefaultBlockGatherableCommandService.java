@@ -2,7 +2,12 @@ package gg.warcraft.gathering.app.gatherable.service;
 
 import com.google.inject.Inject;
 import gg.warcraft.gathering.api.gatherable.BlockGatherable;
+import gg.warcraft.gathering.api.gatherable.event.BlockGatheredEvent;
+import gg.warcraft.gathering.api.gatherable.event.BlockPreGatheredEvent;
 import gg.warcraft.gathering.api.gatherable.service.BlockGatherableCommandService;
+import gg.warcraft.gathering.app.gatherable.event.SimpleBlockGatheredEvent;
+import gg.warcraft.gathering.app.gatherable.event.SimpleBlockPreGatheredEvent;
+import gg.warcraft.monolith.api.core.EventService;
 import gg.warcraft.monolith.api.core.TaskService;
 import gg.warcraft.monolith.api.item.Item;
 import gg.warcraft.monolith.api.util.Duration;
@@ -26,17 +31,20 @@ public class DefaultBlockGatherableCommandService implements BlockGatherableComm
     private final BlockBackupCommandService blockBackupCommandService;
     private final TaskService taskService;
     private final LocationFactory locationFactory;
+    private final EventService eventService;
 
     @Inject
     public DefaultBlockGatherableCommandService(WorldQueryService worldQueryService,
                                                 WorldCommandService worldCommandService,
                                                 BlockBackupCommandService blockBackupCommandService,
-                                                TaskService taskService, LocationFactory locationFactory) {
+                                                TaskService taskService, LocationFactory locationFactory,
+                                                EventService eventService) {
         this.worldQueryService = worldQueryService;
         this.worldCommandService = worldCommandService;
         this.blockBackupCommandService = blockBackupCommandService;
         this.taskService = taskService;
         this.locationFactory = locationFactory;
+        this.eventService = eventService;
     }
 
     void spawnDrops(BlockGatherable gatherable, Block block) {
@@ -64,7 +72,16 @@ public class DefaultBlockGatherableCommandService implements BlockGatherableComm
     @Override
     public void gatherBlock(BlockGatherable gatherable, BlockLocation location) {
         Block block = worldQueryService.getBlockAt(location);
+        BlockPreGatheredEvent blockPreGatheredEvent = new SimpleBlockPreGatheredEvent(block, false);
+        eventService.publish(blockPreGatheredEvent);
+        if (blockPreGatheredEvent.isCancelled() && !blockPreGatheredEvent.isExplicitlyAllowed()) {
+            return;
+        }
+
         spawnDrops(gatherable, block);
+
+        BlockGatheredEvent blockGatheredEvent = new SimpleBlockGatheredEvent(block);
+        eventService.publish(blockGatheredEvent);
     }
 
     @Override
