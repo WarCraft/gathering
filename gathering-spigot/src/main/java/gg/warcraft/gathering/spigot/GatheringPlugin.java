@@ -13,6 +13,7 @@ import gg.warcraft.gathering.api.spot.service.GatheringSpotCommandService;
 import gg.warcraft.gathering.app.config.GatheringMapperModule;
 import gg.warcraft.gathering.app.event.handler.BlockGatheredEventHandler;
 import gg.warcraft.gathering.app.event.handler.EntityGatheredEventHandler;
+import gg.warcraft.gathering.app.event.handler.ServerShutdownEventHandler;
 import gg.warcraft.monolith.api.Monolith;
 import gg.warcraft.monolith.api.MonolithPluginUtils;
 import gg.warcraft.monolith.api.core.EventService;
@@ -92,8 +93,10 @@ public class GatheringPlugin extends JavaPlugin {
         EventService eventService = injector.getInstance(EventService.class);
         BlockGatheredEventHandler blockGatheredEventHandler = injector.getInstance(BlockGatheredEventHandler.class);
         EntityGatheredEventHandler entityGatheredEventHandler = injector.getInstance(EntityGatheredEventHandler.class);
+        ServerShutdownEventHandler serverShutdownEventHandler = injector.getInstance(ServerShutdownEventHandler.class);
         eventService.subscribe(blockGatheredEventHandler);
         eventService.subscribe(entityGatheredEventHandler);
+        eventService.subscribe(serverShutdownEventHandler);
     }
 
     @Override
