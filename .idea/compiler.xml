@@ -10,6 +10,12 @@
       <module name="gathering-spigot_test" target="1.8" />
       <module name="Gathering_main" target="1.10" />
       <module name="Gathering_test" target="1.10" />
+      <module name="gg.warcraft.gathering-api.main" target="1.8" />
+      <module name="gg.warcraft.gathering-api.test" target="1.8" />
+      <module name="gg.warcraft.gathering-app.main" target="1.8" />
+      <module name="gg.warcraft.gathering-app.test" target="1.8" />
+      <module name="gg.warcraft.gathering-spigot.main" target="1.8" />
+      <module name="gg.warcraft.gathering-spigot.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

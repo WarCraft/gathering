@@ -9,12 +9,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class SimpleEntityGatheringSpot extends SimpleGatheringSpot implements EntityGatheringSpot {
+public class SimpleEntityGatheringSpot implements EntityGatheringSpot {
+    private final String id;
     private final List<EntityGatherable> gatherables;
     private final Set<UUID> entityIds;
 
-    public SimpleEntityGatheringSpot(UUID id, List<EntityGatherable> gatherables, Set<UUID> entityIds) {
-        super(id);
+    public SimpleEntityGatheringSpot(String id, List<EntityGatherable> gatherables, Set<UUID> entityIds) {
+        this.id = id;
         this.gatherables = gatherables;
         this.entityIds = entityIds;
     }
@@ -27,5 +28,10 @@ public class SimpleEntityGatheringSpot extends SimpleGatheringSpot implements En
     @Override
     public Set<UUID> getEntityIds() {
         return new HashSet<>(entityIds);
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 }

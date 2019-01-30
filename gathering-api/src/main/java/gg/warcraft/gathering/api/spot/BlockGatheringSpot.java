@@ -20,4 +20,6 @@ public interface BlockGatheringSpot extends GatheringSpot {
      * @return True if the block belongs to this spot, false otherwise.
      */
     boolean containsBlock(Block block);
+
+    String getId();
 }
