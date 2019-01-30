@@ -1,8 +1,7 @@
 package gg.warcraft.gathering.api.spot;
 
-import java.util.UUID;
-
-public interface GatheringSpot {
-
-    UUID getId();
+/**
+ * An abstract gathering spot...
+ */
+interface GatheringSpot {
 }

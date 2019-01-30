@@ -9,12 +9,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class SimpleBlockGatheringSpot extends SimpleGatheringSpot implements BlockGatheringSpot {
+public class SimpleBlockGatheringSpot implements BlockGatheringSpot {
+    private final String id;
     private final Predicate<Block> containsBlock;
     private final List<BlockGatherable> gatherables;
 
-    public SimpleBlockGatheringSpot(UUID id, Predicate<Block> containsBlock, List<BlockGatherable> gatherables) {
-        super(id);
+    public SimpleBlockGatheringSpot(String id, Predicate<Block> containsBlock, List<BlockGatherable> gatherables) {
+        this.id = id;
         this.containsBlock = containsBlock;
         this.gatherables = gatherables;
     }
@@ -27,5 +28,10 @@ public class SimpleBlockGatheringSpot extends SimpleGatheringSpot implements Blo
     @Override
     public boolean containsBlock(Block block) {
         return containsBlock.test(block);
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 }

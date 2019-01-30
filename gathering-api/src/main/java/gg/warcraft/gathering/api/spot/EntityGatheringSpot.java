@@ -20,4 +20,6 @@ public interface EntityGatheringSpot extends GatheringSpot {
      * @return A set of entity ids that belong to this spot. Never null, but can be empty. Items are never null.
      */
     Set<UUID> getEntityIds();
+
+    String getId();
 }
