@@ -8,7 +8,7 @@ public interface EntityGatherableCommandService {
 
     void gatherEntity(EntityGatherable gatherable, UUID entityId, UUID playerId);
 
-    void respawnEntity(EntityGatherable gatherable, UUID gatheringSpotId);
+    void respawnEntity(EntityGatherable gatherable, String gatheringSpotId);
 
     void removeAllEntities();
 }

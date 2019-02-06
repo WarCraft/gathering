@@ -30,16 +30,16 @@ public class DefaultGatheringSpotCommandService implements GatheringSpotCommandS
     }
 
     @Override
-    public UUID createBlockGatheringSpot(Predicate<Block> containsBlock, List<BlockGatherable> gatherables) {
-        UUID id = UUID.randomUUID();
-        BlockGatheringSpot gatheringSpot = new SimpleBlockGatheringSpot(id.toString(), containsBlock, gatherables);
+    public String createBlockGatheringSpot(Predicate<Block> containsBlock, List<BlockGatherable> gatherables) {
+        String id = UUID.randomUUID().toString();
+        BlockGatheringSpot gatheringSpot = new SimpleBlockGatheringSpot(id, containsBlock, gatherables);
         gatheringSpotRepository.save(gatheringSpot);
         return id;
     }
 
     @Override
-    public UUID createEntityGatheringSpot(List<EntityGatherable> gatherables) {
-        UUID gatheringSpotId = UUID.randomUUID();
+    public String createEntityGatheringSpot(List<EntityGatherable> gatherables) {
+        String gatheringSpotId = UUID.randomUUID().toString();
         gatherables.forEach(gatherable -> {
             int entityCount = gatherable.getEntityCount();
             for (int i = 0; i < entityCount; i += 1) {
@@ -48,27 +48,27 @@ public class DefaultGatheringSpotCommandService implements GatheringSpotCommandS
         });
 
         Set<UUID> entityIds = Collections.emptySet();
-        EntityGatheringSpot gatheringSpot = new SimpleEntityGatheringSpot(gatheringSpotId.toString(), gatherables, entityIds);
+        EntityGatheringSpot gatheringSpot = new SimpleEntityGatheringSpot(gatheringSpotId, gatherables, entityIds);
         gatheringSpotRepository.save(gatheringSpot);
         return gatheringSpotId;
     }
 
     @Override
-    public void addEntityToGatheringSpot(UUID gatheringSpotId, UUID entityId) {
-        EntityGatheringSpot gatheringSpot = gatheringSpotRepository.getEntityGatheringSpot(gatheringSpotId.toString());
+    public void addEntityToGatheringSpot(String gatheringSpotId, UUID entityId) {
+        EntityGatheringSpot gatheringSpot = gatheringSpotRepository.getEntityGatheringSpot(gatheringSpotId);
         Set<UUID> entityIds = gatheringSpot.getEntityIds();
         entityIds.add(entityId);
-        EntityGatheringSpot newGatheringSpot = new SimpleEntityGatheringSpot(gatheringSpotId.toString(),
+        EntityGatheringSpot newGatheringSpot = new SimpleEntityGatheringSpot(gatheringSpotId,
                 gatheringSpot.getEntityGatherables(), entityIds);
         gatheringSpotRepository.save(newGatheringSpot);
     }
 
     @Override
-    public void removeEntityFromGatheringSpot(UUID gatheringSpotId, UUID entityId) {
-        EntityGatheringSpot gatheringSpot = gatheringSpotRepository.getEntityGatheringSpot(gatheringSpotId.toString());
+    public void removeEntityFromGatheringSpot(String gatheringSpotId, UUID entityId) {
+        EntityGatheringSpot gatheringSpot = gatheringSpotRepository.getEntityGatheringSpot(gatheringSpotId);
         Set<UUID> entityIds = gatheringSpot.getEntityIds();
         entityIds.remove(entityId);
-        EntityGatheringSpot newGatheringSpot = new SimpleEntityGatheringSpot(gatheringSpotId.toString(),
+        EntityGatheringSpot newGatheringSpot = new SimpleEntityGatheringSpot(gatheringSpotId,
                 gatheringSpot.getEntityGatherables(), entityIds);
         gatheringSpotRepository.save(newGatheringSpot);
     }

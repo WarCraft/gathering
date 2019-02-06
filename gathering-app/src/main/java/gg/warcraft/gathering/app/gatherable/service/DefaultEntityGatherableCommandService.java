@@ -71,7 +71,7 @@ public class DefaultEntityGatherableCommandService implements EntityGatherableCo
     }
 
     @Override
-    public void respawnEntity(EntityGatherable gatherable, UUID gatheringSpotId) {
+    public void respawnEntity(EntityGatherable gatherable, String gatheringSpotId) {
         Location respawnLocation = gatherable.generateSpawnLocation();
         Duration cooldown = gatherable.generateCooldown();
         taskService.runLater(() -> {
