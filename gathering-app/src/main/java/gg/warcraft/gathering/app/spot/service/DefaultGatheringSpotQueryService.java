@@ -7,7 +7,6 @@ import gg.warcraft.gathering.api.spot.service.GatheringSpotQueryService;
 import gg.warcraft.gathering.api.spot.service.GatheringSpotRepository;
 
 import java.util.List;
-import java.util.UUID;
 
 public class DefaultGatheringSpotQueryService implements GatheringSpotQueryService {
     private final GatheringSpotRepository gatheringSpotRepository;
@@ -18,12 +17,12 @@ public class DefaultGatheringSpotQueryService implements GatheringSpotQueryServi
     }
 
     @Override
-    public BlockGatheringSpot getBlockGatheringSpot(UUID id) {
+    public BlockGatheringSpot getBlockGatheringSpot(String id) {
         return gatheringSpotRepository.getBlockGatheringSpot(id);
     }
 
     @Override
-    public EntityGatheringSpot getEntityGatheringSpot(UUID id) {
+    public EntityGatheringSpot getEntityGatheringSpot(String id) {
         return gatheringSpotRepository.getEntityGatheringSpot(id);
     }
 
