@@ -6,7 +6,6 @@ import gg.warcraft.monolith.api.world.block.Block;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Predicate;
 
 public class SimpleBlockGatheringSpot implements BlockGatheringSpot {
