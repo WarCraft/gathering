@@ -9,6 +9,7 @@ import gg.warcraft.monolith.api.world.block.event.BlockPreBreakEvent;
 import gg.warcraft.monolith.api.world.location.BlockLocation;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class BlockGatheredEventHandler {
     private final BlockGatherableCommandService blockGatherableCommandService;
@@ -23,6 +24,11 @@ public class BlockGatheredEventHandler {
 
     @Subscribe
     public void onBlockPreBreakEvent(BlockPreBreakEvent event) {
+        UUID playerId = event.getPlayerId();
+        if (playerId == null) {
+            return;
+        }
+
         Block block = event.getBlock();
         gatheringSpotQueryService.getBlockGatheringSpots().stream()
                 .filter(gatheringSpot -> gatheringSpot.containsBlock(block))
@@ -34,7 +40,7 @@ public class BlockGatheredEventHandler {
                             event.setAlternativeDrops(new ArrayList<>());
 
                             BlockLocation location = block.getLocation();
-                            blockGatherableCommandService.gatherBlock(gatherable, location);
+                            blockGatherableCommandService.gatherBlock(gatherable, location, playerId);
                             blockGatherableCommandService.respawnBlock(gatherable, location);
                         }));
     }
