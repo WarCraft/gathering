@@ -4,9 +4,18 @@ import gg.warcraft.gathering.api.gatherable.event.BlockPreGatheredEvent;
 import gg.warcraft.monolith.api.world.block.Block;
 import gg.warcraft.monolith.api.world.block.event.AbstractBlockPreEvent;
 
-public class SimpleBlockPreGatheredEvent extends AbstractBlockPreEvent implements BlockPreGatheredEvent {
+import java.util.UUID;
 
-    public SimpleBlockPreGatheredEvent(Block block, boolean cancelled) {
+public class SimpleBlockPreGatheredEvent extends AbstractBlockPreEvent implements BlockPreGatheredEvent {
+    private final UUID playerId;
+
+    public SimpleBlockPreGatheredEvent(Block block, UUID playerId, boolean cancelled) {
         super(block, cancelled);
+        this.playerId = playerId;
+    }
+
+    @Override
+    public UUID getPlayerId() {
+        return playerId;
     }
 }

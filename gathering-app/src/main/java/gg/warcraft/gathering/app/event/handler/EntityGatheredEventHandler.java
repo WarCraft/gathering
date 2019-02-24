@@ -62,7 +62,7 @@ public class EntityGatheredEventHandler {
 
                                 String gatheringSpotId = gatheringSpot.getId();
                                 gatheringSpotCommandService.removeEntityFromGatheringSpot(gatheringSpotId, entityId);
-                                entityGatherableCommandService.gatherEntity(gatherable, entityId);
+                                entityGatherableCommandService.gatherEntity(gatherable, entityId, null);
                                 entityGatherableCommandService.respawnEntity(gatherable, gatheringSpotId);
                             });
                 });
