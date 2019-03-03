@@ -31,6 +31,11 @@ public class SimpleEntityGatheringSpotConfiguration implements EntityGatheringSp
     }
 
     @Override
+    public String getId() {
+        return null; // Implement the rest of this method
+    }
+
+    @Override
     public LocationConfiguration getSpawnLocation() {
         return spawnLocation;
     }
