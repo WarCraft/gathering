@@ -5,6 +5,8 @@ import gg.warcraft.monolith.api.world.block.BlockType;
 
 public interface BlockGatheringSpotConfiguration {
 
+    String getId();
+
     BoundingBlockBoxConfiguration getBoundingBox();
 
     BlockType getBlockType();

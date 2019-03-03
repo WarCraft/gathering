@@ -28,6 +28,11 @@ public class SimpleBlockGatheringSpotConfiguration implements BlockGatheringSpot
     }
 
     @Override
+    public String getId() {
+        return null; // Implement this method soon
+    }
+
+    @Override
     public BoundingBlockBoxConfiguration getBoundingBox() {
         return boundingBox;
     }
