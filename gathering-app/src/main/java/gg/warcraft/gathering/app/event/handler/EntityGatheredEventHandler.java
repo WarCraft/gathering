@@ -55,6 +55,10 @@ public class EntityGatheredEventHandler {
     @Subscribe
     public void EntityFatalDamageEvent(EntityFatalDamageEvent event) {
         UUID attackerId = event.getDamage().getSource().getEntityId();
+        if (attackerId == null) {
+            return;
+        }
+
         Player attacker = playerQueryService.getPlayer(attackerId);
         if (attacker == null) {
             return;
