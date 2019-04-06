@@ -33,4 +33,9 @@ public class SimpleBlockGatheringSpot implements BlockGatheringSpot {
     public boolean containsBlock(Block block) {
         return containsBlock.test(block);
     }
+
+    @Override
+    public String getId() {
+        return id;
+    }
 }

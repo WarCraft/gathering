@@ -34,4 +34,9 @@ public class SimpleEntityGatheringSpot implements EntityGatheringSpot {
     public Set<UUID> getEntityIds() {
         return new HashSet<>(entityIds);
     }
+
+    @Override
+    public String getId() {
+        return id;
+    }
 }
