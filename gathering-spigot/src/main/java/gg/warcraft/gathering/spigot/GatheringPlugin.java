@@ -66,7 +66,8 @@ public class GatheringPlugin extends JavaPlugin {
                     },
                     () -> timeUtils.createDurationInSeconds(blockGatheringSpotConfiguration.getCooldownInSeconds()));
             Predicate<Block> containsBlock = block -> boundingBox.test(block.getLocation());
-            gatheringSpotCommandService.createBlockGatheringSpot(containsBlock, Collections.singletonList(gatherable));
+            String gatheringSpotId = blockGatheringSpotConfiguration.getId();
+            gatheringSpotCommandService.createBlockGatheringSpot(gatheringSpotId, containsBlock, Collections.singletonList(gatherable));
         });
         configuration.getEntityGatheringSpots().forEach(entityGatheringSpotConfiguration -> {
             Location spawnLocation = locationFactory.createLocation(
@@ -85,7 +86,8 @@ public class GatheringPlugin extends JavaPlugin {
                         return Collections.singletonList(builder.build());
                     },
                     () -> timeUtils.createDurationInSeconds(entityGatheringSpotConfiguration.getCooldownInSeconds()));
-            gatheringSpotCommandService.createEntityGatheringSpot(Collections.singletonList(gatherable));
+            String gatheringSpotId = entityGatheringSpotConfiguration.getId();
+            gatheringSpotCommandService.createEntityGatheringSpot(gatheringSpotId, Collections.singletonList(gatherable));
         });
     }
 

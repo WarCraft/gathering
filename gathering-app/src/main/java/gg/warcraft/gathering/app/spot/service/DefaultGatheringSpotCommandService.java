@@ -1,8 +1,6 @@
 package gg.warcraft.gathering.app.spot.service;
 
 import com.google.inject.Inject;
-import gg.warcraft.gathering.api.config.BlockGatheringSpotConfiguration;
-import gg.warcraft.gathering.api.config.EntityGatheringSpotConfiguration;
 import gg.warcraft.gathering.api.gatherable.BlockGatherable;
 import gg.warcraft.gathering.api.gatherable.EntityGatherable;
 import gg.warcraft.gathering.api.gatherable.service.EntityGatherableCommandService;
@@ -23,31 +21,23 @@ import java.util.function.Predicate;
 public class DefaultGatheringSpotCommandService implements GatheringSpotCommandService {
     private final GatheringSpotRepository gatheringSpotRepository;
     private final EntityGatherableCommandService entityGatherableCommandService;
-    private final BlockGatheringSpotConfiguration blockGatheringSpotConfiguration;
-    private final EntityGatheringSpotConfiguration entityGatheringSpotConfiguration;
 
     @Inject
     public DefaultGatheringSpotCommandService(GatheringSpotRepository gatheringSpotRepository,
-                                              EntityGatherableCommandService entityGatherableCommandService,
-                                              BlockGatheringSpotConfiguration blockGatheringSpotConfiguration,
-                                              EntityGatheringSpotConfiguration entityGatheringSpotConfiguration) {
+                                              EntityGatherableCommandService entityGatherableCommandService) {
         this.gatheringSpotRepository = gatheringSpotRepository;
         this.entityGatherableCommandService = entityGatherableCommandService;
-        this.blockGatheringSpotConfiguration = blockGatheringSpotConfiguration;
-        this.entityGatheringSpotConfiguration = entityGatheringSpotConfiguration;
     }
 
     @Override
-    public String createBlockGatheringSpot(Predicate<Block> containsBlock, List<BlockGatherable> gatherables) {
-        String id = blockGatheringSpotConfiguration.getId();
-        BlockGatheringSpot gatheringSpot = new SimpleBlockGatheringSpot(id, containsBlock, gatherables);
+    public String createBlockGatheringSpot(String gatheringSpotId, Predicate<Block> containsBlock, List<BlockGatherable> gatherables) {
+        BlockGatheringSpot gatheringSpot = new SimpleBlockGatheringSpot(gatheringSpotId, containsBlock, gatherables);
         gatheringSpotRepository.save(gatheringSpot);
-        return id;
+        return gatheringSpotId;
     }
 
     @Override
-    public String createEntityGatheringSpot(List<EntityGatherable> gatherables) {
-        String gatheringSpotId = entityGatheringSpotConfiguration.getId();
+    public String createEntityGatheringSpot(String gatheringSpotId, List<EntityGatherable> gatherables) {
         gatherables.forEach(gatherable -> {
             int entityCount = gatherable.getEntityCount();
             for (int i = 0; i < entityCount; i += 1) {
