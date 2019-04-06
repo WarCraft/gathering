@@ -76,7 +76,7 @@ public class EntityGatheredEventHandler {
                             .ifPresent(gatherable -> {
                                 String gatheringSpotId = gatheringSpot.getId();
                                 gatheringSpotCommandService.removeEntityFromGatheringSpot(gatheringSpotId, entityId);
-                                entityGatherableCommandService.gatherEntity(gatherable, entityId, attackerId);
+                                entityGatherableCommandService.gatherEntity(gatherable, entityId, gatheringSpotId, attackerId);
                                 entityGatherableCommandService.respawnEntity(gatherable, gatheringSpotId);
                             });
                 });

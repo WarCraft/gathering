@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface BlockGatherableCommandService {
 
-    void gatherBlock(BlockGatherable gatherable, BlockLocation location, UUID playerId);
+    void gatherBlock(BlockGatherable gatherable, BlockLocation location, String gatheringSpotId, UUID playerId);
 
     void respawnBlock(BlockGatherable gatherable, BlockLocation location);
 }

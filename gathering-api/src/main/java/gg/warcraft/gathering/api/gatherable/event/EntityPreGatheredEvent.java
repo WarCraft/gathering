@@ -6,5 +6,7 @@ import java.util.UUID;
 
 public interface EntityPreGatheredEvent extends EntityPreEvent {
 
+    String getGatheringSpotId();
+
     UUID getPlayerId();
 }
