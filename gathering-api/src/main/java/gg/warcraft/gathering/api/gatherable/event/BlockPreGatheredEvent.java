@@ -6,5 +6,7 @@ import java.util.UUID;
 
 public interface BlockPreGatheredEvent extends BlockPreEvent {
 
+    String getGatheringSpotId();
+
     UUID getPlayerId();
 }

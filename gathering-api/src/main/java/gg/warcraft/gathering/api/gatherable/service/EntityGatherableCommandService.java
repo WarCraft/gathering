@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public interface EntityGatherableCommandService {
 
-    void gatherEntity(EntityGatherable gatherable, UUID entityId, UUID playerId);
+    void gatherEntity(EntityGatherable gatherable, UUID entityId, String gatheringSpotId, UUID playerId);
 
     void respawnEntity(EntityGatherable gatherable, String gatheringSpotId);
 

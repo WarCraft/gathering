@@ -70,10 +70,10 @@ public class DefaultBlockGatherableCommandService implements BlockGatherableComm
     }
 
     @Override
-    public void gatherBlock(BlockGatherable gatherable, BlockLocation location, UUID playerId) {
+    public void gatherBlock(BlockGatherable gatherable, BlockLocation location, String gatheringSpotId, UUID playerId) {
         Block block = worldQueryService.getBlockAt(location);
         BlockPreGatheredEvent blockPreGatheredEvent = new SimpleBlockPreGatheredEvent(
-                block, playerId, false);
+                block, gatheringSpotId, playerId, false);
         eventService.publish(blockPreGatheredEvent);
         if (blockPreGatheredEvent.isCancelled() && !blockPreGatheredEvent.isExplicitlyAllowed()) {
             return;
@@ -82,7 +82,7 @@ public class DefaultBlockGatherableCommandService implements BlockGatherableComm
         spawnDrops(gatherable, block);
 
         BlockGatheredEvent blockGatheredEvent = new SimpleBlockGatheredEvent(
-                block, playerId);
+                block, gatheringSpotId, playerId);
         eventService.publish(blockGatheredEvent);
     }
 

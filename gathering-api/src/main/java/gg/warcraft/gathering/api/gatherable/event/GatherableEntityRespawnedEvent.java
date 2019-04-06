@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public interface GatherableEntityRespawnedEvent extends Event {
 
-    UUID getEntityId();
-
     String getGatheringSpotId();
+
+    UUID getEntityId();
 }
