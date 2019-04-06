@@ -8,7 +8,10 @@ import gg.warcraft.gathering.api.spot.service.GatheringSpotCommandService;
 import gg.warcraft.gathering.api.spot.service.GatheringSpotQueryService;
 import gg.warcraft.monolith.api.entity.Entity;
 import gg.warcraft.monolith.api.entity.event.EntityDeathEvent;
+import gg.warcraft.monolith.api.entity.event.EntityFatalDamageEvent;
 import gg.warcraft.monolith.api.entity.event.EntityPreFatalDamageEvent;
+import gg.warcraft.monolith.api.entity.player.Player;
+import gg.warcraft.monolith.api.entity.player.service.PlayerQueryService;
 import gg.warcraft.monolith.api.entity.service.EntityQueryService;
 
 import java.util.ArrayList;
@@ -19,16 +22,19 @@ public class EntityGatheredEventHandler {
     private final GatheringSpotCommandService gatheringSpotCommandService;
     private final EntityGatherableCommandService entityGatherableCommandService;
     private final EntityQueryService entityQueryService;
+    private final PlayerQueryService playerQueryService;
 
     @Inject
     public EntityGatheredEventHandler(GatheringSpotQueryService gatheringSpotQueryService,
                                       GatheringSpotCommandService gatheringSpotCommandService,
                                       EntityGatherableCommandService entityGatherableCommandService,
-                                      EntityQueryService entityQueryService) {
+                                      EntityQueryService entityQueryService,
+                                      PlayerQueryService playerQueryService) {
         this.gatheringSpotQueryService = gatheringSpotQueryService;
         this.gatheringSpotCommandService = gatheringSpotCommandService;
         this.entityGatherableCommandService = entityGatherableCommandService;
         this.entityQueryService = entityQueryService;
+        this.playerQueryService = playerQueryService;
     }
 
     @Subscribe
@@ -47,7 +53,6 @@ public class EntityGatheredEventHandler {
     }
 
     @Subscribe
-    public void onEntityDeathEvent(EntityDeathEvent event) {
     public void EntityFatalDamageEvent(EntityFatalDamageEvent event) {
         UUID attackerId = event.getDamage().getSource().getEntityId();
         if (attackerId == null) {
@@ -69,14 +74,26 @@ public class EntityGatheredEventHandler {
                             .filter(gatherable -> gatherable.getEntityType() == entity.getType())
                             .findAny()
                             .ifPresent(gatherable -> {
-                                event.setDrops(new ArrayList<>());
-
-                                String gatheringSpotId = gatheringSpot.getId();
                                 String gatheringSpotId = gatheringSpot.getId();
                                 gatheringSpotCommandService.removeEntityFromGatheringSpot(gatheringSpotId, entityId);
-                                entityGatherableCommandService.gatherEntity(gatherable, entityId, null);
+                                entityGatherableCommandService.gatherEntity(gatherable, entityId, attackerId);
                                 entityGatherableCommandService.respawnEntity(gatherable, gatheringSpotId);
                             });
+                });
+    }
+
+    @Subscribe
+    public void onEntityDeathEvent(EntityDeathEvent event) {
+        UUID entityId = event.getEntityId();
+        gatheringSpotQueryService.getEntityGatheringSpots().stream()
+                .filter(gatheringSpot -> gatheringSpot.getEntityIds().contains(entityId))
+                .findAny()
+                .ifPresent(gatheringSpot -> {
+                    Entity entity = entityQueryService.getEntity(entityId);
+                    gatheringSpot.getEntityGatherables().stream()
+                            .filter(gatherable -> gatherable.getEntityType() == entity.getType())
+                            .findAny()
+                            .ifPresent(gatherable -> event.setDrops(new ArrayList<>()));
                 });
     }
 
