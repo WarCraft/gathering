@@ -12,11 +12,6 @@ import java.util.UUID;
 public interface EntityGatheringSpot extends GatheringSpot {
 
     /**
-     * @return The id of this gathering spot. Never null or empty.
-     */
-    String getId();
-
-    /**
      * @return The gatherables of this spot. Never null, but can be empty. Items are never null.
      */
     List<EntityGatherable> getEntityGatherables();

@@ -20,6 +20,11 @@ public class SimpleBlockGatheringSpot implements BlockGatheringSpot {
     }
 
     @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
     public List<BlockGatherable> getBlockGatherables() {
         return new ArrayList<>(gatherables);
     }
@@ -27,10 +32,5 @@ public class SimpleBlockGatheringSpot implements BlockGatheringSpot {
     @Override
     public boolean containsBlock(Block block) {
         return containsBlock.test(block);
-    }
-
-    @Override
-    public String getId() {
-        return id;
     }
 }

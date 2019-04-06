@@ -21,6 +21,11 @@ public class SimpleEntityGatheringSpot implements EntityGatheringSpot {
     }
 
     @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
     public List<EntityGatherable> getEntityGatherables() {
         return new ArrayList<>(gatherables);
     }
@@ -28,10 +33,5 @@ public class SimpleEntityGatheringSpot implements EntityGatheringSpot {
     @Override
     public Set<UUID> getEntityIds() {
         return new HashSet<>(entityIds);
-    }
-
-    @Override
-    public String getId() {
-        return id;
     }
 }
