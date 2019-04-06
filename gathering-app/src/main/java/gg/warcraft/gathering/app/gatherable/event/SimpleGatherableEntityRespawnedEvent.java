@@ -6,9 +6,9 @@ import java.util.UUID;
 
 public class SimpleGatherableEntityRespawnedEvent implements GatherableEntityRespawnedEvent {
     private final UUID entityId;
-    private final UUID gatheringSpotId;
+    private final String gatheringSpotId;
 
-    public SimpleGatherableEntityRespawnedEvent(UUID entityId, UUID gatheringSpotId) {
+    public SimpleGatherableEntityRespawnedEvent(UUID entityId, String gatheringSpotId) {
         this.entityId = entityId;
         this.gatheringSpotId = gatheringSpotId;
     }
@@ -19,7 +19,7 @@ public class SimpleGatherableEntityRespawnedEvent implements GatherableEntityRes
     }
 
     @Override
-    public UUID getGatheringSpotId() {
+    public String getGatheringSpotId() {
         return gatheringSpotId;
     }
 }

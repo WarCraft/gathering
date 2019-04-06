@@ -8,5 +8,5 @@ public interface GatherableEntityRespawnedEvent extends Event {
 
     UUID getEntityId();
 
-    UUID getGatheringSpotId();
+    String getGatheringSpotId();
 }

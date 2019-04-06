@@ -8,6 +8,7 @@ import gg.warcraft.monolith.api.config.BoundingBlockBoxConfiguration;
 import gg.warcraft.monolith.api.world.block.BlockType;
 
 public class SimpleBlockGatheringSpotConfiguration implements BlockGatheringSpotConfiguration {
+    private final String id;
     private final BoundingBlockBoxConfiguration boundingBox;
     private final BlockType blockType;
     private final BlockType cooldownType;
@@ -15,16 +16,23 @@ public class SimpleBlockGatheringSpotConfiguration implements BlockGatheringSpot
     private final int cooldownInSeconds;
 
     @JsonCreator
-    public SimpleBlockGatheringSpotConfiguration(@JsonProperty("boundingBox") BoundingBlockBoxConfiguration boundingBox,
+    public SimpleBlockGatheringSpotConfiguration(@JsonProperty("id") String id,
+                                                 @JsonProperty("boundingBox") BoundingBlockBoxConfiguration boundingBox,
                                                  @JsonProperty("blockType") BlockType blockType,
                                                  @JsonProperty("cooldownType") BlockType cooldownType,
                                                  @JsonProperty("drop") DropConfiguration drop,
                                                  @JsonProperty("cooldownInSeconds") int cooldownInSeconds) {
+        this.id = id;
         this.boundingBox = boundingBox;
         this.blockType = blockType;
         this.cooldownType = cooldownType;
         this.drop = drop;
         this.cooldownInSeconds = cooldownInSeconds;
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 
     @Override

@@ -74,7 +74,7 @@ public class EntityGatheredEventHandler {
                             .filter(gatherable -> gatherable.getEntityType() == entity.getType())
                             .findAny()
                             .ifPresent(gatherable -> {
-                                UUID gatheringSpotId = gatheringSpot.getId();
+                                String gatheringSpotId = gatheringSpot.getId();
                                 gatheringSpotCommandService.removeEntityFromGatheringSpot(gatheringSpotId, entityId);
                                 entityGatherableCommandService.gatherEntity(gatherable, entityId, attackerId);
                                 entityGatherableCommandService.respawnEntity(gatherable, gatheringSpotId);
@@ -99,7 +99,7 @@ public class EntityGatheredEventHandler {
 
     @Subscribe
     public void onGatherableEntitySpawnedEvent(GatherableEntityRespawnedEvent event) {
-        UUID gatheringSpotId = event.getGatheringSpotId();
+        String gatheringSpotId = event.getGatheringSpotId();
         UUID entityId = event.getEntityId();
         gatheringSpotCommandService.addEntityToGatheringSpot(gatheringSpotId, entityId);
     }

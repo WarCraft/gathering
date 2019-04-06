@@ -5,6 +5,8 @@ import gg.warcraft.monolith.api.entity.EntityType;
 
 public interface EntityGatheringSpotConfiguration {
 
+    String getId();
+
     LocationConfiguration getSpawnLocation();
 
     float getSpawnRadius();

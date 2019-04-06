@@ -21,15 +21,15 @@ public interface GatheringSpotCommandService {
      *                      is a simple {@code BoundingBlockBox} check. Can not be null.
      * @param gatherables   A list of gatherables that belong to this gathering spot. Can not be null or empty.
      */
-    UUID createBlockGatheringSpot(Predicate<Block> containsBlock, List<BlockGatherable> gatherables);
+    String createBlockGatheringSpot(Predicate<Block> containsBlock, List<BlockGatherable> gatherables);
 
     /**
      * @param gatherables A list of gatherables that belong to this gathering spot. Can not be null or empty.
      */
-    UUID createEntityGatheringSpot(List<EntityGatherable> gatherables);
+    String createEntityGatheringSpot(List<EntityGatherable> gatherables);
 
 
-    void addEntityToGatheringSpot(UUID gatheringSpotId, UUID entityId);
+    void addEntityToGatheringSpot(String gatheringSpotId, UUID entityId);
 
-    void removeEntityFromGatheringSpot(UUID gatheringSpotId, UUID entityId);
+    void removeEntityFromGatheringSpot(String gatheringSpotId, UUID entityId);
 }

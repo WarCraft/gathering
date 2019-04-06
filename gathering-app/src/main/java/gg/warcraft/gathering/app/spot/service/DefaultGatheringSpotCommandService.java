@@ -1,6 +1,8 @@
 package gg.warcraft.gathering.app.spot.service;
 
 import com.google.inject.Inject;
+import gg.warcraft.gathering.api.config.BlockGatheringSpotConfiguration;
+import gg.warcraft.gathering.api.config.EntityGatheringSpotConfiguration;
 import gg.warcraft.gathering.api.gatherable.BlockGatherable;
 import gg.warcraft.gathering.api.gatherable.EntityGatherable;
 import gg.warcraft.gathering.api.gatherable.service.EntityGatherableCommandService;
@@ -21,25 +23,31 @@ import java.util.function.Predicate;
 public class DefaultGatheringSpotCommandService implements GatheringSpotCommandService {
     private final GatheringSpotRepository gatheringSpotRepository;
     private final EntityGatherableCommandService entityGatherableCommandService;
+    private final BlockGatheringSpotConfiguration blockGatheringSpotConfiguration;
+    private final EntityGatheringSpotConfiguration entityGatheringSpotConfiguration;
 
     @Inject
     public DefaultGatheringSpotCommandService(GatheringSpotRepository gatheringSpotRepository,
-                                              EntityGatherableCommandService entityGatherableCommandService) {
+                                              EntityGatherableCommandService entityGatherableCommandService,
+                                              BlockGatheringSpotConfiguration blockGatheringSpotConfiguration,
+                                              EntityGatheringSpotConfiguration entityGatheringSpotConfiguration) {
         this.gatheringSpotRepository = gatheringSpotRepository;
         this.entityGatherableCommandService = entityGatherableCommandService;
+        this.blockGatheringSpotConfiguration = blockGatheringSpotConfiguration;
+        this.entityGatheringSpotConfiguration = entityGatheringSpotConfiguration;
     }
 
     @Override
-    public UUID createBlockGatheringSpot(Predicate<Block> containsBlock, List<BlockGatherable> gatherables) {
-        UUID id = UUID.randomUUID();
+    public String createBlockGatheringSpot(Predicate<Block> containsBlock, List<BlockGatherable> gatherables) {
+        String id = blockGatheringSpotConfiguration.getId();
         BlockGatheringSpot gatheringSpot = new SimpleBlockGatheringSpot(id, containsBlock, gatherables);
         gatheringSpotRepository.save(gatheringSpot);
         return id;
     }
 
     @Override
-    public UUID createEntityGatheringSpot(List<EntityGatherable> gatherables) {
-        UUID gatheringSpotId = UUID.randomUUID();
+    public String createEntityGatheringSpot(List<EntityGatherable> gatherables) {
+        String gatheringSpotId = entityGatheringSpotConfiguration.getId();
         gatherables.forEach(gatherable -> {
             int entityCount = gatherable.getEntityCount();
             for (int i = 0; i < entityCount; i += 1) {
@@ -54,7 +62,7 @@ public class DefaultGatheringSpotCommandService implements GatheringSpotCommandS
     }
 
     @Override
-    public void addEntityToGatheringSpot(UUID gatheringSpotId, UUID entityId) {
+    public void addEntityToGatheringSpot(String gatheringSpotId, UUID entityId) {
         EntityGatheringSpot gatheringSpot = gatheringSpotRepository.getEntityGatheringSpot(gatheringSpotId);
         Set<UUID> entityIds = gatheringSpot.getEntityIds();
         entityIds.add(entityId);
@@ -64,7 +72,7 @@ public class DefaultGatheringSpotCommandService implements GatheringSpotCommandS
     }
 
     @Override
-    public void removeEntityFromGatheringSpot(UUID gatheringSpotId, UUID entityId) {
+    public void removeEntityFromGatheringSpot(String gatheringSpotId, UUID entityId) {
         EntityGatheringSpot gatheringSpot = gatheringSpotRepository.getEntityGatheringSpot(gatheringSpotId);
         Set<UUID> entityIds = gatheringSpot.getEntityIds();
         entityIds.remove(entityId);

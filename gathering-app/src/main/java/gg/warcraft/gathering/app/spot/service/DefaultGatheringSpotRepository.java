@@ -9,12 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Singleton
 public class DefaultGatheringSpotRepository implements GatheringSpotRepository {
-    final Map<UUID, BlockGatheringSpot> blockGatheringSpots;
-    final Map<UUID, EntityGatheringSpot> entityGatheringSpots;
+    final Map<String, BlockGatheringSpot> blockGatheringSpots;
+    final Map<String, EntityGatheringSpot> entityGatheringSpots;
 
     public DefaultGatheringSpotRepository() {
         this.blockGatheringSpots = new HashMap<>();
@@ -22,12 +21,12 @@ public class DefaultGatheringSpotRepository implements GatheringSpotRepository {
     }
 
     @Override
-    public BlockGatheringSpot getBlockGatheringSpot(UUID id) {
+    public BlockGatheringSpot getBlockGatheringSpot(String id) {
         return blockGatheringSpots.get(id);
     }
 
     @Override
-    public EntityGatheringSpot getEntityGatheringSpot(UUID id) {
+    public EntityGatheringSpot getEntityGatheringSpot(String id) {
         return entityGatheringSpots.get(id);
     }
 
