@@ -53,13 +53,13 @@ public class DefaultEntityGatherableCommandService implements EntityGatherableCo
     }
 
     @Override
-    public void gatherEntity(EntityGatherable gatherable, UUID entityId, String gatheringSpotId, UUID playerId) {
+    public boolean gatherEntity(EntityGatherable gatherable, UUID entityId, String gatheringSpotId, UUID playerId) {
         Entity entity = entityQueryService.getEntity(entityId);
         EntityPreGatheredEvent entityPreGatheredEvent = new SimpleEntityPreGatheredEvent(
                 entityId, entity.getType(), gatheringSpotId, playerId, false);
         eventService.publish(entityPreGatheredEvent);
         if (entityPreGatheredEvent.isCancelled() && !entityPreGatheredEvent.isExplicitlyAllowed()) {
-            return;
+            return false;
         }
 
         spawnDrops(gatherable, entity);
@@ -68,6 +68,8 @@ public class DefaultEntityGatherableCommandService implements EntityGatherableCo
         EntityGatheredEvent entityGatheredEvent = new SimpleEntityGatheredEvent(
                 entityId, entity.getType(), gatheringSpotId, playerId);
         eventService.publish(entityGatheredEvent);
+
+        return true;
     }
 
     @Override
