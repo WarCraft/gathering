@@ -40,8 +40,12 @@ public class BlockGatheredEventHandler {
                             event.setAlternativeDrops(new ArrayList<>());
 
                             BlockLocation location = block.getLocation();
-                            blockGatherableCommandService.gatherBlock(gatherable, location, gatheringSpot.getId(), playerId);
-                            blockGatherableCommandService.respawnBlock(gatherable, location);
+                            final boolean blockGathered = blockGatherableCommandService.gatherBlock(gatherable,
+                                    location, gatheringSpot.getId(), playerId);
+
+                            if (blockGathered) {
+                                blockGatherableCommandService.respawnBlock(gatherable, location);
+                            }
                         }));
     }
 }

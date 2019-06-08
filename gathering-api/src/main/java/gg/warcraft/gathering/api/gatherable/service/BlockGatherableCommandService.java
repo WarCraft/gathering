@@ -7,7 +7,10 @@ import java.util.UUID;
 
 public interface BlockGatherableCommandService {
 
-    void gatherBlock(BlockGatherable gatherable, BlockLocation location, String gatheringSpotId, UUID playerId);
+    /**
+     * @return gathered - a flag whether the block has been gathered or not when the event has been cancelled
+     */
+    boolean gatherBlock(BlockGatherable gatherable, BlockLocation location, String gatheringSpotId, UUID playerId);
 
     void respawnBlock(BlockGatherable gatherable, BlockLocation location);
 }
