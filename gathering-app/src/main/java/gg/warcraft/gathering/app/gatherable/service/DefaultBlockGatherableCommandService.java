@@ -16,7 +16,6 @@ import gg.warcraft.monolith.api.world.block.BlockType;
 import gg.warcraft.monolith.api.world.block.backup.service.BlockBackupCommandService;
 import gg.warcraft.monolith.api.world.location.BlockLocation;
 import gg.warcraft.monolith.api.world.location.Location;
-import gg.warcraft.monolith.api.world.location.LocationFactory;
 import gg.warcraft.monolith.api.world.service.WorldCommandService;
 import gg.warcraft.monolith.api.world.service.WorldQueryService;
 
@@ -30,27 +29,24 @@ public class DefaultBlockGatherableCommandService implements BlockGatherableComm
     private final WorldCommandService worldCommandService;
     private final BlockBackupCommandService blockBackupCommandService;
     private final TaskService taskService;
-    private final LocationFactory locationFactory;
     private final EventService eventService;
 
     @Inject
     public DefaultBlockGatherableCommandService(WorldQueryService worldQueryService,
                                                 WorldCommandService worldCommandService,
                                                 BlockBackupCommandService blockBackupCommandService,
-                                                TaskService taskService, LocationFactory locationFactory,
-                                                EventService eventService) {
+                                                TaskService taskService, EventService eventService) {
         this.worldQueryService = worldQueryService;
         this.worldCommandService = worldCommandService;
         this.blockBackupCommandService = blockBackupCommandService;
         this.taskService = taskService;
-        this.locationFactory = locationFactory;
         this.eventService = eventService;
     }
 
     void spawnDrops(BlockGatherable gatherable, Block block) {
         List<Item> drops = gatherable.generateDrops();
         BlockLocation blockLocation = block.getLocation();
-        Location dropLocation = locationFactory.createLocation(
+        Location dropLocation = new Location(
                 blockLocation.getWorld(),
                 blockLocation.getX() + DROP_OFFSET,
                 blockLocation.getY() + DROP_OFFSET,

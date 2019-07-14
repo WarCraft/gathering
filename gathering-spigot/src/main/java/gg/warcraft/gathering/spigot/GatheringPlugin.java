@@ -23,7 +23,6 @@ import gg.warcraft.monolith.api.world.block.Block;
 import gg.warcraft.monolith.api.world.block.box.BoundingBlockBox;
 import gg.warcraft.monolith.api.world.block.box.BoundingBlockBoxFactory;
 import gg.warcraft.monolith.api.world.location.Location;
-import gg.warcraft.monolith.api.world.location.LocationFactory;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.joml.Vector3i;
@@ -41,7 +40,6 @@ public class GatheringPlugin extends JavaPlugin {
 
     private void readGatheringConfiguration(GatheringConfiguration configuration, Injector injector) {
         GatherableFactory gatherableFactory = injector.getInstance(GatherableFactory.class);
-        LocationFactory locationFactory = injector.getInstance(LocationFactory.class);
         BoundingBlockBoxFactory boundingBoxFactory = injector.getInstance(BoundingBlockBoxFactory.class);
         ResourceBuilderFactory resourceBuilderFactory = injector.getInstance(ResourceBuilderFactory.class);
         TimeUtils timeUtils = injector.getInstance(TimeUtils.class);
@@ -70,7 +68,7 @@ public class GatheringPlugin extends JavaPlugin {
             gatheringSpotCommandService.createBlockGatheringSpot(gatheringSpotId, containsBlock, Collections.singletonList(gatherable));
         });
         configuration.getEntityGatheringSpots().forEach(entityGatheringSpotConfiguration -> {
-            Location spawnLocation = locationFactory.createLocation(
+            Location spawnLocation = new Location(
                     entityGatheringSpotConfiguration.getSpawnLocation().getWorld(),
                     entityGatheringSpotConfiguration.getSpawnLocation().getX(),
                     entityGatheringSpotConfiguration.getSpawnLocation().getY(),

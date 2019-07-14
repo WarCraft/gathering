@@ -1,13 +1,13 @@
 package gg.warcraft.gathering.api.config;
 
-import gg.warcraft.monolith.api.config.LocationConfiguration;
 import gg.warcraft.monolith.api.entity.EntityType;
+import gg.warcraft.monolith.api.world.location.config.LocationConfig;
 
 public interface EntityGatheringSpotConfiguration {
 
     String getId();
 
-    LocationConfiguration getSpawnLocation();
+    LocationConfig getSpawnLocation();
 
     float getSpawnRadius();
 
