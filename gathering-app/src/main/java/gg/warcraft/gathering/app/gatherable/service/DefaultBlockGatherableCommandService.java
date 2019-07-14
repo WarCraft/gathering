@@ -51,7 +51,7 @@ public class DefaultBlockGatherableCommandService implements BlockGatherableComm
         List<Item> drops = gatherable.generateDrops();
         BlockLocation blockLocation = block.getLocation();
         Location dropLocation = locationFactory.createLocation(
-                blockLocation.getWorld().getType(),
+                blockLocation.getWorld(),
                 blockLocation.getX() + DROP_OFFSET,
                 blockLocation.getY() + DROP_OFFSET,
                 blockLocation.getZ() + DROP_OFFSET);
