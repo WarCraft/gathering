@@ -19,13 +19,12 @@ import gg.warcraft.monolith.api.MonolithPluginUtils;
 import gg.warcraft.monolith.api.core.EventService;
 import gg.warcraft.monolith.api.item.ItemType;
 import gg.warcraft.monolith.api.util.TimeUtils;
+import gg.warcraft.monolith.api.world.Location;
 import gg.warcraft.monolith.api.world.block.Block;
 import gg.warcraft.monolith.api.world.block.box.BoundingBlockBox;
 import gg.warcraft.monolith.api.world.block.box.BoundingBlockBoxFactory;
-import gg.warcraft.monolith.api.world.location.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.joml.Vector3i;
 
 import java.util.Collections;
 import java.util.function.Predicate;
@@ -47,12 +46,8 @@ public class GatheringPlugin extends JavaPlugin {
         configuration.getBlockGatheringSpots().forEach(blockGatheringSpotConfiguration -> {
             BoundingBlockBox boundingBox = boundingBoxFactory.createBoundingBlockBox(
                     blockGatheringSpotConfiguration.getBoundingBox().getWorld(),
-                    new Vector3i(blockGatheringSpotConfiguration.getBoundingBox().getMinimumcorner().getX(),
-                            blockGatheringSpotConfiguration.getBoundingBox().getMinimumcorner().getY(),
-                            blockGatheringSpotConfiguration.getBoundingBox().getMinimumcorner().getZ()),
-                    new Vector3i(blockGatheringSpotConfiguration.getBoundingBox().getMaximumcorner().getX(),
-                            blockGatheringSpotConfiguration.getBoundingBox().getMaximumcorner().getY(),
-                            blockGatheringSpotConfiguration.getBoundingBox().getMaximumcorner().getZ()));
+                    blockGatheringSpotConfiguration.getBoundingBox().getMinimumcorner().toVector3i(),
+                    blockGatheringSpotConfiguration.getBoundingBox().getMaximumcorner().toVector3i());
             BlockGatherable gatherable = gatherableFactory.createBlockGatherable(
                     blockGatheringSpotConfiguration.getBlockType()::equals,
                     blockGatheringSpotConfiguration.getCooldownType(),
@@ -68,11 +63,7 @@ public class GatheringPlugin extends JavaPlugin {
             gatheringSpotCommandService.createBlockGatheringSpot(gatheringSpotId, containsBlock, Collections.singletonList(gatherable));
         });
         configuration.getEntityGatheringSpots().forEach(entityGatheringSpotConfiguration -> {
-            Location spawnLocation = new Location(
-                    entityGatheringSpotConfiguration.getSpawnLocation().getWorld(),
-                    entityGatheringSpotConfiguration.getSpawnLocation().getX(),
-                    entityGatheringSpotConfiguration.getSpawnLocation().getY(),
-                    entityGatheringSpotConfiguration.getSpawnLocation().getZ());
+            Location spawnLocation = entityGatheringSpotConfiguration.getSpawnLocation().toLocation();
             EntityGatherable gatherable = gatherableFactory.createEntityGatherable(
                     entityGatheringSpotConfiguration.getEntityType(),
                     entityGatheringSpotConfiguration.getEntityCount(),

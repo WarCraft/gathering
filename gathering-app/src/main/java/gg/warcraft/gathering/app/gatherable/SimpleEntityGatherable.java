@@ -6,7 +6,7 @@ import gg.warcraft.gathering.api.gatherable.EntityGatherable;
 import gg.warcraft.monolith.api.entity.EntityType;
 import gg.warcraft.monolith.api.item.Item;
 import gg.warcraft.monolith.api.util.Duration;
-import gg.warcraft.monolith.api.world.location.Location;
+import gg.warcraft.monolith.api.world.Location;
 
 import java.util.List;
 import java.util.function.Supplier;

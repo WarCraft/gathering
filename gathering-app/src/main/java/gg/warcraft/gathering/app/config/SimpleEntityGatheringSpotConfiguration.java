@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import gg.warcraft.gathering.api.config.DropConfiguration;
 import gg.warcraft.gathering.api.config.EntityGatheringSpotConfiguration;
 import gg.warcraft.monolith.api.entity.EntityType;
-import gg.warcraft.monolith.api.world.location.config.LocationConfig;
+import gg.warcraft.monolith.api.world.config.LocationConfig;
 
 public class SimpleEntityGatheringSpotConfiguration implements EntityGatheringSpotConfiguration {
     private final String id;

@@ -5,8 +5,8 @@ import com.google.inject.name.Named;
 import gg.warcraft.monolith.api.entity.EntityType;
 import gg.warcraft.monolith.api.item.Item;
 import gg.warcraft.monolith.api.util.Duration;
+import gg.warcraft.monolith.api.world.Location;
 import gg.warcraft.monolith.api.world.block.BlockType;
-import gg.warcraft.monolith.api.world.location.Location;
 
 import java.util.List;
 import java.util.function.Predicate;

@@ -1,7 +1,7 @@
 package gg.warcraft.gathering.api.gatherable;
 
 import gg.warcraft.monolith.api.entity.EntityType;
-import gg.warcraft.monolith.api.world.location.Location;
+import gg.warcraft.monolith.api.world.Location;
 
 /**
  * An EntityGatherable represents an entity that can be harvested for resources such as a PIG on a farm. Gatherables

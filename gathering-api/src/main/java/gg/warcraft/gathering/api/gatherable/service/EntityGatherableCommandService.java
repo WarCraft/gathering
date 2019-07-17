@@ -2,7 +2,7 @@ package gg.warcraft.gathering.api.gatherable.service;
 
 import gg.warcraft.gathering.api.gatherable.BlockGatherable;
 import gg.warcraft.gathering.api.gatherable.EntityGatherable;
-import gg.warcraft.monolith.api.world.location.BlockLocation;
+import gg.warcraft.monolith.api.world.BlockLocation;
 
 import java.util.UUID;
 
