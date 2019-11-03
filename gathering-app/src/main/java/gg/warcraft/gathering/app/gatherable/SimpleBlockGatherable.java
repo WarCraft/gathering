@@ -3,9 +3,9 @@ package gg.warcraft.gathering.app.gatherable;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import gg.warcraft.gathering.api.gatherable.BlockGatherable;
-import gg.warcraft.monolith.api.item.Item;
 import gg.warcraft.monolith.api.util.Duration;
 import gg.warcraft.monolith.api.world.block.BlockType;
+import gg.warcraft.monolith.api.world.item.Item;
 
 import java.util.List;
 import java.util.function.Predicate;

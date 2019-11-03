@@ -1,8 +1,8 @@
 package gg.warcraft.gathering.app.gatherable;
 
 import gg.warcraft.gathering.api.gatherable.Gatherable;
-import gg.warcraft.monolith.api.item.Item;
 import gg.warcraft.monolith.api.util.Duration;
+import gg.warcraft.monolith.api.world.item.Item;
 
 import java.util.List;
 import java.util.function.Supplier;

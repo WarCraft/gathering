@@ -16,9 +16,9 @@ import gg.warcraft.monolith.api.entity.Entity;
 import gg.warcraft.monolith.api.entity.EntityType;
 import gg.warcraft.monolith.api.entity.service.EntityCommandService;
 import gg.warcraft.monolith.api.entity.service.EntityQueryService;
-import gg.warcraft.monolith.api.item.Item;
 import gg.warcraft.monolith.api.util.Duration;
 import gg.warcraft.monolith.api.world.Location;
+import gg.warcraft.monolith.api.world.item.Item;
 import gg.warcraft.monolith.api.world.service.WorldCommandService;
 
 import java.util.List;

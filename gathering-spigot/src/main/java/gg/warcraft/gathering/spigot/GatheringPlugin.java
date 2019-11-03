@@ -17,12 +17,12 @@ import gg.warcraft.gathering.app.event.handler.ServerShutdownEventHandler;
 import gg.warcraft.monolith.api.Monolith;
 import gg.warcraft.monolith.api.MonolithPluginUtils;
 import gg.warcraft.monolith.api.core.EventService;
-import gg.warcraft.monolith.api.item.ItemType;
 import gg.warcraft.monolith.api.util.TimeUtils;
 import gg.warcraft.monolith.api.world.Location;
 import gg.warcraft.monolith.api.world.block.Block;
 import gg.warcraft.monolith.api.world.block.box.BoundingBlockBox;
 import gg.warcraft.monolith.api.world.block.box.BoundingBlockBoxFactory;
+import gg.warcraft.monolith.api.world.item.ItemType;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -58,7 +58,7 @@ public class GatheringPlugin extends JavaPlugin {
                         return Collections.singletonList(builder.build());
                     },
                     () -> timeUtils.createDurationInSeconds(blockGatheringSpotConfiguration.getCooldownInSeconds()));
-            Predicate<Block> containsBlock = block -> boundingBox.test(block.getLocation());
+            Predicate<Block> containsBlock = block -> boundingBox.test(block.location());
             String gatheringSpotId = blockGatheringSpotConfiguration.getId();
             gatheringSpotCommandService.createBlockGatheringSpot(gatheringSpotId, containsBlock, Collections.singletonList(gatherable));
         });

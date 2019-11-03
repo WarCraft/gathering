@@ -1,6 +1,6 @@
 package gg.warcraft.gathering.api.config;
 
-import gg.warcraft.monolith.api.item.ItemType;
+import gg.warcraft.monolith.api.world.item.ItemType;
 
 public interface DropConfiguration {
 

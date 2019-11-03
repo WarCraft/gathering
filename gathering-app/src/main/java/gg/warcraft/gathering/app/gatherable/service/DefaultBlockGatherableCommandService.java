@@ -9,13 +9,13 @@ import gg.warcraft.gathering.app.gatherable.event.SimpleBlockGatheredEvent;
 import gg.warcraft.gathering.app.gatherable.event.SimpleBlockPreGatheredEvent;
 import gg.warcraft.monolith.api.core.EventService;
 import gg.warcraft.monolith.api.core.TaskService;
-import gg.warcraft.monolith.api.item.Item;
 import gg.warcraft.monolith.api.util.Duration;
 import gg.warcraft.monolith.api.world.BlockLocation;
 import gg.warcraft.monolith.api.world.Location;
 import gg.warcraft.monolith.api.world.block.Block;
 import gg.warcraft.monolith.api.world.block.BlockType;
-import gg.warcraft.monolith.api.world.block.backup.service.BlockBackupCommandService;
+import gg.warcraft.monolith.api.world.block.backup.BlockBackupService;
+import gg.warcraft.monolith.api.world.item.Item;
 import gg.warcraft.monolith.api.world.service.WorldCommandService;
 import gg.warcraft.monolith.api.world.service.WorldQueryService;
 
@@ -27,14 +27,14 @@ public class DefaultBlockGatherableCommandService implements BlockGatherableComm
 
     private final WorldQueryService worldQueryService;
     private final WorldCommandService worldCommandService;
-    private final BlockBackupCommandService blockBackupCommandService;
+    private final BlockBackupService blockBackupCommandService;
     private final TaskService taskService;
     private final EventService eventService;
 
     @Inject
     public DefaultBlockGatherableCommandService(WorldQueryService worldQueryService,
                                                 WorldCommandService worldCommandService,
-                                                BlockBackupCommandService blockBackupCommandService,
+                                                BlockBackupService blockBackupCommandService,
                                                 TaskService taskService, EventService eventService) {
         this.worldQueryService = worldQueryService;
         this.worldCommandService = worldCommandService;
@@ -45,7 +45,7 @@ public class DefaultBlockGatherableCommandService implements BlockGatherableComm
 
     void spawnDrops(BlockGatherable gatherable, Block block) {
         List<Item> drops = gatherable.generateDrops();
-        BlockLocation blockLocation = block.getLocation();
+        BlockLocation blockLocation = block.location();
         Location dropLocation = new Location(
                 blockLocation.world(),
                 blockLocation.x() + DROP_OFFSET,
@@ -61,7 +61,7 @@ public class DefaultBlockGatherableCommandService implements BlockGatherableComm
 
     void queueBlockRestoration(BlockGatherable blockGatherable, Block block) {
         Duration cooldown = blockGatherable.generateCooldown();
-        UUID blockBackupId = blockBackupCommandService.createBlockBackup(block.getLocation());
+        UUID blockBackupId = blockBackupCommandService.createBackup(block.location());
         taskService.runLater(() -> blockBackupCommandService.restoreBlockBackup(blockBackupId), cooldown);
     }
 

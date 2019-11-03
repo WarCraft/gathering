@@ -1,5 +1,6 @@
 dependencies {
     api project(':gathering-app')
 
-    shadow('org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT') { exclude group: '*' }
+    shadow 'gg.warcraft:monolith-api:2.0.0-SNAPSHOT'
+    shadow('org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT') { exclude group: '*' }
 }

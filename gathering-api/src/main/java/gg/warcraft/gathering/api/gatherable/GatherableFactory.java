@@ -3,10 +3,10 @@ package gg.warcraft.gathering.api.gatherable;
 import com.google.inject.assistedinject.Assisted;
 import com.google.inject.name.Named;
 import gg.warcraft.monolith.api.entity.EntityType;
-import gg.warcraft.monolith.api.item.Item;
 import gg.warcraft.monolith.api.util.Duration;
 import gg.warcraft.monolith.api.world.Location;
 import gg.warcraft.monolith.api.world.block.BlockType;
+import gg.warcraft.monolith.api.world.item.Item;
 
 import java.util.List;
 import java.util.function.Predicate;

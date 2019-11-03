@@ -3,7 +3,7 @@ package gg.warcraft.gathering.app.config;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import gg.warcraft.gathering.api.config.DropConfiguration;
-import gg.warcraft.monolith.api.item.ItemType;
+import gg.warcraft.monolith.api.world.item.ItemType;
 
 public class SimpleDropConfiguration implements DropConfiguration {
     private final ItemType type;

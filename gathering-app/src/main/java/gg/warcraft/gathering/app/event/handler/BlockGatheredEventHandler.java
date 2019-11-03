@@ -33,13 +33,13 @@ public class BlockGatheredEventHandler {
         gatheringSpotQueryService.getBlockGatheringSpots().stream()
                 .filter(gatheringSpot -> gatheringSpot.containsBlock(block))
                 .forEach(gatheringSpot -> gatheringSpot.getBlockGatherables().stream()
-                        .filter(gatherable -> gatherable.containsBlockType(block.getType()))
+                        .filter(gatherable -> gatherable.containsBlockType(block.type()))
                         .findAny()
                         .ifPresent(gatherable -> {
                             event.explicitlyAllow();
                             event.setAlternativeDrops(new ArrayList<>());
 
-                            BlockLocation location = block.getLocation();
+                            BlockLocation location = block.location();
                             final boolean blockGathered = blockGatherableCommandService.gatherBlock(gatherable,
                                     location, gatheringSpot.getId(), playerId);
 

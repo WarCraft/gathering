@@ -4,9 +4,9 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import gg.warcraft.gathering.api.gatherable.EntityGatherable;
 import gg.warcraft.monolith.api.entity.EntityType;
-import gg.warcraft.monolith.api.item.Item;
 import gg.warcraft.monolith.api.util.Duration;
 import gg.warcraft.monolith.api.world.Location;
+import gg.warcraft.monolith.api.world.item.Item;
 
 import java.util.List;
 import java.util.function.Supplier;
