@@ -18,8 +18,8 @@ import gg.warcraft.monolith.api.entity.service.EntityCommandService;
 import gg.warcraft.monolith.api.entity.service.EntityQueryService;
 import gg.warcraft.monolith.api.util.Duration;
 import gg.warcraft.monolith.api.world.Location;
+import gg.warcraft.monolith.api.world.WorldService;
 import gg.warcraft.monolith.api.world.item.Item;
-import gg.warcraft.monolith.api.world.service.WorldCommandService;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,7 +28,7 @@ public class DefaultEntityGatherableCommandService implements EntityGatherableCo
     private final EntityGatherableRepository entityGatherableRepository;
     private final EntityQueryService entityQueryService;
     private final EntityCommandService entityCommandService;
-    private final WorldCommandService worldCommandService;
+    private final WorldService worldService;
     private final EventService eventService;
     private final TaskService taskService;
 
@@ -36,12 +36,12 @@ public class DefaultEntityGatherableCommandService implements EntityGatherableCo
     public DefaultEntityGatherableCommandService(EntityGatherableRepository entityGatherableRepository,
                                                  EntityQueryService entityQueryService,
                                                  EntityCommandService entityCommandService,
-                                                 WorldCommandService worldCommandService,
+                                                 WorldService worldService,
                                                  EventService eventService, TaskService taskService) {
         this.entityGatherableRepository = entityGatherableRepository;
         this.entityQueryService = entityQueryService;
         this.entityCommandService = entityCommandService;
-        this.worldCommandService = worldCommandService;
+        this.worldService = worldService;
         this.eventService = eventService;
         this.taskService = taskService;
     }
@@ -49,7 +49,7 @@ public class DefaultEntityGatherableCommandService implements EntityGatherableCo
     void spawnDrops(EntityGatherable gatherable, Entity entity) {
         List<Item> drops = gatherable.generateDrops();
         Location dropLocation = entity.getLocation();
-        worldCommandService.dropItemsAt(drops, dropLocation);
+        worldService.dropItems(dropLocation, drops.toArray(new Item[0]));
     }
 
     @Override

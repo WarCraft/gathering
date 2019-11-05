@@ -12,12 +12,11 @@ import gg.warcraft.monolith.api.core.TaskService;
 import gg.warcraft.monolith.api.util.Duration;
 import gg.warcraft.monolith.api.world.BlockLocation;
 import gg.warcraft.monolith.api.world.Location;
+import gg.warcraft.monolith.api.world.WorldService;
 import gg.warcraft.monolith.api.world.block.Block;
 import gg.warcraft.monolith.api.world.block.BlockType;
 import gg.warcraft.monolith.api.world.block.backup.BlockBackupService;
 import gg.warcraft.monolith.api.world.item.Item;
-import gg.warcraft.monolith.api.world.service.WorldCommandService;
-import gg.warcraft.monolith.api.world.service.WorldQueryService;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,19 +24,16 @@ import java.util.UUID;
 public class DefaultBlockGatherableCommandService implements BlockGatherableCommandService {
     private static final float DROP_OFFSET = 0.5f;
 
-    private final WorldQueryService worldQueryService;
-    private final WorldCommandService worldCommandService;
+    private final WorldService worldService;
     private final BlockBackupService blockBackupCommandService;
     private final TaskService taskService;
     private final EventService eventService;
 
     @Inject
-    public DefaultBlockGatherableCommandService(WorldQueryService worldQueryService,
-                                                WorldCommandService worldCommandService,
+    public DefaultBlockGatherableCommandService(WorldService worldService,
                                                 BlockBackupService blockBackupCommandService,
                                                 TaskService taskService, EventService eventService) {
-        this.worldQueryService = worldQueryService;
-        this.worldCommandService = worldCommandService;
+        this.worldService = worldService;
         this.blockBackupCommandService = blockBackupCommandService;
         this.taskService = taskService;
         this.eventService = eventService;
@@ -51,23 +47,23 @@ public class DefaultBlockGatherableCommandService implements BlockGatherableComm
                 blockLocation.x() + DROP_OFFSET,
                 blockLocation.y() + DROP_OFFSET,
                 blockLocation.z() + DROP_OFFSET);
-        worldCommandService.dropItemsAt(drops, dropLocation);
+        worldService.dropItems(dropLocation, drops.toArray(new Item[0])); // TODO create nicer Java API
     }
 
     void queueBlockCooldownState(BlockGatherable blockGatherable, Block block) {
         BlockType cooldownBlockType = blockGatherable.getCooldownBlockType();
-        taskService.runNextTick(() -> worldCommandService.setBlockType(block, cooldownBlockType));
+        taskService.runNextTick(() -> worldService.setBlockType(block.location(), cooldownBlockType));
     }
 
     void queueBlockRestoration(BlockGatherable blockGatherable, Block block) {
         Duration cooldown = blockGatherable.generateCooldown();
         UUID blockBackupId = blockBackupCommandService.createBackup(block.location());
-        taskService.runLater(() -> blockBackupCommandService.restoreBlockBackup(blockBackupId), cooldown);
+        taskService.runLater(() -> blockBackupCommandService.restoreBackup(blockBackupId), cooldown);
     }
 
     @Override
     public boolean gatherBlock(BlockGatherable gatherable, BlockLocation location, String gatheringSpotId, UUID playerId) {
-        Block block = worldQueryService.getBlockAt(location);
+        Block block = worldService.getBlock(location);
         BlockPreGatheredEvent blockPreGatheredEvent = new SimpleBlockPreGatheredEvent(
                 block, gatheringSpotId, playerId, false);
         eventService.publish(blockPreGatheredEvent);
@@ -86,7 +82,7 @@ public class DefaultBlockGatherableCommandService implements BlockGatherableComm
 
     @Override
     public void respawnBlock(BlockGatherable gatherable, BlockLocation location) {
-        Block block = worldQueryService.getBlockAt(location);
+        Block block = worldService.getBlock(location);
         queueBlockCooldownState(gatherable, block);
         queueBlockRestoration(gatherable, block);
     }

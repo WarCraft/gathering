@@ -41,19 +41,19 @@ public class SimpleResourceBuilder implements ResourceBuilder {
 
     @Override
     public Item build() {
-        ItemBuilder itemBuilder = itemFactory.createItemBuilder(type, ColorCode.WHITE + name);
-
-        // set type at top of tooltip
-        itemBuilder.addLore(ColorCode.GRAY + "Resource");
+        Item item = itemFactory
+                .create(type)
+                .withName(ColorCode.WHITE + name)
+                .addTooltip(ColorCode.GRAY + "Resource");
 
         // add flavor text
         if (!flavorText.isEmpty()) {
-            itemBuilder.addLore("");
+            item = item.addTooltip("");
             for (String text : flavorText) {
-                itemBuilder.addLore("" + FormatCode.ITALIC + ColorCode.GRAY + text);
+                item = item.addTooltip("" + FormatCode.ITALIC + ColorCode.GRAY + text);
             }
         }
 
-        return itemBuilder.build();
+        return item;
     }
 }
