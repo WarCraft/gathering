@@ -63,7 +63,7 @@ public class GatheringPlugin extends JavaPlugin {
             gatheringSpotCommandService.createBlockGatheringSpot(gatheringSpotId, containsBlock, Collections.singletonList(gatherable));
         });
         configuration.getEntityGatheringSpots().forEach(entityGatheringSpotConfiguration -> {
-            Location spawnLocation = entityGatheringSpotConfiguration.getSpawnLocation().toLocation();
+            Location spawnLocation = entityGatheringSpotConfiguration.getSpawnLocation().toBlockLocation().toLocation();
             EntityGatherable gatherable = gatherableFactory.createEntityGatherable(
                     entityGatheringSpotConfiguration.getEntityType(),
                     entityGatheringSpotConfiguration.getEntityCount(),

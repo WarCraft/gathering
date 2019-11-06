@@ -6,22 +6,22 @@ import gg.warcraft.gathering.api.item.ResourceBuilder;
 import gg.warcraft.monolith.api.util.ColorCode;
 import gg.warcraft.monolith.api.util.FormatCode;
 import gg.warcraft.monolith.api.world.item.Item;
-import gg.warcraft.monolith.api.world.item.ItemFactory;
+import gg.warcraft.monolith.api.world.item.ItemService;
 import gg.warcraft.monolith.api.world.item.ItemType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleResourceBuilder implements ResourceBuilder {
-    private final ItemFactory itemFactory;
+    private final ItemService itemService;
     private final ItemType type;
     private final String name;
 
     private List<String> flavorText;
 
     @Inject
-    public SimpleResourceBuilder(ItemFactory itemFactory, @Assisted ItemType type, @Assisted String name) {
-        this.itemFactory = itemFactory;
+    public SimpleResourceBuilder(ItemService itemService, @Assisted ItemType type, @Assisted String name) {
+        this.itemService = itemService;
         this.type = type;
         this.name = name;
         this.flavorText = new ArrayList<>();
@@ -41,7 +41,7 @@ public class SimpleResourceBuilder implements ResourceBuilder {
 
     @Override
     public Item build() {
-        Item item = itemFactory
+        Item item = itemService
                 .create(type)
                 .withName(ColorCode.WHITE + name)
                 .addTooltip(ColorCode.GRAY + "Resource");

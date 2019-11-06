@@ -5,11 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import gg.warcraft.gathering.api.config.DropConfiguration;
 import gg.warcraft.gathering.api.config.EntityGatheringSpotConfiguration;
 import gg.warcraft.monolith.api.entity.EntityType;
+import gg.warcraft.monolith.api.world.config.BlockLocationConfig;
 import gg.warcraft.monolith.api.world.config.LocationConfig;
 
 public class SimpleEntityGatheringSpotConfiguration implements EntityGatheringSpotConfiguration {
     private final String id;
-    private final LocationConfig spawnLocation;
+    private final BlockLocationConfig spawnLocation;
     private final float spawnRadius;
     private final EntityType entityType;
     private final int entityCount;
@@ -18,7 +19,7 @@ public class SimpleEntityGatheringSpotConfiguration implements EntityGatheringSp
 
     @JsonCreator
     public SimpleEntityGatheringSpotConfiguration(@JsonProperty("id") String id,
-                                                  @JsonProperty("spawnLocation") LocationConfig spawnLocation,
+                                                  @JsonProperty("spawnLocation") BlockLocationConfig spawnLocation,
                                                   @JsonProperty("spawnRadius") float spawnRadius,
                                                   @JsonProperty("entityType") EntityType entityType,
                                                   @JsonProperty("entityCount") int entityCount,
@@ -39,7 +40,7 @@ public class SimpleEntityGatheringSpotConfiguration implements EntityGatheringSp
     }
 
     @Override
-    public LocationConfig getSpawnLocation() {
+    public BlockLocationConfig getSpawnLocation() {
         return spawnLocation;
     }
 
