@@ -14,9 +14,9 @@ import gg.warcraft.monolith.api.world.BlockLocation;
 import gg.warcraft.monolith.api.world.Location;
 import gg.warcraft.monolith.api.world.WorldService;
 import gg.warcraft.monolith.api.world.block.Block;
-import gg.warcraft.monolith.api.world.block.BlockType;
 import gg.warcraft.monolith.api.world.block.backup.BlockBackupService;
 import gg.warcraft.monolith.api.world.item.Item;
+import gg.warcraft.monolith.api.world.item.ItemService;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,15 +25,17 @@ public class DefaultBlockGatherableCommandService implements BlockGatherableComm
     private static final float DROP_OFFSET = 0.5f;
 
     private final WorldService worldService;
+    private final ItemService itemService;
     private final BlockBackupService blockBackupCommandService;
     private final TaskService taskService;
     private final EventService eventService;
 
     @Inject
-    public DefaultBlockGatherableCommandService(WorldService worldService,
+    public DefaultBlockGatherableCommandService(WorldService worldService, ItemService itemService,
                                                 BlockBackupService blockBackupCommandService,
                                                 TaskService taskService, EventService eventService) {
         this.worldService = worldService;
+        this.itemService = itemService;
         this.blockBackupCommandService = blockBackupCommandService;
         this.taskService = taskService;
         this.eventService = eventService;
@@ -47,12 +49,12 @@ public class DefaultBlockGatherableCommandService implements BlockGatherableComm
                 blockLocation.x() + DROP_OFFSET,
                 blockLocation.y() + DROP_OFFSET,
                 blockLocation.z() + DROP_OFFSET);
-        worldService.dropItems(dropLocation, drops.toArray(new Item[0])); // TODO create nicer Java API
+        itemService.dropItems(dropLocation, drops.toArray(new Item[0])); // TODO create nicer Java API
     }
 
     void queueBlockCooldownState(BlockGatherable blockGatherable, Block block) {
-        BlockType cooldownBlockType = blockGatherable.getCooldownBlockType();
-        taskService.runNextTick(() -> worldService.setBlockType(block.location(), cooldownBlockType));
+        Object cooldownBlockData = blockGatherable.getCooldownBlockData();
+        taskService.runNextTick(() -> worldService.setBlockData(block.location(), cooldownBlockData));
     }
 
     void queueBlockRestoration(BlockGatherable blockGatherable, Block block) {

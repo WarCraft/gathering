@@ -1,7 +1,6 @@
 package gg.warcraft.gathering.api.config;
 
 import gg.warcraft.monolith.api.config.BoundingBlockBoxConfiguration;
-import gg.warcraft.monolith.api.world.block.BlockType;
 
 public interface BlockGatheringSpotConfiguration {
 
@@ -9,9 +8,9 @@ public interface BlockGatheringSpotConfiguration {
 
     BoundingBlockBoxConfiguration getBoundingBox();
 
-    BlockType getBlockType();
+    String getBlockType();
 
-    BlockType getCooldownType();
+    String getCooldownType();
 
     DropConfiguration getDrop();
 

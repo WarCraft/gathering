@@ -7,20 +7,19 @@ import gg.warcraft.monolith.api.util.ColorCode;
 import gg.warcraft.monolith.api.util.FormatCode;
 import gg.warcraft.monolith.api.world.item.Item;
 import gg.warcraft.monolith.api.world.item.ItemService;
-import gg.warcraft.monolith.api.world.item.ItemType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleResourceBuilder implements ResourceBuilder {
     private final ItemService itemService;
-    private final ItemType type;
+    private final String type;
     private final String name;
 
     private List<String> flavorText;
 
     @Inject
-    public SimpleResourceBuilder(ItemService itemService, @Assisted ItemType type, @Assisted String name) {
+    public SimpleResourceBuilder(ItemService itemService, @Assisted("type") String type, @Assisted("name") String name) {
         this.itemService = itemService;
         this.type = type;
         this.name = name;

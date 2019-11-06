@@ -32,8 +32,8 @@ public interface GatherableFactory {
      * @return A new block gatherable. Never null.
      */
     @Named("block")
-    BlockGatherable createBlockGatherable(Predicate<BlockType> containsBlockType,
-                                          BlockType cooldownBlockType,
+    BlockGatherable createBlockGatherable(Predicate<Object> containsBlockType,
+                                          Object cooldownBlockType,
                                           @Assisted Supplier<List<Item>> dropsSupplier,
                                           @Assisted Supplier<Duration> cooldownSupplier);
 

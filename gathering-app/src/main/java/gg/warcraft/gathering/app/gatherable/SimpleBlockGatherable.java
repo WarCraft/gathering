@@ -12,26 +12,25 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class SimpleBlockGatherable extends AbstractGatherable implements BlockGatherable {
-    private final Predicate<BlockType> containsBlockType;
-    private final BlockType cooldownBlockType;
+    private final Predicate<Object> containsBlockType;
+    private final Object cooldownBlockType;
 
     @Inject
-    public SimpleBlockGatherable(@Assisted Predicate<BlockType> containsBlockType,
-                                 @Assisted BlockType cooldownBlockType,
+    public SimpleBlockGatherable(@Assisted Predicate<Object> containsBlockData,
+                                 @Assisted Object cooldownBlockData,
                                  @Assisted Supplier<List<Item>> dropsSupplier,
                                  @Assisted Supplier<Duration> cooldownSupplier) {
         super(dropsSupplier, cooldownSupplier);
-        this.containsBlockType = containsBlockType;
-        this.cooldownBlockType = cooldownBlockType;
+        this.containsBlockType = containsBlockData;
+        this.cooldownBlockType = cooldownBlockData;
     }
 
     @Override
-    public BlockType getCooldownBlockType() {
+    public Object getCooldownBlockData() {
         return cooldownBlockType;
     }
 
-    @Override
-    public boolean containsBlockType(BlockType blockType) {
-        return containsBlockType.test(blockType);
+    public boolean containsBlockData(Object blockData) {
+        return containsBlockType.test(blockData);
     }
 }

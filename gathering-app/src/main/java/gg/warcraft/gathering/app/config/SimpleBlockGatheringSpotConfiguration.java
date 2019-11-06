@@ -5,21 +5,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import gg.warcraft.gathering.api.config.BlockGatheringSpotConfiguration;
 import gg.warcraft.gathering.api.config.DropConfiguration;
 import gg.warcraft.monolith.api.config.BoundingBlockBoxConfiguration;
-import gg.warcraft.monolith.api.world.block.BlockType;
 
 public class SimpleBlockGatheringSpotConfiguration implements BlockGatheringSpotConfiguration {
     private final String id;
     private final BoundingBlockBoxConfiguration boundingBox;
-    private final BlockType blockType;
-    private final BlockType cooldownType;
+    private final String blockType;
+    private final String cooldownType;
     private final DropConfiguration drop;
     private final int cooldownInSeconds;
 
     @JsonCreator
     public SimpleBlockGatheringSpotConfiguration(@JsonProperty("id") String id,
                                                  @JsonProperty("boundingBox") BoundingBlockBoxConfiguration boundingBox,
-                                                 @JsonProperty("blockType") BlockType blockType,
-                                                 @JsonProperty("cooldownType") BlockType cooldownType,
+                                                 @JsonProperty("blockType") String blockType,
+                                                 @JsonProperty("cooldownType") String cooldownType,
                                                  @JsonProperty("drop") DropConfiguration drop,
                                                  @JsonProperty("cooldownInSeconds") int cooldownInSeconds) {
         this.id = id;
@@ -41,12 +40,12 @@ public class SimpleBlockGatheringSpotConfiguration implements BlockGatheringSpot
     }
 
     @Override
-    public BlockType getBlockType() {
+    public String getBlockType() {
         return blockType;
     }
 
     @Override
-    public BlockType getCooldownType() {
+    public String getCooldownType() {
         return cooldownType;
     }
 

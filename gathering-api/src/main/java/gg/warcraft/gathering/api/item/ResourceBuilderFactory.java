@@ -1,8 +1,8 @@
 package gg.warcraft.gathering.api.item;
 
-import gg.warcraft.monolith.api.world.item.ItemType;
+import com.google.inject.assistedinject.Assisted;
 
 public interface ResourceBuilderFactory {
 
-    ResourceBuilder createResourceBuilder(ItemType type, String name);
+    ResourceBuilder createResourceBuilder(@Assisted("type") String type, @Assisted("name") String name);
 }
