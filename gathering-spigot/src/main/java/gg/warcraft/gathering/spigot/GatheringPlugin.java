@@ -25,6 +25,7 @@ import gg.warcraft.monolith.api.world.block.box.BoundingBlockBox;
 import gg.warcraft.monolith.api.world.block.box.BoundingBlockBoxFactory;
 import gg.warcraft.monolith.api.world.item.ItemService;
 import gg.warcraft.monolith.api.world.item.ItemType;
+import gg.warcraft.monolith.api.world.item.ItemTypeOrVariant;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -44,6 +45,7 @@ public class GatheringPlugin extends JavaPlugin {
         BoundingBlockBoxFactory boundingBoxFactory = injector.getInstance(BoundingBlockBoxFactory.class);
         ResourceBuilderFactory resourceBuilderFactory = injector.getInstance(ResourceBuilderFactory.class);
         WorldService worldService = injector.getInstance(WorldService.class);
+        ItemService itemService = injector.getInstance(ItemService.class);
         TimeUtils timeUtils = injector.getInstance(TimeUtils.class);
         GatheringSpotCommandService gatheringSpotCommandService = injector.getInstance(GatheringSpotCommandService.class);
         configuration.getBlockGatheringSpots().forEach(blockGatheringSpotConfiguration -> {
@@ -55,7 +57,7 @@ public class GatheringPlugin extends JavaPlugin {
                     worldService.parseData(blockGatheringSpotConfiguration.getBlockType())::equals,
                     worldService.parseData(blockGatheringSpotConfiguration.getCooldownType()),
                     () -> {
-                        String type = blockGatheringSpotConfiguration.getDrop().getType();
+                        ItemTypeOrVariant type = itemService.parseData(blockGatheringSpotConfiguration.getDrop().getType());
                         String name = blockGatheringSpotConfiguration.getDrop().getName();
                         ResourceBuilder builder = resourceBuilderFactory.createResourceBuilder(type, name);
                         return Collections.singletonList(builder.build());
@@ -72,7 +74,7 @@ public class GatheringPlugin extends JavaPlugin {
                     entityGatheringSpotConfiguration.getEntityCount(),
                     () -> spawnLocation,
                     () -> {
-                        String type = entityGatheringSpotConfiguration.getDrop().getType();
+                        ItemTypeOrVariant type = itemService.parseData(entityGatheringSpotConfiguration.getDrop().getType());
                         String name = entityGatheringSpotConfiguration.getDrop().getName();
                         ResourceBuilder builder = resourceBuilderFactory.createResourceBuilder(type, name);
                         return Collections.singletonList(builder.build());

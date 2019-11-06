@@ -14,6 +14,7 @@ import gg.warcraft.monolith.api.world.BlockLocation;
 import gg.warcraft.monolith.api.world.Location;
 import gg.warcraft.monolith.api.world.WorldService;
 import gg.warcraft.monolith.api.world.block.Block;
+import gg.warcraft.monolith.api.world.block.BlockTypeVariantOrState;
 import gg.warcraft.monolith.api.world.block.backup.BlockBackupService;
 import gg.warcraft.monolith.api.world.item.Item;
 import gg.warcraft.monolith.api.world.item.ItemService;
@@ -53,8 +54,8 @@ public class DefaultBlockGatherableCommandService implements BlockGatherableComm
     }
 
     void queueBlockCooldownState(BlockGatherable blockGatherable, Block block) {
-        Object cooldownBlockData = blockGatherable.getCooldownBlockData();
-        taskService.runNextTick(() -> worldService.setBlockData(block.location(), cooldownBlockData));
+        BlockTypeVariantOrState cooldownBlockData = blockGatherable.getCooldownBlockData();
+        taskService.runNextTick(() -> worldService.setBlock(block.location(), cooldownBlockData));
     }
 
     void queueBlockRestoration(BlockGatherable blockGatherable, Block block) {
