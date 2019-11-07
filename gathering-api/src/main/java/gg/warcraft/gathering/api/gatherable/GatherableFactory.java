@@ -6,6 +6,7 @@ import gg.warcraft.monolith.api.entity.EntityType;
 import gg.warcraft.monolith.api.util.Duration;
 import gg.warcraft.monolith.api.world.Location;
 import gg.warcraft.monolith.api.world.block.BlockType;
+import gg.warcraft.monolith.api.world.block.BlockTypeVariantOrState;
 import gg.warcraft.monolith.api.world.item.Item;
 
 import java.util.List;
@@ -32,8 +33,8 @@ public interface GatherableFactory {
      * @return A new block gatherable. Never null.
      */
     @Named("block")
-    BlockGatherable createBlockGatherable(Predicate<Object> containsBlockType,
-                                          Object cooldownBlockType,
+    BlockGatherable createBlockGatherable(Predicate<BlockTypeVariantOrState> containsBlockType,
+                                          BlockTypeVariantOrState cooldownBlockType,
                                           @Assisted Supplier<List<Item>> dropsSupplier,
                                           @Assisted Supplier<Duration> cooldownSupplier);
 
