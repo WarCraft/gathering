@@ -21,6 +21,7 @@ import gg.warcraft.monolith.api.util.TimeUtils;
 import gg.warcraft.monolith.api.world.Location;
 import gg.warcraft.monolith.api.world.WorldService;
 import gg.warcraft.monolith.api.world.block.Block;
+import gg.warcraft.monolith.api.world.block.BlockTypeVariantOrState;
 import gg.warcraft.monolith.api.world.block.box.BoundingBlockBox;
 import gg.warcraft.monolith.api.world.block.box.BoundingBlockBoxFactory;
 import gg.warcraft.monolith.api.world.item.ItemService;
@@ -53,8 +54,9 @@ public class GatheringPlugin extends JavaPlugin {
                     blockGatheringSpotConfiguration.getBoundingBox().getWorld(),
                     blockGatheringSpotConfiguration.getBoundingBox().getMinimumcorner().toVector3i(),
                     blockGatheringSpotConfiguration.getBoundingBox().getMaximumcorner().toVector3i());
+            BlockTypeVariantOrState gatherableBlockData = worldService.parseData(blockGatheringSpotConfiguration.getBlockType());
             BlockGatherable gatherable = gatherableFactory.createBlockGatherable(
-                    worldService.parseData(blockGatheringSpotConfiguration.getBlockType())::equals,
+                    block -> block.hasData(gatherableBlockData),
                     worldService.parseData(blockGatheringSpotConfiguration.getCooldownType()),
                     () -> {
                         ItemTypeOrVariant type = itemService.parseData(blockGatheringSpotConfiguration.getDrop().getType());

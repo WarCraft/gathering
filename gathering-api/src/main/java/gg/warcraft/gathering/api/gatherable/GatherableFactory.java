@@ -5,6 +5,7 @@ import com.google.inject.name.Named;
 import gg.warcraft.monolith.api.entity.EntityType;
 import gg.warcraft.monolith.api.util.Duration;
 import gg.warcraft.monolith.api.world.Location;
+import gg.warcraft.monolith.api.world.block.Block;
 import gg.warcraft.monolith.api.world.block.BlockType;
 import gg.warcraft.monolith.api.world.block.BlockTypeVariantOrState;
 import gg.warcraft.monolith.api.world.item.Item;
@@ -22,7 +23,7 @@ import java.util.function.Supplier;
 public interface GatherableFactory {
 
     /**
-     * @param containsBlockType The predicate to check whether a block type belongs to the gatherable. Can not be null.
+     * @param containsBlock The predicate to check whether a block type belongs to the gatherable. Can not be null.
      * @param cooldownBlockType The block type this gatherable will be set to while on cooldown. Can not be null.
      * @param dropsSupplier     The item supplier that will be called every time the gatherable is gathered, it allows
      *                          for dynamic drop lists. Can not be null. The return value of the supplier can not be
@@ -33,7 +34,7 @@ public interface GatherableFactory {
      * @return A new block gatherable. Never null.
      */
     @Named("block")
-    BlockGatherable createBlockGatherable(Predicate<BlockTypeVariantOrState> containsBlockType,
+    BlockGatherable createBlockGatherable(Predicate<Block> containsBlock,
                                           BlockTypeVariantOrState cooldownBlockType,
                                           @Assisted Supplier<List<Item>> dropsSupplier,
                                           @Assisted Supplier<Duration> cooldownSupplier);

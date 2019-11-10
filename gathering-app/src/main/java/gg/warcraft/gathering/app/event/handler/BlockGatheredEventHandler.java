@@ -6,9 +6,7 @@ import gg.warcraft.gathering.api.gatherable.BlockGatherable;
 import gg.warcraft.gathering.api.gatherable.service.BlockGatherableCommandService;
 import gg.warcraft.gathering.api.spot.service.GatheringSpotQueryService;
 import gg.warcraft.monolith.api.world.BlockLocation;
-import gg.warcraft.monolith.api.world.block.Block;
-import gg.warcraft.monolith.api.world.block.StatefulBlock;
-import gg.warcraft.monolith.api.world.block.VariableBlock;
+import gg.warcraft.monolith.api.world.block.*;
 import gg.warcraft.monolith.api.world.block.event.BlockPreBreakEvent;
 
 import java.util.ArrayList;
@@ -37,14 +35,7 @@ public class BlockGatheredEventHandler {
         Predicate<BlockGatherable> containsBlockCheck = new Predicate<BlockGatherable>() {
             @Override
             public boolean test(BlockGatherable gatherable) {
-                System.out.println("TESTING GATHERABLE WITH BLOCK " + block);
-                if(block instanceof VariableBlock) {
-                    return gatherable.containsBlockData(((VariableBlock)block).variant());
-                } else if (block instanceof StatefulBlock) {
-                    return gatherable.containsBlockData(((StatefulBlock)block).state());
-                } else {
-                    return gatherable.containsBlockData(block.type());
-                }
+                return gatherable.containsBlock(block);
             }
         };
 

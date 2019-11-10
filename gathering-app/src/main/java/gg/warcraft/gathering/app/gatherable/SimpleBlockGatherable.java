@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 import gg.warcraft.gathering.api.gatherable.BlockGatherable;
 import gg.warcraft.monolith.api.util.Duration;
+import gg.warcraft.monolith.api.world.block.Block;
 import gg.warcraft.monolith.api.world.block.BlockType;
 import gg.warcraft.monolith.api.world.block.BlockTypeVariantOrState;
 import gg.warcraft.monolith.api.world.item.Item;
@@ -13,16 +14,16 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class SimpleBlockGatherable extends AbstractGatherable implements BlockGatherable {
-    private final Predicate<BlockTypeVariantOrState> containsBlockType;
+    private final Predicate<Block> containsBlock;
     private final BlockTypeVariantOrState cooldownBlockType;
 
     @Inject
-    public SimpleBlockGatherable(@Assisted Predicate<BlockTypeVariantOrState> containsBlockData,
+    public SimpleBlockGatherable(@Assisted Predicate<Block> containsBlock,
                                  @Assisted BlockTypeVariantOrState cooldownBlockData,
                                  @Assisted Supplier<List<Item>> dropsSupplier,
                                  @Assisted Supplier<Duration> cooldownSupplier) {
         super(dropsSupplier, cooldownSupplier);
-        this.containsBlockType = containsBlockData;
+        this.containsBlock = containsBlock;
         this.cooldownBlockType = cooldownBlockData;
     }
 
@@ -31,7 +32,7 @@ public class SimpleBlockGatherable extends AbstractGatherable implements BlockGa
         return cooldownBlockType;
     }
 
-    public boolean containsBlockData(BlockTypeVariantOrState blockData) {
-        return containsBlockType.test(blockData);
+    public boolean containsBlock(Block block) {
+        return containsBlock.test(block);
     }
 }

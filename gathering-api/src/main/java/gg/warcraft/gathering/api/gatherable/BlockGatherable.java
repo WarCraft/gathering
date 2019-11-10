@@ -1,5 +1,6 @@
 package gg.warcraft.gathering.api.gatherable;
 
+import gg.warcraft.monolith.api.world.block.Block;
 import gg.warcraft.monolith.api.world.block.BlockTypeVariantOrState;
 
 /**
@@ -14,8 +15,8 @@ public interface BlockGatherable extends Gatherable {
     BlockTypeVariantOrState getCooldownBlockData();
 
     /**
-     * @param blockType The type. Can not be null.
+     * @param block The type. Can not be null.
      * @return True if this gatherable contains the type, false otherwise.
      */
-    boolean containsBlockData(BlockTypeVariantOrState blockData);
+    boolean containsBlock(Block block);
 }
