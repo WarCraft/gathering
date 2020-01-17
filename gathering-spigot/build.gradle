@@ -1,5 +1,0 @@
-dependencies {
-    api project(':gathering-app')
-
-    shadow('org.spigotmc:spigot-api:1.15.1-R0.1-SNAPSHOT') { exclude group: '*' }
-}
