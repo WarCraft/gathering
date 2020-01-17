@@ -1,6 +1,6 @@
 package gg.warcraft.gathering.api.gatherable.event;
 
-import gg.warcraft.monolith.api.core.Event;
+import gg.warcraft.monolith.api.core.event.Event;
 
 import java.util.UUID;
 

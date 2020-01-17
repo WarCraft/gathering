@@ -10,8 +10,8 @@ import gg.warcraft.gathering.api.gatherable.service.EntityGatherableRepository;
 import gg.warcraft.gathering.app.gatherable.event.SimpleEntityGatheredEvent;
 import gg.warcraft.gathering.app.gatherable.event.SimpleEntityPreGatheredEvent;
 import gg.warcraft.gathering.app.gatherable.event.SimpleGatherableEntityRespawnedEvent;
-import gg.warcraft.monolith.api.core.EventService;
 import gg.warcraft.monolith.api.core.TaskService;
+import gg.warcraft.monolith.api.core.event.EventService;
 import gg.warcraft.monolith.api.entity.Entity;
 import gg.warcraft.monolith.api.entity.EntityType;
 import gg.warcraft.monolith.api.entity.service.EntityCommandService;
@@ -61,7 +61,7 @@ public class DefaultEntityGatherableCommandService implements EntityGatherableCo
         EntityPreGatheredEvent entityPreGatheredEvent = new SimpleEntityPreGatheredEvent(
                 entityId, entity.getType(), gatheringSpotId, playerId, false);
         eventService.publish(entityPreGatheredEvent);
-        if (entityPreGatheredEvent.isCancelled() && !entityPreGatheredEvent.isExplicitlyAllowed()) {
+        if (!entityPreGatheredEvent.allowed()) {
             return false;
         }
 

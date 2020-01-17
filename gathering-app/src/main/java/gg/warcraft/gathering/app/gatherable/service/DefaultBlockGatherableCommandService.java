@@ -7,7 +7,7 @@ import gg.warcraft.gathering.api.gatherable.event.BlockPreGatheredEvent;
 import gg.warcraft.gathering.api.gatherable.service.BlockGatherableCommandService;
 import gg.warcraft.gathering.app.gatherable.event.SimpleBlockGatheredEvent;
 import gg.warcraft.gathering.app.gatherable.event.SimpleBlockPreGatheredEvent;
-import gg.warcraft.monolith.api.core.EventService;
+import gg.warcraft.monolith.api.core.event.EventService;
 import gg.warcraft.monolith.api.core.TaskService;
 import gg.warcraft.monolith.api.util.Duration;
 import gg.warcraft.monolith.api.world.BlockLocation;
@@ -70,7 +70,7 @@ public class DefaultBlockGatherableCommandService implements BlockGatherableComm
         BlockPreGatheredEvent blockPreGatheredEvent = new SimpleBlockPreGatheredEvent(
                 block, gatheringSpotId, playerId, false);
         eventService.publish(blockPreGatheredEvent);
-        if (blockPreGatheredEvent.isCancelled() && !blockPreGatheredEvent.isExplicitlyAllowed()) {
+        if (!blockPreGatheredEvent.allowed()) {
             return false;
         }
 
