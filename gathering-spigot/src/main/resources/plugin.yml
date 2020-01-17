@@ -1,8 +1,9 @@
 name: "WarCraft_Gathering"
-version: 1.0.0
+version: 15.0.0-SNAPSHOT
 author: fishb6nes
 authors: [fishb6nes, cbngu]
 website: http://warcraft.gg
 
+api-version: "1.15"
 main: gg.warcraft.gathering.spigot.GatheringPlugin
 depend: ["WarCraft_Monolith"]
