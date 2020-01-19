@@ -7,7 +7,7 @@ import gg.warcraft.monolith.api.world.item.{Item, ItemService}
 class ResourceFactory(
     private implicit val itemService: ItemService
 ) {
-  private val resourceTooltip = s"${FormatCode.ITALIC}Resource"
+  private final val resourceTooltip = s"${FormatCode.ITALIC}Resource"
 
   def create(gatherable: Gatherable): Item = itemService
     .create(gatherable.dropData)
