@@ -21,12 +21,12 @@ object EntityGatherableService {
 class EntityGatherableService(
     private implicit val eventService: EventService,
     private implicit val taskService: TaskService,
-    private implicit val itemService: ItemService,
-    private implicit val entityService: EntityCommandService
-) {
-  import EntityGatherableService._
+    private implicit val entityService: EntityCommandService,
+    protected implicit val itemService: ItemService
+) extends GatherableService {
+  import EntityGatherableService.entities
 
-  private final val dropOffset = Vector3f(0.5f, 0, 0.5f)
+  protected final val dropOffset = Vector3f(0, 0.5f, 0)
 
   def gatherEntity(
       spot: GatheringSpot,
@@ -34,21 +34,18 @@ class EntityGatherableService(
       entity: Entity,
       playerId: UUID
   ): Boolean = {
-    val entityId = entity.getId
-    val entityType = entity.getType
-    var preGatherEvent =
-      EntityPreGatherEvent(entityId, entityType, spot.id, playerId)
+    import entity.{getId, getType}
+
+    var preGatherEvent = EntityPreGatherEvent(getId, getType, spot.id, playerId)
     preGatherEvent = eventService.publish(preGatherEvent)
     if (!preGatherEvent.allowed) return false
 
-    val drop = itemService.create(gatherable.dropData).withName(gatherable.dropName)
-    val dropLocation = entity.getLocation.add(dropOffset)
-    itemService.dropItems(dropLocation, drop)
-    entities.remove(entityId)
+    spawnDrops(gatherable, entity.getLocation)
+    entities.remove(getId)
     // TODO delete entityId from persistence
 
     val gatherEvent =
-      EntityGatherEvent(entityId, entityType, spot.id, playerId)
+      EntityGatherEvent(getId, getType, spot.id, playerId)
     eventService.publish(gatherEvent)
     true
   }

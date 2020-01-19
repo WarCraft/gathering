@@ -16,11 +16,11 @@ import scala.util.Random
 class BlockGatherableService(
     private implicit val eventService: EventService,
     private implicit val taskService: TaskService,
-    private implicit val itemService: ItemService,
     private implicit val worldService: WorldService,
-    private implicit val blockBackupService: BlockBackupService
-) {
-  private final val dropOffset = Vector3f(0.5f, 0.5f, 0.5f)
+    private implicit val blockBackupService: BlockBackupService,
+    protected implicit val itemService: ItemService
+) extends GatherableService {
+  protected final val dropOffset = Vector3f(0.5f, 0.5f, 0.5f)
 
   def gatherBlock(
       spot: GatheringSpot,
@@ -32,10 +32,7 @@ class BlockGatherableService(
     preGatherEvent = eventService.publish(preGatherEvent)
     if (!preGatherEvent.allowed) return false
 
-    val drop = itemService.create(gatherable.dropData).withName(gatherable.dropName)
-    val dropLocation = block.location.toLocation.add(dropOffset)
-    itemService.dropItems(dropLocation, drop)
-
+    spawnDrops(gatherable, block.location.toLocation)
     queueCooldownState(gatherable, block)
     queueBlockRestoration(gatherable, block)
 
