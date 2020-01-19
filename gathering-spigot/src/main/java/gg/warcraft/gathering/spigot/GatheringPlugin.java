@@ -34,12 +34,6 @@ import java.util.function.Predicate;
 
 public class GatheringPlugin extends JavaPlugin {
 
-    private void removeExistingEntityGatherables(Injector injector) {
-        EntityGatherableCommandService entityGatherableCommandService =
-                injector.getInstance(EntityGatherableCommandService.class);
-        entityGatherableCommandService.removeAllEntities();
-    }
-
     private void readGatheringConfiguration(GatheringConfiguration configuration, Injector injector) {
         GatherableFactory gatherableFactory = injector.getInstance(GatherableFactory.class);
         BoundingBlockBoxFactory boundingBoxFactory = injector.getInstance(BoundingBlockBoxFactory.class);
@@ -86,23 +80,6 @@ public class GatheringPlugin extends JavaPlugin {
         });
     }
 
-    private void initializeMonolithEventHandlers(Injector injector) {
-        EventService eventService = injector.getInstance(EventService.class);
-        BlockGatheredEventHandler blockGatheredEventHandler = injector.getInstance(BlockGatheredEventHandler.class);
-        EntityGatheredEventHandler entityGatheredEventHandler = injector.getInstance(EntityGatheredEventHandler.class);
-        ServerShutdownEventHandler serverShutdownEventHandler = injector.getInstance(ServerShutdownEventHandler.class);
-        eventService.subscribe(blockGatheredEventHandler);
-        eventService.subscribe(entityGatheredEventHandler);
-        eventService.subscribe(serverShutdownEventHandler);
-    }
-
-    @Override
-    public void onLoad() {
-        saveDefaultConfig();
-        Module spigotGatheringModule = new SpigotGatheringModule(this);
-        Monolith.registerModule(spigotGatheringModule);
-    }
-
     @Override
     public void onEnable() {
         FileConfiguration localConfig = getConfig();
@@ -116,7 +93,5 @@ public class GatheringPlugin extends JavaPlugin {
         GatheringConfiguration configuration = pluginUtils.loadConfiguration(configurationType, configurationFileName,
                 localConfig.saveToString(), GatheringConfiguration.class, new GatheringMapperModule());
         readGatheringConfiguration(configuration, injector);
-
-        initializeMonolithEventHandlers(injector);
     }
 }
