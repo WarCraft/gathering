@@ -2,19 +2,21 @@ package gg.warcraft.gathering.api
 
 import com.fasterxml.jackson.annotation.{JsonCreator, JsonProperty}
 import gg.warcraft.gathering.api.gatherable.{BlockGatherable, EntityGatherable}
-import gg.warcraft.monolith.api.Implicits._
 import gg.warcraft.monolith.api.config.BoundingBlockBoxConfiguration
+import gg.warcraft.monolith.api.entity.EntityType
+import gg.warcraft.monolith.api.world.block.BlockTypeVariantOrState
+import gg.warcraft.monolith.api.world.item.ItemTypeOrVariant
 
 @JsonCreator
 case class BlockGatherableConfig(
-    @JsonProperty("blockData") blockData: String,
-    @JsonProperty("dropData") dropData: String,
+    @JsonProperty("blockData") blockData: BlockTypeVariantOrState,
+    @JsonProperty("dropData") dropData: ItemTypeOrVariant,
     @JsonProperty("dropName") dropName: String,
     @JsonProperty("cooldown") cooldown: Int,
     @JsonProperty("cooldownDelta") cooldownDelta: Int,
-    @JsonProperty("cooldownData") cooldownData: String
+    @JsonProperty("cooldownData") cooldownData: BlockTypeVariantOrState
 ) {
-  def toBlockGatherable: BlockGatherable = new BlockGatherable(
+  def toBlockGatherable: BlockGatherable = BlockGatherable(
     blockData,
     dropData,
     dropName,
@@ -26,14 +28,14 @@ case class BlockGatherableConfig(
 
 @JsonCreator
 case class EntityGatherableConfig(
-    @JsonProperty("entityType") entityType: String,
+    @JsonProperty("entityType") entityType: EntityType,
     @JsonProperty("entityCount") entityCount: Int,
-    @JsonProperty("dropData") dropData: String,
+    @JsonProperty("dropData") dropData: ItemTypeOrVariant,
     @JsonProperty("dropName") dropName: String,
     @JsonProperty("cooldown") cooldown: Int,
     @JsonProperty("cooldownDelta") cooldownDelta: Int
 ) {
-  def toEntityGatherable: EntityGatherable = new EntityGatherable(
+  def toEntityGatherable: EntityGatherable = EntityGatherable(
     entityType,
     entityCount,
     dropData,
