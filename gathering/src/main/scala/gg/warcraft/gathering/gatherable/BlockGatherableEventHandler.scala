@@ -5,8 +5,8 @@ import gg.warcraft.monolith.api.core.event.{EventHandler, PreEvent}
 import gg.warcraft.monolith.api.world.block.BlockPreBreakEvent
 
 class BlockGatherableEventHandler(
-    private implicit val blockGatherableService: BlockGatherableService,
-    private implicit val gatheringSpotService: GatheringSpotService
+    private val blockGatherableService: BlockGatherableService,
+    private val gatheringSpotService: GatheringSpotService
 ) extends EventHandler {
   override def reduce[T <: PreEvent](event: T): T = event match {
     case preBreak: BlockPreBreakEvent =>
