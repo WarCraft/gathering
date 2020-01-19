@@ -22,7 +22,7 @@ case class BlockGatherEvent(
 ) extends Event
 
 // ENTITY
-case class EntityGatherEvent(
+case class EntityPreGatherEvent(
     entityId: UUID,
     entityType: EntityType,
     gatheringSpotId: String,
@@ -31,7 +31,7 @@ case class EntityGatherEvent(
     explicitlyAllowed: Boolean = false
 ) extends CancellableEvent
 
-case class EntityPreGatherEvent(
+case class EntityGatherEvent(
     entityId: UUID,
     entityType: EntityType,
     gatheringSpotId: String,

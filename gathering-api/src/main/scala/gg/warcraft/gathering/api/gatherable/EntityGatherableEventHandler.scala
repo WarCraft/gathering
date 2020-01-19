@@ -6,12 +6,6 @@ import gg.warcraft.monolith.api.core.event.{
 import gg.warcraft.monolith.api.entity.EntityPreFatalDamageEvent
 
 class EntityGatherableEventHandler extends EventHandler {
-  override def handle(event: Event): Unit = event match {
-    case _: ServerShutdownEvent => ()
-    // entityGatherableQueryService.getSpawnedEntityIds().forEach(entityCommandService::removeEntity);
-    case _ => ()
-  }
-
   override def reduce[T <: PreEvent](event: T): T = event match {
     case entityPreFatal: EntityPreFatalDamageEvent => event
     /*

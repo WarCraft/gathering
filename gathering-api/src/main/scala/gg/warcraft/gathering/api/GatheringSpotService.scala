@@ -1,19 +1,23 @@
 package gg.warcraft.gathering.api
 
-class GatheringSpotService {
-def getGatheringSpot(id: String): Option[GatheringSpot] = {
-  None
+import scala.collection.mutable
+
+object GatheringSpotService {
+  private val spots = mutable.Map[String, GatheringSpot]()
 }
 
-  def getGatheringSpots(): List[GatheringSpot] = {
-    List()
-  }
+class GatheringSpotService {
+  import GatheringSpotService._
 
-  def addGatheringSpot(spot: GatheringSpot): Boolean = {
-    false
-  }
+  def getGatheringSpot(id: String): Option[GatheringSpot] =
+    spots.get(id)
 
-  def removeGatheringSpot(id: String): Boolean = {
-    false
-  }
+  def getGatheringSpots: Iterable[GatheringSpot] =
+    spots.values
+
+  def addGatheringSpot(spot: GatheringSpot): Boolean =
+    spots.put(spot.id, spot).isEmpty
+
+  def removeGatheringSpot(id: String): Boolean =
+    spots.remove(id).isDefined
 }

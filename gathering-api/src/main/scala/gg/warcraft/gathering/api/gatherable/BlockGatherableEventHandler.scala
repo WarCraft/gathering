@@ -15,11 +15,11 @@ class BlockGatherableEventHandler(
 
       val block = event.block
       gatheringSpotService
-        .getGatheringSpots()
+        .getGatheringSpots
         .filter(_.contains(block))
         .foreach(spot => {
           spot.blockGatherables
-            .find(_.contains(block))
+            .find(_.matches(block))
             .map(blockGatherableService.gatherBlock(spot, _, block, playerId))
             .map(if (_) {
               return event
