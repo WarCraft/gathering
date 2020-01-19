@@ -3,13 +3,15 @@ package gg.warcraft.gathering.api.gatherable
 import java.util.UUID
 
 import gg.warcraft.gathering.api.GatheringSpot
-import gg.warcraft.monolith.api.core.TaskService
 import gg.warcraft.monolith.api.core.event.EventService
+import gg.warcraft.monolith.api.core.{Duration, TaskService}
 import gg.warcraft.monolith.api.math.Vector3f
 import gg.warcraft.monolith.api.world.WorldService
 import gg.warcraft.monolith.api.world.block.Block
 import gg.warcraft.monolith.api.world.block.backup.BlockBackupService
 import gg.warcraft.monolith.api.world.item.ItemService
+
+import scala.util.Random
 
 class BlockGatherableService(
     private implicit val eventService: EventService,
@@ -30,7 +32,7 @@ class BlockGatherableService(
     preGatherEvent = eventService.publish(preGatherEvent)
     if (!preGatherEvent.allowed) return false
 
-    val drop = gatherable.generateDrop
+    val drop = itemService.create(gatherable.dropData).withName(gatherable.dropName)
     val dropLocation = block.location.toLocation.add(dropOffset)
     itemService.dropItems(dropLocation, drop)
 
@@ -49,9 +51,10 @@ class BlockGatherableService(
 
   def queueBlockRestoration(gatherable: BlockGatherable, block: Block): Unit = {
     val backupId = blockBackupService.createBackup(block.location)
+    val cooldown = gatherable.cooldown + Random.nextInt(gatherable.cooldownDelta)
     taskService.runLater(
       () => blockBackupService.restoreBackup(backupId),
-      gatherable.generateCooldown
+      Duration.ofSeconds(cooldown)
     )
   }
 }
