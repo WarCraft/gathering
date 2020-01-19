@@ -1,8 +1,6 @@
-package gg.warcraft.gathering.api.gatherable
+package gg.warcraft.gathering.gatherable
 
-import gg.warcraft.monolith.api.core.event.{
-  Event, EventHandler, PreEvent, ServerShutdownEvent
-}
+import gg.warcraft.monolith.api.core.event.{EventHandler, PreEvent}
 import gg.warcraft.monolith.api.entity.EntityPreFatalDamageEvent
 
 class EntityGatherableEventHandler extends EventHandler {

@@ -1,4 +1,4 @@
-package gg.warcraft.gathering.api.gatherable
+package gg.warcraft.gathering.gatherable
 
 import gg.warcraft.monolith.api.entity.{Entity, EntityType}
 import gg.warcraft.monolith.api.world.block.{Block, BlockTypeVariantOrState}

@@ -1,4 +1,4 @@
-package gg.warcraft.gathering.api.gatherable
+package gg.warcraft.gathering.gatherable
 
 import java.util.UUID
 

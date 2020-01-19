@@ -1,6 +1,6 @@
-package gg.warcraft.gathering.api.gatherable
+package gg.warcraft.gathering.gatherable
 
-import gg.warcraft.gathering.api.ResourceFactory
+import gg.warcraft.gathering.ResourceFactory
 import gg.warcraft.monolith.api.math.Vector3f
 import gg.warcraft.monolith.api.world.Location
 import gg.warcraft.monolith.api.world.item.ItemService

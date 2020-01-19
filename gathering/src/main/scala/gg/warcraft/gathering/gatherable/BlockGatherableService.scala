@@ -1,8 +1,8 @@
-package gg.warcraft.gathering.api.gatherable
+package gg.warcraft.gathering.gatherable
 
 import java.util.UUID
 
-import gg.warcraft.gathering.api.GatheringSpot
+import gg.warcraft.gathering.GatheringSpot
 import gg.warcraft.monolith.api.core.event.EventService
 import gg.warcraft.monolith.api.core.{Duration, TaskService}
 import gg.warcraft.monolith.api.math.Vector3f

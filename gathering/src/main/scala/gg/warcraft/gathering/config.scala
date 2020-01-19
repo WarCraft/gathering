@@ -1,7 +1,7 @@
-package gg.warcraft.gathering.api
+package gg.warcraft.gathering
 
 import com.fasterxml.jackson.annotation.{JsonCreator, JsonProperty}
-import gg.warcraft.gathering.api.gatherable.{BlockGatherable, EntityGatherable}
+import gg.warcraft.gathering.gatherable.{BlockGatherable, EntityGatherable}
 import gg.warcraft.monolith.api.config.BoundingBlockBoxConfiguration
 import gg.warcraft.monolith.api.entity.EntityType
 import gg.warcraft.monolith.api.world.block.BlockTypeVariantOrState

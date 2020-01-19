@@ -1,4 +1,4 @@
-package gg.warcraft.gathering.api
+package gg.warcraft.gathering
 
 import scala.collection.mutable
 

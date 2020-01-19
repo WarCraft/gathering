@@ -1,6 +1,6 @@
-package gg.warcraft.gathering.api
+package gg.warcraft.gathering
 
-import gg.warcraft.gathering.api.gatherable.{BlockGatherable, EntityGatherable}
+import gg.warcraft.gathering.gatherable.{BlockGatherable, EntityGatherable}
 import gg.warcraft.monolith.api.entity.Entity
 import gg.warcraft.monolith.api.world.block.Block
 import gg.warcraft.monolith.api.world.block.box.BoundingBlockBox

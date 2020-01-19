@@ -1,6 +1,6 @@
-package gg.warcraft.gathering.api.gatherable
+package gg.warcraft.gathering.gatherable
 
-import gg.warcraft.gathering.api.GatheringSpotService
+import gg.warcraft.gathering.GatheringSpotService
 import gg.warcraft.monolith.api.core.event.{EventHandler, PreEvent}
 import gg.warcraft.monolith.api.world.block.BlockPreBreakEvent
 
@@ -14,8 +14,7 @@ class BlockGatherableEventHandler(
       if (playerId == null) return event
 
       val block = event.block
-      gatheringSpotService
-        .getGatheringSpots
+      gatheringSpotService.getGatheringSpots
         .filter(_.contains(block))
         .foreach(spot => {
           spot.blockGatherables

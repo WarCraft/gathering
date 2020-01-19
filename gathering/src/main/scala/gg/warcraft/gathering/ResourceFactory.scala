@@ -1,6 +1,6 @@
-package gg.warcraft.gathering.api
+package gg.warcraft.gathering
 
-import gg.warcraft.gathering.api.gatherable.Gatherable
+import gg.warcraft.gathering.gatherable.Gatherable
 import gg.warcraft.monolith.api.util.FormatCode
 import gg.warcraft.monolith.api.world.item.{Item, ItemService}
 
