@@ -5,8 +5,9 @@ import java.util.UUID
 import gg.warcraft.gathering.GatheringSpot
 import gg.warcraft.monolith.api.core.event.EventService
 import gg.warcraft.monolith.api.core.{Duration, TaskService}
-import gg.warcraft.monolith.api.entity.Entity
-import gg.warcraft.monolith.api.entity.service.EntityCommandService
+import gg.warcraft.monolith.api.entity.service.{
+  EntityCommandService, EntityQueryService
+}
 import gg.warcraft.monolith.api.math.Vector3f
 import gg.warcraft.monolith.api.world.Location
 import gg.warcraft.monolith.api.world.item.ItemService
@@ -22,6 +23,7 @@ class EntityGatherableService(
     private implicit val eventService: EventService,
     private implicit val taskService: TaskService,
     private implicit val entityService: EntityCommandService,
+    private implicit val entityQueryService: EntityQueryService,
     protected implicit val itemService: ItemService
 ) extends GatherableService {
   import EntityGatherableService.entities
@@ -31,9 +33,10 @@ class EntityGatherableService(
   def gatherEntity(
       spot: GatheringSpot,
       gatherable: EntityGatherable,
-      entity: Entity,
+      entityId: UUID,
       playerId: UUID
   ): Boolean = {
+    val entity = entityQueryService.getEntity(entityId)
     import entity.{getId, getType}
 
     var preGatherEvent = EntityPreGatherEvent(getId, getType, spot.id, playerId)

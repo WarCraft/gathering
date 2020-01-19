@@ -1,83 +1,59 @@
 package gg.warcraft.gathering.gatherable
 
+import java.util.UUID
+
+import gg.warcraft.gathering.{GatheringSpot, GatheringSpotService}
 import gg.warcraft.monolith.api.core.event.{EventHandler, PreEvent}
-import gg.warcraft.monolith.api.entity.EntityPreFatalDamageEvent
+import gg.warcraft.monolith.api.entity.player.service.PlayerQueryService
+import gg.warcraft.monolith.api.entity.{EntityDeathEvent, EntityPreFatalDamageEvent}
 
-class EntityGatherableEventHandler extends EventHandler {
-  override def reduce[T <: PreEvent](event: T): T = event match {
-    case entityPreFatal: EntityPreFatalDamageEvent => event
-    /*
-          @Subscribe
-          public void onEntityPreFatalDamageEvent(EntityPreFatalDamageEvent event) {
-              UUID entityId = event.getEntityId();
-              gatheringSpotQueryService.getEntityGatheringSpots().stream()
-                      .filter(gatheringSpot -> gatheringSpot.getEntityIds().contains(entityId))
-                      .findAny()
-                      .ifPresent(gatheringSpot -> {
-                          Entity entity = entityQueryService.getEntity(entityId);
-                          gatheringSpot.getEntityGatherables().stream()
-                                  .filter(gatherable -> gatherable.getEntityType() == entity.getType())
-                                  .findAny()
-                                  .ifPresent(gatherable -> event.explicitlyAllow());
-                      });
-          }
+import scala.collection.mutable
 
-          @Subscribe
-          public void EntityFatalDamageEvent(EntityFatalDamageEvent event) {
-              UUID attackerId = event.getDamage().getSource().getEntityId();
-              if (attackerId == null) {
-                  return;
-              }
+object EntityGatherableEventHandler {
+  private val gatheredEntityIds = mutable.Set[UUID]()
+}
 
-              Player attacker = playerQueryService.getPlayer(attackerId);
-              if (attacker == null) {
-                  return;
-              }
+class EntityGatherableEventHandler(
+    private val gatheringSpotService: GatheringSpotService,
+    private val gatherableService: EntityGatherableService
+)(
+    private implicit val playerService: PlayerQueryService
+) extends EventHandler {
+  import EntityGatherableEventHandler.gatheredEntityIds
 
-              UUID entityId = event.getEntityId();
-              gatheringSpotQueryService.getEntityGatheringSpots().stream()
-                      .filter(gatheringSpot -> gatheringSpot.getEntityIds().contains(entityId))
-                      .findAny()
-                      .ifPresent(gatheringSpot -> {
-                          Entity entity = entityQueryService.getEntity(entityId);
-                          gatheringSpot.getEntityGatherables().stream()
-                                  .filter(gatherable -> gatherable.getEntityType() == entity.getType())
-                                  .findAny()
-                                  .ifPresent(gatherable -> {
-                                      String gatheringSpotId = gatheringSpot.getId();
-                                      gatheringSpotCommandService.removeEntityFromGatheringSpot(gatheringSpotId, entityId);
-                                      final boolean entityGathered = entityGatherableCommandService.gatherEntity(gatherable,
-                                              entityId, gatheringSpotId, attackerId);
+  override def reduce[T >: PreEvent](event: T): T = event match {
+    case preFatalEvent: EntityPreFatalDamageEvent =>
+      import preFatalEvent._
 
-                                      if (entityGathered) {
-                                          entityGatherableCommandService.respawnEntity(gatherable, gatheringSpotId);
-                                      }
-                                  });
-                      });
-          }
+      val attackerId = damage.source.entityId
+      if (attackerId.isEmpty) return preFatalEvent
+      val player = playerService.getPlayer(attackerId.get)
+      if (player == null) return preFatalEvent
 
-          @Subscribe
-          public void onEntityDeathEvent(EntityDeathEvent event) {
-              UUID entityId = event.getEntityId();
-              gatheringSpotQueryService.getEntityGatheringSpots().stream()
-                      .filter(gatheringSpot -> gatheringSpot.getEntityIds().contains(entityId))
-                      .findAny()
-                      .ifPresent(gatheringSpot -> {
-                          Entity entity = entityQueryService.getEntity(entityId);
-                          gatheringSpot.getEntityGatherables().stream()
-                                  .filter(gatherable -> gatherable.getEntityType() == entity.getType())
-                                  .findAny()
-                                  .ifPresent(gatherable -> event.setDrops(new ArrayList<>()));
-                      });
-          }
+      val gatherEntity = (spot: GatheringSpot, it: EntityGatherable) => {
+        if (gatherableService.gatherEntity(spot, it, entityId, player.getId)) {
+          gatheredEntityIds.add(entityId)
+          preFatalEvent.copy(explicitlyAllowed = true)
+        } else preFatalEvent
+      }
 
-          @Subscribe
-          public void onGatherableEntitySpawnedEvent(GatherableEntityRespawnedEvent event) {
-              String gatheringSpotId = event.getGatheringSpotId();
-              UUID entityId = event.getEntityId();
-              gatheringSpotCommandService.addEntityToGatheringSpot(gatheringSpotId, entityId);
-          }
-     */
+      gatheringSpotService.getGatheringSpots
+        .find(_.contains(entityId))
+        .map(spot => {
+          spot.entityGatherables
+            .find(_.matches(entityType))
+            .map(gatherEntity(spot, _))
+            .getOrElse(preFatalEvent)
+        })
+        .getOrElse(preFatalEvent)
+
+    case deathEvent: EntityDeathEvent =>
+      import deathEvent._
+
+      // TODO add preDeath event to remove drops
+      if (gatheredEntityIds.remove(entityId)) deathEvent
+      else deathEvent
+
     case _ => event
   }
 }

@@ -1,6 +1,6 @@
 package gg.warcraft.gathering.gatherable
 
-import gg.warcraft.monolith.api.entity.{Entity, EntityType}
+import gg.warcraft.monolith.api.entity.EntityType
 import gg.warcraft.monolith.api.world.block.{Block, BlockTypeVariantOrState}
 import gg.warcraft.monolith.api.world.item.ItemTypeOrVariant
 
@@ -31,6 +31,6 @@ case class EntityGatherable(
     cooldown: Int,
     cooldownDelta: Int
 ) extends Gatherable {
-  def matches(entity: Entity): Boolean =
-    entity.getType == entityType
+  def matches(entityType: EntityType): Boolean =
+    this.entityType == entityType
 }

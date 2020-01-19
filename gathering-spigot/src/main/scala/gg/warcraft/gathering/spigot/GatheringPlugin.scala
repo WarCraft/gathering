@@ -22,14 +22,14 @@ class GatheringPlugin extends JavaPlugin {
       .foreach(gatheringSpotService.addGatheringSpot)
 
     val blockGatherableHandler = new BlockGatherableEventHandler(
-      new BlockGatherableService,
-      gatheringSpotService
+      gatheringSpotService,
+      new BlockGatherableService
     )
     eventService.subscribe(blockGatherableHandler)
 
     val entityGatherableHandler = new EntityGatherableEventHandler(
-      new EntityGatherableService,
-      gatheringSpotService
+      gatheringSpotService,
+      new EntityGatherableService
     )
     eventService.subscribe(entityGatherableHandler)
   }
