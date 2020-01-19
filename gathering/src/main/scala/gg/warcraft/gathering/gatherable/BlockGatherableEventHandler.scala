@@ -9,11 +9,11 @@ class BlockGatherableEventHandler(
     private implicit val gatheringSpotService: GatheringSpotService
 ) extends EventHandler {
   override def reduce[T <: PreEvent](event: T): T = event match {
-    case event: BlockPreBreakEvent =>
-      val playerId = event.playerId
+    case preBreak: BlockPreBreakEvent =>
+      val playerId = preBreak.playerId
       if (playerId == null) return event
 
-      val block = event.block
+      val block = preBreak.block
       gatheringSpotService.getGatheringSpots
         .filter(_.contains(block))
         .foreach(spot => {
@@ -21,7 +21,7 @@ class BlockGatherableEventHandler(
             .find(_.matches(block))
             .map(blockGatherableService.gatherBlock(spot, _, block, playerId))
             .map(if (_) {
-              return event
+              return preBreak
                 .copy(alternativeDrops = Some(List()), explicitlyAllowed = true)
                 .asInstanceOf[T]
             })
