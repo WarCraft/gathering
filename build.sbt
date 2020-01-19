@@ -31,14 +31,6 @@ lazy val api = (project in file("gathering-api"))
     libraryDependencies ++= commonDependencies
   )
 
-lazy val app = (project in file("gathering-app"))
-  .settings(
-    name := "gathering-app",
-    commonSettings,
-    libraryDependencies ++= commonDependencies
-  )
-  .dependsOn(api)
-
 lazy val spigot = (project in file("gathering-spigot"))
   .settings(
     name := "gathering-spigot",
@@ -51,4 +43,4 @@ lazy val spigot = (project in file("gathering-spigot"))
       "com.destroystokyo.paper" % "paper-api" % "1.15.1-R0.1-SNAPSHOT" % Provided
     )
   )
-  .dependsOn(app)
+  .dependsOn(api)
