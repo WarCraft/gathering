@@ -12,22 +12,16 @@ import gg.warcraft.monolith.api.math.Vector3f
 import gg.warcraft.monolith.api.world.Location
 import gg.warcraft.monolith.api.world.item.ItemService
 
-import scala.collection.mutable
 import scala.util.Random
-
-object EntityGatherableService {
-  private val entities = mutable.Set[UUID]()
-}
 
 class EntityGatherableService(
     private implicit val eventService: EventService,
     private implicit val taskService: TaskService,
     private implicit val entityService: EntityCommandService,
     private implicit val entityQueryService: EntityQueryService,
+    private implicit val entityGatherableRepository: EntityGatherableRepository,
     protected implicit val itemService: ItemService
 ) extends GatherableService {
-  import EntityGatherableService.entities
-
   protected final val dropOffset = Vector3f(0, 0.5f, 0)
 
   def gatherEntity(
@@ -44,8 +38,7 @@ class EntityGatherableService(
     if (!preGatherEvent.allowed) return false
 
     spawnDrops(gatherable, entity.getLocation)
-    entities.remove(getId)
-    // TODO delete entityId from persistence
+    entityGatherableRepository.delete(getId)
 
     val gatherEvent =
       EntityGatherEvent(getId, getType, spot.id, playerId)
@@ -60,9 +53,7 @@ class EntityGatherableService(
       () => {
         val entityType = gatherable.entityType
         val entityId = entityService.spawnEntity(entityType, location)
-        entities.add(entityId)
-        // TODO add entityId to persistence with gatheringSpotId so
-        // TODO we don't have to keep removing and respawning them
+        entityGatherableRepository.save(spot.id, entityId)
 
         // NOTE option to publish GatherableEntityRespawnEvent
       },

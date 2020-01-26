@@ -14,9 +14,8 @@ object EntityGatherableEventHandler {
 }
 
 class EntityGatherableEventHandler(
-    private val gatheringSpotService: GatheringSpotService,
-    private val gatherableService: EntityGatherableService
-)(
+    private implicit val gatheringSpotService: GatheringSpotService,
+    private implicit val gatherableService: EntityGatherableService,
     private implicit val playerService: PlayerQueryService
 ) extends EventHandler {
   import EntityGatherableEventHandler.gatheredEntityIds

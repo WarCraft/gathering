@@ -14,6 +14,7 @@ class GatheringSpot(
     val blockGatherables: List[BlockGatherable],
     val entityGatherables: List[EntityGatherable]
 ) {
+  // TODO initialize entities from repository
   val entities: mutable.Set[UUID] = mutable.Set()
 
   def contains(block: Block): Boolean =
