@@ -24,14 +24,14 @@ lazy val commonDependencies = Seq(
   "org.scalatest" %% "scalatest" % "3.0.8" % Test
 )
 
-lazy val gathering = (project in file("gathering"))
+lazy val api = (project in file("gathering-api"))
   .settings(
-    name := "gathering",
+    name := "gathering-api",
     commonSettings,
     libraryDependencies ++= commonDependencies
   )
 
-lazy val gatheringSpigot = (project in file("gathering-spigot"))
+lazy val spigot = (project in file("gathering-spigot"))
   .settings(
     name := "gathering-spigot",
     commonSettings,
@@ -43,4 +43,4 @@ lazy val gatheringSpigot = (project in file("gathering-spigot"))
       "com.destroystokyo.paper" % "paper-api" % "1.15.1-R0.1-SNAPSHOT" % Provided
     )
   )
-  .dependsOn(gathering)
+  .dependsOn(api)
