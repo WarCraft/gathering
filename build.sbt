@@ -40,7 +40,8 @@ lazy val spigot = (project in file("gathering-spigot"))
       "PaperMC" at "https://papermc.io/repo/repository/maven-public/"
     ),
     libraryDependencies ++= commonDependencies ++ Seq(
-      "com.destroystokyo.paper" % "paper-api" % "1.15.1-R0.1-SNAPSHOT" % Provided
+      "gg.warcraft" %% "monolith-spigot" % "15.0.0-SNAPSHOT",
+      "com.destroystokyo.paper" % "paper-api" % "1.15.2-R0.1-SNAPSHOT" % Provided
     )
   )
   .dependsOn(api)
