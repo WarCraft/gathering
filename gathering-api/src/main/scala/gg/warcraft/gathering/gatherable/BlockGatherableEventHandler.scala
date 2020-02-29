@@ -5,15 +5,18 @@ import gg.warcraft.monolith.api.core.event.{EventHandler, PreEvent}
 import gg.warcraft.monolith.api.world.block.BlockPreBreakEvent
 
 class BlockGatherableEventHandler(
-    private val gatheringSpotService: GatheringSpotService,
-    private val gatherableService: BlockGatherableService
+    private implicit val gatheringSpotService: GatheringSpotService,
+    private implicit val gatherableService: BlockGatherableService
 ) extends EventHandler {
-  override def reduce[T >: PreEvent](event: T): T = event match {
-    case preBreak: BlockPreBreakEvent =>
-      val playerId = preBreak.playerId
-      if (playerId == null) return preBreak
+  override def reduce[T <: PreEvent](event: T): T = event match {
+    case it: BlockPreBreakEvent => reducePreBreak(it).asInstanceOf[T]
+    case _                      => event
+  }
 
-      val block = preBreak.block
+  private def reducePreBreak(event: BlockPreBreakEvent): BlockPreBreakEvent = {
+    import event._
+
+    if (playerId != null) {
       gatheringSpotService.getGatheringSpots
         .filter(_.contains(block))
         .foreach(spot => {
@@ -21,12 +24,12 @@ class BlockGatherableEventHandler(
             .find(_.matches(block))
             .map(gatherableService.gatherBlock(spot, _, block, playerId))
             .map(if (_) {
-              return preBreak
+              return event
                 .copy(alternativeDrops = Some(List()), explicitlyAllowed = true)
             })
         })
+    }
 
-      preBreak
-    case _ => event
+    event
   }
 }
