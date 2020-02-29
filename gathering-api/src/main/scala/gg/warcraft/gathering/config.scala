@@ -1,20 +1,18 @@
 package gg.warcraft.gathering
 
-import com.fasterxml.jackson.annotation.{JsonCreator, JsonProperty}
 import gg.warcraft.gathering.gatherable.{BlockGatherable, EntityGatherable}
 import gg.warcraft.monolith.api.config.BoundingBlockBoxConfiguration
 import gg.warcraft.monolith.api.entity.EntityType
 import gg.warcraft.monolith.api.world.block.BlockTypeVariantOrState
 import gg.warcraft.monolith.api.world.item.ItemTypeOrVariant
 
-@JsonCreator
 case class BlockGatherableConfig(
-    @JsonProperty("blockData") blockData: BlockTypeVariantOrState,
-    @JsonProperty("dropData") dropData: ItemTypeOrVariant,
-    @JsonProperty("dropName") dropName: String,
-    @JsonProperty("cooldown") cooldown: Int,
-    @JsonProperty("cooldownDelta") cooldownDelta: Int,
-    @JsonProperty("cooldownData") cooldownData: BlockTypeVariantOrState
+    blockData: BlockTypeVariantOrState,
+    dropData: ItemTypeOrVariant,
+    dropName: String,
+    cooldown: Int,
+    cooldownDelta: Int,
+    cooldownData: BlockTypeVariantOrState
 ) {
   def toBlockGatherable: BlockGatherable = BlockGatherable(
     blockData,
@@ -26,14 +24,13 @@ case class BlockGatherableConfig(
   )
 }
 
-@JsonCreator
 case class EntityGatherableConfig(
-    @JsonProperty("entityType") entityType: EntityType,
-    @JsonProperty("entityCount") entityCount: Int,
-    @JsonProperty("dropData") dropData: ItemTypeOrVariant,
-    @JsonProperty("dropName") dropName: String,
-    @JsonProperty("cooldown") cooldown: Int,
-    @JsonProperty("cooldownDelta") cooldownDelta: Int
+    entityType: EntityType,
+    entityCount: Int,
+    dropData: ItemTypeOrVariant,
+    dropName: String,
+    cooldown: Int,
+    cooldownDelta: Int
 ) {
   def toEntityGatherable: EntityGatherable = EntityGatherable(
     entityType,
@@ -45,12 +42,11 @@ case class EntityGatherableConfig(
   )
 }
 
-@JsonCreator
 case class GatheringSpotConfig(
-    @JsonProperty("id") id: String,
-    @JsonProperty("boundingBox") boundingBox: BoundingBlockBoxConfiguration,
-    @JsonProperty("blockGatherables") blocks: List[BlockGatherableConfig],
-    @JsonProperty("entityGatherables") entities: List[EntityGatherableConfig]
+    id: String,
+    boundingBox: BoundingBlockBoxConfiguration,
+    blocks: List[BlockGatherableConfig],
+    entities: List[EntityGatherableConfig]
 ) {
   def toGatheringSpot: GatheringSpot = new GatheringSpot(
     id,
@@ -60,7 +56,6 @@ case class GatheringSpotConfig(
   )
 }
 
-@JsonCreator
 case class GatheringConfig(
-    @JsonProperty("gatheringSpots") gatheringSpots: List[GatheringSpotConfig]
+    gatheringSpots: List[GatheringSpotConfig]
 )

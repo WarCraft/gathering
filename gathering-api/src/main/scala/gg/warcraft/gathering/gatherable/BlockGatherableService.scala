@@ -33,7 +33,7 @@ class BlockGatherableService(
     if (!preGatherEvent.allowed) return false
 
     spawnDrops(gatherable, block.location.toLocation)
-    queueCooldownState(gatherable, block)
+    queueBlockCooldown(gatherable, block)
     queueBlockRestoration(gatherable, block)
 
     val gatherEvent = BlockGatherEvent(block, spot.id, playerId)
@@ -41,12 +41,12 @@ class BlockGatherableService(
     true
   }
 
-  def queueCooldownState(gatherable: BlockGatherable, block: Block): Unit =
+  private def queueBlockCooldown(gatherable: BlockGatherable, block: Block): Unit =
     taskService.runNextTick(() => {
       worldService.setBlock(block.location, gatherable.cooldownData)
     })
 
-  def queueBlockRestoration(gatherable: BlockGatherable, block: Block): Unit = {
+  private def queueBlockRestoration(gatherable: BlockGatherable, block: Block): Unit = {
     val backupId = blockBackupService.createBackup(block.location)
     val cooldown = gatherable.cooldown + Random.nextInt(gatherable.cooldownDelta)
     taskService.runLater(
