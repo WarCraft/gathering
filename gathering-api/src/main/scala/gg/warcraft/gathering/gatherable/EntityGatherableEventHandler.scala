@@ -38,7 +38,7 @@ class EntityGatherableEventHandler(implicit
     }
 
     gatheringSpotService.gatheringSpots
-      .find(_._2.contains(entityId))
+      .find(_.contains(entityId))
       .map(spot => {
         spot.entityGatherables
           .find(_.matches(entityType))

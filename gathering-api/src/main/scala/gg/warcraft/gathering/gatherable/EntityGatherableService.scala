@@ -45,15 +45,14 @@ class EntityGatherableService(
   def queueEntityRespawn(gatherable: EntityGatherable, spot: GatheringSpot): Unit = {
     val location: Location = null // TODO generate random location in boundingbox
     val cooldown = gatherable.cooldown + Random.nextInt(gatherable.cooldownDelta)
-    taskService.runLater(
-      () => {
+    taskService.evalLater(
+      cooldown.seconds, {
         val entityType = gatherable.entityType
         val entityId = entityService.spawnEntity(entityType, location)
         entityGatherableRepository.save(spot.id, entityId)
 
         // NOTE option to publish GatherableEntityRespawnEvent
-      },
-      cooldown.seconds
+      }
     )
   }
 }

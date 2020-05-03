@@ -2,45 +2,49 @@ package gg.warcraft.gathering.gatherable
 
 import java.util.UUID
 
-import com.typesafe.config.Config
+import gg.warcraft.monolith.api.util.Ops._
+import io.getquill.NamingStrategy
+import io.getquill.context.jdbc.JdbcContext
+import io.getquill.context.sql.idiom.SqlIdiom
 
-import scala.collection.mutable
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 private case class EntityGatherableItem(
     spotId: String,
     entityId: UUID
 )
 
-object EntityGatherableRepository {
-  private val _entities = mutable.Map[String, mutable.Set[UUID]]()
-}
+class EntityGatherableRepository[D <: SqlIdiom, N <: NamingStrategy](implicit
+    context: ExecutionContext,
+    database: JdbcContext[D, N]
+) {
+  import database._
 
-class EntityGatherableRepository(
-    override protected implicit val dbConfig: Config
-) extends Repository {
-  import EntityGatherableRepository._
-  import db._
+  private var _gatherableEntities: Map[String, Set[UUID]] = Map.empty
 
-  def entities(spotId: String): Set[UUID] =
-    _entities(spotId).asInstanceOf[Set[UUID]]
+  def gatherableEntities(spotId: String): Set[UUID] = _gatherableEntities(spotId)
 
   def load(spotId: String): Set[UUID] = {
-    val entityIds = db
-      .run(query[EntityGatherableItem].filter(_.spotId == lift(spotId)))
-      .map(_.entityId)
+    val entityIds = database
+      .run { query[EntityGatherableItem].filter(_.spotId == lift(spotId)) }
+      .map { _.entityId }
       .toSet
-    _entities += (spotId -> entityIds.to(collection.mutable.Set))
+    _gatherableEntities += (spotId -> entityIds)
     entityIds
   }
 
   def save(spotId: String, entityId: UUID): Unit = {
     val item = EntityGatherableItem(spotId, entityId)
-    Future { db.run(query[EntityGatherableItem].insert(lift(item))) }
-    _entities(spotId).add(entityId)
+    _gatherableEntities.updatedWith(spotId) {
+      case Some(value) => value + entityId |> Some.apply
+      case None        => Set(entityId) |> Some.apply
+    }
+    Future { database.run { query[EntityGatherableItem].insert(lift(item)) } }
   }
 
   def delete(entityId: UUID): Unit = Future {
-    db.run(query[EntityGatherableItem].filter(_.entityId == lift(entityId)).delete)
+    database.run {
+      query[EntityGatherableItem].filter(_.entityId == lift(entityId)).delete
+    }
   }
 }
