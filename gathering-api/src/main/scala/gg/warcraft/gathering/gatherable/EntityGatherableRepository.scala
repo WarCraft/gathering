@@ -3,7 +3,6 @@ package gg.warcraft.gathering.gatherable
 import java.util.UUID
 
 import com.typesafe.config.Config
-import gg.warcraft.monolith.api.core.Repository
 
 import scala.collection.mutable
 import scala.concurrent.Future

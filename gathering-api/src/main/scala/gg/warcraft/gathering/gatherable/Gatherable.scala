@@ -1,10 +1,10 @@
 package gg.warcraft.gathering.gatherable
 
-import gg.warcraft.monolith.api.entity.EntityType
-import gg.warcraft.monolith.api.world.block.{Block, BlockTypeVariantOrState}
-import gg.warcraft.monolith.api.world.item.ItemTypeOrVariant
+import gg.warcraft.monolith.api.block.{Block, BlockTypeVariantOrState}
+import gg.warcraft.monolith.api.entity.Entity
+import gg.warcraft.monolith.api.item.ItemTypeOrVariant
 
-trait Gatherable {
+sealed trait Gatherable {
   val dropData: ItemTypeOrVariant
   val dropName: String
   val cooldown: Int
@@ -24,13 +24,13 @@ case class BlockGatherable(
 }
 
 case class EntityGatherable(
-    entityType: EntityType,
+    entityType: Entity.Type,
     entityCount: Int,
     dropData: ItemTypeOrVariant,
     dropName: String,
     cooldown: Int,
     cooldownDelta: Int
 ) extends Gatherable {
-  def matches(entityType: EntityType): Boolean =
+  def matches(entityType: Entity.Type): Boolean =
     this.entityType == entityType
 }

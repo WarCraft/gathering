@@ -5,9 +5,10 @@ import gg.warcraft.gathering.gatherable.{
   BlockGatherableEventHandler, BlockGatherableService, EntityGatherableEventHandler,
   EntityGatherableRepository, EntityGatherableService
 }
+import gg.warcraft.monolith.spigot.Codecs.Circe._
 import gg.warcraft.monolith.spigot.Implicits._
 import io.circe.generic.auto._
-import io.circe.parser.decode
+import io.circe.parser._
 import org.bukkit.plugin.java.JavaPlugin
 
 class GatheringPlugin extends JavaPlugin {
@@ -33,9 +34,7 @@ class GatheringPlugin extends JavaPlugin {
       case Left(err) =>
         getLogger.severe("Failed to parse configuration: " + err.getMessage)
       case Right(config) =>
-        config.gatheringSpots
-          .map(_.toGatheringSpot)
-          .foreach(gatheringSpotService.addGatheringSpot)
+        config.gatheringSpots.foreach(gatheringSpotService.addGatheringSpot)
     }
 
     // init

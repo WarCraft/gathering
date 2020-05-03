@@ -4,21 +4,19 @@ import java.util.UUID
 
 import gg.warcraft.gathering.GatheringSpot
 import gg.warcraft.monolith.api.core.event.EventService
-import gg.warcraft.monolith.api.core.{Duration, TaskService}
-import gg.warcraft.monolith.api.entity.service.{
-  EntityCommandService, EntityQueryService
-}
+import gg.warcraft.monolith.api.core.Duration._
+import gg.warcraft.monolith.api.core.task.TaskService
+import gg.warcraft.monolith.api.entity.EntityService
+import gg.warcraft.monolith.api.item.ItemService
 import gg.warcraft.monolith.api.math.Vector3f
 import gg.warcraft.monolith.api.world.Location
-import gg.warcraft.monolith.api.world.item.ItemService
 
 import scala.util.Random
 
 class EntityGatherableService(
     private implicit val eventService: EventService,
     private implicit val taskService: TaskService,
-    private implicit val entityService: EntityCommandService,
-    private implicit val entityQueryService: EntityQueryService,
+    private implicit val entityService: EntityService,
     private implicit val entityGatherableRepository: EntityGatherableRepository,
     protected implicit val itemService: ItemService
 ) extends GatherableService {
@@ -30,20 +28,18 @@ class EntityGatherableService(
       entityId: UUID,
       playerId: UUID
   ): Boolean = {
-    val entity = entityQueryService.getEntity(entityId)
-    import entity.{getId, getType}
+    val entity = entityService.getEntity(entityId)
 
-    var preGatherEvent = EntityPreGatherEvent(getId, getType, spot.id, playerId)
+    var preGatherEvent = EntityPreGatherEvent(entity, spot, playerId)
     preGatherEvent = eventService.publish(preGatherEvent)
-    if (!preGatherEvent.allowed) return false
+    if (preGatherEvent.allowed) {
+      spawnDrops(gatherable, entity.location)
+      entityGatherableRepository.delete(entity.id)
 
-    spawnDrops(gatherable, entity.getLocation)
-    entityGatherableRepository.delete(getId)
-
-    val gatherEvent =
-      EntityGatherEvent(getId, getType, spot.id, playerId)
-    eventService.publish(gatherEvent)
-    true
+      val gatherEvent = EntityGatherEvent(entity, spot, playerId)
+      eventService.publish(gatherEvent)
+      true
+    } else false
   }
 
   def queueEntityRespawn(gatherable: EntityGatherable, spot: GatheringSpot): Unit = {
@@ -57,7 +53,7 @@ class EntityGatherableService(
 
         // NOTE option to publish GatherableEntityRespawnEvent
       },
-      Duration.ofSeconds(cooldown)
+      cooldown.seconds
     )
   }
 }

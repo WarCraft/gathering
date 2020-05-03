@@ -3,22 +3,16 @@ package gg.warcraft.gathering.gatherable
 import java.util.UUID
 
 import gg.warcraft.gathering.{GatheringSpot, GatheringSpotService}
-import gg.warcraft.monolith.api.core.event.{EventHandler, PreEvent}
+import gg.warcraft.monolith.api.core.event.{Event, PreEvent}
 import gg.warcraft.monolith.api.entity.{EntityDeathEvent, EntityPreFatalDamageEvent}
-import gg.warcraft.monolith.api.entity.player.service.PlayerQueryService
+import gg.warcraft.monolith.api.player.PlayerService
 
-import scala.collection.mutable
-
-object EntityGatherableEventHandler {
-  private val gatheredEntityIds = mutable.Set[UUID]()
-}
-
-class EntityGatherableEventHandler(
-    private implicit val gatheringSpotService: GatheringSpotService,
-    private implicit val gatherableService: EntityGatherableService,
-    private implicit val playerService: PlayerQueryService
-) extends EventHandler {
-  import EntityGatherableEventHandler.gatheredEntityIds
+class EntityGatherableEventHandler(implicit
+    gatheringSpotService: GatheringSpotService,
+    gatherableService: EntityGatherableService,
+    playerService: PlayerService
+) extends Event.Handler {
+  private var _gatheredEntityIds: Set[UUID] = Set.empty
 
   override def reduce[T <: PreEvent](event: T): T = event match {
     case it: EntityPreFatalDamageEvent => reducePreFatal(it).asInstanceOf[T]
@@ -37,14 +31,14 @@ class EntityGatherableEventHandler(
     if (player == null) return event
 
     val gatherEntity = (spot: GatheringSpot, it: EntityGatherable) => {
-      if (gatherableService.gatherEntity(spot, it, entityId, player.getId)) {
-        gatheredEntityIds.add(entityId)
+      if (gatherableService.gatherEntity(spot, it, entityId, player.id)) {
+        _gatheredEntityIds += entityId
         event.copy(explicitlyAllowed = true)
       } else event
     }
 
-    gatheringSpotService.getGatheringSpots
-      .find(_.contains(entityId))
+    gatheringSpotService.gatheringSpots
+      .find(_._2.contains(entityId))
       .map(spot => {
         spot.entityGatherables
           .find(_.matches(entityType))
@@ -55,10 +49,11 @@ class EntityGatherableEventHandler(
   }
 
   private def reduceDeath(event: EntityDeathEvent): EntityDeathEvent = {
-    import event._
-
+    import event.entityId
     // TODO add preDeath event to remove drops
-    if (gatheredEntityIds.remove(entityId)) event
-    else event
+    if (_gatheredEntityIds.contains(entityId)) {
+      _gatheredEntityIds -= entityId
+      event
+    } else event
   }
 }
