@@ -14,13 +14,13 @@ class BlockGatherableEventHandler(
   }
 
   private def reducePreBreak(event: BlockPreBreakEvent): BlockPreBreakEvent = {
-    import event.{block, playerId}
+    import event.{block, player}
     gatheringSpotService.gatheringSpots
       .filter(_.contains(block))
       .foreach(spot => {
         spot.blockGatherables
           .find(_.matches(block))
-          .map(gatherableService.gatherBlock(spot, _, block, playerId))
+          .map(gatherableService.gatherBlock(spot, _, block, player))
           .map(if (_) {
             return event
               .copy(alternativeDrops = Some(List()), explicitlyAllowed = true)

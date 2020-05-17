@@ -10,6 +10,7 @@ import gg.warcraft.monolith.api.core.Duration._
 import gg.warcraft.monolith.api.core.task.TaskService
 import gg.warcraft.monolith.api.item.ItemService
 import gg.warcraft.monolith.api.math.Vector3f
+import gg.warcraft.monolith.api.player.Player
 import gg.warcraft.monolith.api.world.WorldService
 
 import scala.util.Random
@@ -29,9 +30,9 @@ class BlockGatherableService(
       spot: GatheringSpot,
       gatherable: BlockGatherable,
       block: Block,
-      playerId: UUID
+      player: Player
   ): Boolean = {
-    var preGatherEvent = BlockPreGatherEvent(block, spot, playerId)
+    var preGatherEvent = BlockPreGatherEvent(block, spot, player)
     preGatherEvent = eventService.publish(preGatherEvent)
     if (!preGatherEvent.allowed) return false
 
@@ -39,7 +40,7 @@ class BlockGatherableService(
     queueBlockCooldown(gatherable, block)
     queueBlockRestoration(gatherable, block)
 
-    val gatherEvent = BlockGatherEvent(block, spot, playerId)
+    val gatherEvent = BlockGatherEvent(block, spot, player)
     eventService.publish(gatherEvent)
     true
   }

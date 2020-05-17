@@ -6,9 +6,10 @@ import gg.warcraft.gathering.GatheringSpot
 import gg.warcraft.monolith.api.core.event.EventService
 import gg.warcraft.monolith.api.core.Duration._
 import gg.warcraft.monolith.api.core.task.TaskService
-import gg.warcraft.monolith.api.entity.EntityService
+import gg.warcraft.monolith.api.entity.{ Entity, EntityService }
 import gg.warcraft.monolith.api.item.ItemService
 import gg.warcraft.monolith.api.math.Vector3f
+import gg.warcraft.monolith.api.player.Player
 import gg.warcraft.monolith.api.world.Location
 
 import scala.util.Random
@@ -25,18 +26,16 @@ class EntityGatherableService(
   def gatherEntity(
       spot: GatheringSpot,
       gatherable: EntityGatherable,
-      entityId: UUID,
-      playerId: UUID
+      entity: Entity,
+      player: Player
   ): Boolean = {
-    val entity = entityService.getEntity(entityId)
-
-    var preGatherEvent = EntityPreGatherEvent(entity, spot, playerId)
+    var preGatherEvent = EntityPreGatherEvent(entity, spot, player)
     preGatherEvent = eventService.publish(preGatherEvent)
     if (preGatherEvent.allowed) {
       spawnDrops(gatherable, entity.location)
       entityGatherableRepository.delete(entity.id)
 
-      val gatherEvent = EntityGatherEvent(entity, spot, playerId)
+      val gatherEvent = EntityGatherEvent(entity, spot, player)
       eventService.publish(gatherEvent)
       true
     } else false

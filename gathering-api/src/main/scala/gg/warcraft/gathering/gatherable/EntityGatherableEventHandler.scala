@@ -31,17 +31,17 @@ class EntityGatherableEventHandler(implicit
     if (player == null) return event
 
     val gatherEntity = (spot: GatheringSpot, it: EntityGatherable) => {
-      if (gatherableService.gatherEntity(spot, it, entityId, player.id)) {
-        _gatheredEntityIds += entityId
+      if (gatherableService.gatherEntity(spot, it, entity, player)) {
+        _gatheredEntityIds += entity.id
         event.copy(explicitlyAllowed = true)
       } else event
     }
 
     gatheringSpotService.gatheringSpots
-      .find(_.contains(entityId))
+      .find(_.contains(entity.id))
       .map(spot => {
         spot.entityGatherables
-          .find(_.matches(entityType))
+          .find(_.matches(entity.typed))
           .map(gatherEntity(spot, _))
           .getOrElse(event)
       })
@@ -49,10 +49,10 @@ class EntityGatherableEventHandler(implicit
   }
 
   private def reduceDeath(event: EntityDeathEvent): EntityDeathEvent = {
-    import event.entityId
+    import event.entity
     // TODO add preDeath event to remove drops
-    if (_gatheredEntityIds.contains(entityId)) {
-      _gatheredEntityIds -= entityId
+    if (_gatheredEntityIds.contains(entity.id)) {
+      _gatheredEntityIds -= entity.id
       event
     } else event
   }

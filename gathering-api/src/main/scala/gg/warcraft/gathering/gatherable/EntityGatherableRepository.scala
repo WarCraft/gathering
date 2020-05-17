@@ -2,10 +2,9 @@ package gg.warcraft.gathering.gatherable
 
 import java.util.UUID
 
-import gg.warcraft.monolith.api.util.Ops._
-import io.getquill.NamingStrategy
+import gg.warcraft.monolith.api.util.chaining._
+import io.getquill.{SnakeCase, SqliteDialect}
 import io.getquill.context.jdbc.JdbcContext
-import io.getquill.context.sql.idiom.SqlIdiom
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -14,11 +13,13 @@ private case class EntityGatherableItem(
     entityId: UUID
 )
 
-class EntityGatherableRepository[D <: SqlIdiom, N <: NamingStrategy](implicit
-    context: ExecutionContext,
-    database: JdbcContext[D, N]
+class EntityGatherableRepository(implicit
+    database: JdbcContext[SqliteDialect, SnakeCase]
 ) {
   import database._
+
+  private implicit val executionContext: ExecutionContext =
+    ExecutionContext.global
 
   private var _gatherableEntities: Map[String, Set[UUID]] = Map.empty
 
