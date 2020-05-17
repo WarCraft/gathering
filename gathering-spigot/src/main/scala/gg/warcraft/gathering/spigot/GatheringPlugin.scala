@@ -1,43 +1,36 @@
 package gg.warcraft.gathering.spigot
 
-import gg.warcraft.gathering.{GatheringConfig, GatheringSpotService}
+import gg.warcraft.gathering.GatheringConfig
 import gg.warcraft.gathering.gatherable.{
-  BlockGatherableEventHandler, BlockGatherableService, EntityGatherableEventHandler,
-  EntityGatherableRepository, EntityGatherableService
+  BlockGatherableEventHandler, EntityGatherableEventHandler
 }
-import gg.warcraft.monolith.spigot.Codecs.Circe._
-import gg.warcraft.monolith.spigot.Implicits._
+import gg.warcraft.monolith.spigot.SpigotMonolithPlugin
+import gg.warcraft.monolith.spigot.implicits._
 import io.circe.generic.auto._
 import io.circe.parser._
-import org.bukkit.plugin.java.JavaPlugin
+import io.getquill.{SnakeCase, SqliteDialect}
 
-class GatheringPlugin extends JavaPlugin {
-  override def onLoad(): Unit = saveDefaultConfig()
+class GatheringPlugin extends SpigotMonolithPlugin {
+  import implicits._
+
+  override def onLoad(): Unit = {
+    super.onLoad()
+
+    implicit val databaseContext: DatabaseContext =
+      initDatabase(SqliteDialect, SnakeCase, getDataFolder)
+    upgradeDatabase(getDataFolder, getClassLoader)
+
+    implicits.init()
+  }
 
   override def onEnable(): Unit = {
-    // spot implicits
-    implicit val gatheringSpotService: GatheringSpotService =
-      new GatheringSpotService
-
-    // block implicits
-    implicit val blockGatherableService: BlockGatherableService =
-      new BlockGatherableService
-
-    // entity implicits
-    implicit val entityGatherableRepository: EntityGatherableRepository =
-      new EntityGatherableRepository
-    implicit val entityGatherableService: EntityGatherableService =
-      new EntityGatherableService
-
-    // parse config
     decode[GatheringConfig](getConfig.saveToString()) match {
       case Left(err) =>
-        getLogger.severe("Failed to parse configuration: " + err.getMessage)
+        getLogger.severe(s"Failed to parse configuration with $err")
       case Right(config) =>
         config.gatheringSpots.foreach(gatheringSpotService.addGatheringSpot)
     }
 
-    // init
     eventService.subscribe(new BlockGatherableEventHandler)
     eventService.subscribe(new EntityGatherableEventHandler)
   }
