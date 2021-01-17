@@ -1,7 +1,7 @@
 lazy val commonSettings = Seq(
   organization := "gg.warcraft",
-  version := "15.0.0-SNAPSHOT",
-  scalaVersion := "2.13.2",
+  version := "16.0.0-SNAPSHOT",
+  scalaVersion := "2.13.4",
   scalacOptions ++= Seq(
     // additional scalac options go here
   ),
@@ -21,16 +21,15 @@ lazy val assemblySettings = Seq(
   }
 )
 
-lazy val commonDependencies = Seq(
-  "gg.warcraft" %% "monolith-api" % "15.0.0-SNAPSHOT" % Provided,
-  "org.scalatest" %% "scalatest" % "3.0.8" % Test
-)
-
 lazy val api = (project in file("gathering-api"))
   .settings(
     name := "gathering-api",
     commonSettings,
-    libraryDependencies ++= commonDependencies
+    libraryDependencies ++= Seq(
+      "gg.warcraft" %% "monolith-api" % "16.0.0-SNAPSHOT" % Provided
+    ) ++ Seq(
+      "org.scalatest" %% "scalatest" % "3.2.+" % Test
+    )
   )
 
 lazy val spigot = (project in file("gathering-spigot"))
@@ -41,9 +40,9 @@ lazy val spigot = (project in file("gathering-spigot"))
     resolvers ++= Seq(
       "PaperMC" at "https://papermc.io/repo/repository/maven-public/"
     ),
-    libraryDependencies ++= commonDependencies ++ Seq(
-      "gg.warcraft" %% "monolith-spigot" % "15.0.0-SNAPSHOT" % Provided,
-      "com.destroystokyo.paper" % "paper-api" % "1.15.2-R0.1-SNAPSHOT" % Provided
+    libraryDependencies ++= Seq(
+      "com.destroystokyo.paper" % "paper-api" % "1.16.4-R0.1-SNAPSHOT" % Provided,
+      "gg.warcraft" %% "monolith-spigot" % "16.0.0-SNAPSHOT" % Provided
     )
   )
   .dependsOn(api)
