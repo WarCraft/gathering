@@ -24,13 +24,11 @@
 
 package gg.warcraft.gathering.gatherable
 
-import java.util.UUID
-
 import gg.warcraft.gathering.GatheringSpot
-import gg.warcraft.monolith.api.block.backup.BlockBackupService
 import gg.warcraft.monolith.api.block.Block
-import gg.warcraft.monolith.api.core.event.EventService
+import gg.warcraft.monolith.api.block.backup.BlockBackupService
 import gg.warcraft.monolith.api.core.Duration._
+import gg.warcraft.monolith.api.core.event.EventService
 import gg.warcraft.monolith.api.core.task.TaskService
 import gg.warcraft.monolith.api.item.ItemService
 import gg.warcraft.monolith.api.math.Vector3f

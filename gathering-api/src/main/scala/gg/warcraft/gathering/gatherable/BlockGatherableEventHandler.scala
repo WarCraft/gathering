@@ -42,7 +42,7 @@ class BlockGatherableEventHandler(
     gatheringSpotService.gatheringSpots
       .filter(_.contains(block))
       .foreach(spot => {
-        spot.blockGatherables
+        spot.blocks
           .find(_.matches(block))
           .map(gatherableService.gatherBlock(spot, _, block, player))
           .map(if (_) {

@@ -24,12 +24,12 @@
 
 package gg.warcraft.gathering.gatherable
 
-import java.util.UUID
-
 import gg.warcraft.gathering.{GatheringSpot, GatheringSpotService}
 import gg.warcraft.monolith.api.core.event.{Event, PreEvent}
 import gg.warcraft.monolith.api.entity.{EntityDeathEvent, EntityPreFatalDamageEvent}
 import gg.warcraft.monolith.api.player.PlayerService
+
+import java.util.UUID
 
 class EntityGatherableEventHandler(implicit
     gatheringSpotService: GatheringSpotService,
@@ -64,7 +64,7 @@ class EntityGatherableEventHandler(implicit
     gatheringSpotService.gatheringSpots
       .find(_.contains(entity.id))
       .map(spot => {
-        spot.entityGatherables
+        spot.entities
           .find(_.matches(entity.typed))
           .map(gatherEntity(spot, _))
           .getOrElse(event)

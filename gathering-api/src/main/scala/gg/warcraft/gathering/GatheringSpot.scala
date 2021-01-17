@@ -24,26 +24,23 @@
 
 package gg.warcraft.gathering
 
-import java.util.UUID
-
 import gg.warcraft.gathering.gatherable.{BlockGatherable, EntityGatherable}
-import gg.warcraft.monolith.api.block.box.BlockBox
 import gg.warcraft.monolith.api.block.Block
+import gg.warcraft.monolith.api.block.box.BlockBox
 
-import scala.collection.mutable
+import java.util.UUID
 
 class GatheringSpot(
     val id: String,
     val boundingBox: BlockBox,
-    val blockGatherables: List[BlockGatherable],
-    val entityGatherables: List[EntityGatherable]
+    val blocks: List[BlockGatherable],
+    val entities: List[EntityGatherable]
 ) {
-  // TODO initialize entities from repository
-  val entities: mutable.Set[UUID] = mutable.Set()
+  var entityIds: Set[UUID] = Set.empty
 
   def contains(block: Block): Boolean =
     boundingBox.test(block.location)
 
   def contains(entityId: UUID): Boolean =
-    entities.contains(entityId)
+    entityIds.contains(entityId)
 }
