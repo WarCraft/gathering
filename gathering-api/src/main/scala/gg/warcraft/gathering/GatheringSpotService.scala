@@ -43,7 +43,7 @@ class GatheringSpotService(implicit
 
   def readConfig(config: GatheringConfig): Unit = {
     config.blockGatheringSpots.foreach(addGatheringSpot)
-    config.entityGatheringSpot.map { _.parse() }.foreach(addGatheringSpot)
+    config.entityGatheringSpots.map { _.parse() }.foreach(addGatheringSpot)
   }
 
   def addGatheringSpot(spot: GatheringSpot): Boolean =
