@@ -35,7 +35,9 @@ class GatheringSpotService(implicit
   def gatheringSpots: List[GatheringSpot] = _gatheringSpots
 
   def readConfig(config: GatheringConfig): Unit =
-    config.gatheringSpots.foreach(addGatheringSpot)
+    config.gatheringSpots
+      .map { _.parse() }
+      .foreach(addGatheringSpot)
 
   private def initGatheringSpot(spot: GatheringSpot): Unit =
     spot.entities.foreach { entity =>

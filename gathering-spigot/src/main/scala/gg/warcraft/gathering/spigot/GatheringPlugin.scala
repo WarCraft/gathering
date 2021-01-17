@@ -44,7 +44,6 @@ class GatheringPlugin extends SpigotMonolithPlugin {
 
   override def onEnable(): Unit = {
     val config = parseConfig[GatheringConfig](getConfig.saveToString())
-    config.gatheringSpots.foreach(gatheringSpotService.addGatheringSpot)
 
     implicits.configure(config)
     gatheringSpotService.readConfig(config)

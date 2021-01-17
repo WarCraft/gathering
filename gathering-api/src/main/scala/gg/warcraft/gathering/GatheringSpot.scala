@@ -51,4 +51,15 @@ class GatheringSpot(
 
 object GatheringSpot {
   type Id = String
+
+  case class Config(
+      id: GatheringSpot.Id,
+      boundingBox: BlockBox,
+      spawn: Location,
+      blocks: List[BlockGatherable],
+      entities: List[EntityGatherable]
+  ) {
+    def parse(): GatheringSpot =
+      new GatheringSpot(id, boundingBox, spawn, blocks, entities)
+  }
 }
