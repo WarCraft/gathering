@@ -32,16 +32,14 @@ import gg.warcraft.monolith.api.entity.{Entity, EntityService}
 import gg.warcraft.monolith.api.item.ItemService
 import gg.warcraft.monolith.api.math.Vector3f
 import gg.warcraft.monolith.api.player.Player
-import gg.warcraft.monolith.api.world.Location
 
 import scala.util.Random
 
-class EntityGatherableService(
-    private implicit val eventService: EventService,
-    private implicit val taskService: TaskService,
-    private implicit val entityService: EntityService,
-    private implicit val entityGatherableRepository: EntityGatherableRepository,
-    protected implicit val itemService: ItemService
+class EntityGatherableService(implicit
+    eventService: EventService,
+    taskService: TaskService,
+    entityService: EntityService,
+    itemService: ItemService
 ) extends GatherableService {
   protected final val dropOffset = Vector3f(0, 0.5f, 0)
 
@@ -55,7 +53,7 @@ class EntityGatherableService(
     preGatherEvent = eventService.publish(preGatherEvent)
     if (preGatherEvent.allowed) {
       spawnDrops(gatherable, entity.location)
-      entityGatherableRepository.delete(entity.id)
+      spot.entityIds -= entity.id
 
       val gatherEvent = EntityGatherEvent(entity, spot, player)
       eventService.publish(gatherEvent)
@@ -64,13 +62,11 @@ class EntityGatherableService(
   }
 
   def queueEntityRespawn(gatherable: EntityGatherable, spot: GatheringSpot): Unit = {
-    val location: Location = null // TODO generate random location in boundingbox
     val cooldown = gatherable.cooldown + Random.nextInt(gatherable.cooldownDelta)
     taskService.evalLater(
       cooldown.seconds, {
-        val entityType = gatherable.entityType
-        val entityId = entityService.spawnEntity(entityType, location)
-        entityGatherableRepository.save(spot.id, entityId)
+        val entityId = entityService.spawnEntity(gatherable.entityType, spot.spawn)
+        spot.entityIds += entityId
 
         // NOTE option to publish GatherableEntityRespawnEvent
       }

@@ -27,20 +27,28 @@ package gg.warcraft.gathering
 import gg.warcraft.gathering.gatherable.{BlockGatherable, EntityGatherable}
 import gg.warcraft.monolith.api.block.Block
 import gg.warcraft.monolith.api.block.box.BlockBox
+import gg.warcraft.monolith.api.world.Location
 
 import java.util.UUID
 
 class GatheringSpot(
-    val id: String,
+    val id: GatheringSpot.Id,
     val boundingBox: BlockBox,
+    val spawn: Location,
     val blocks: List[BlockGatherable],
     val entities: List[EntityGatherable]
 ) {
   var entityIds: Set[UUID] = Set.empty
 
-  def contains(block: Block): Boolean =
-    boundingBox.test(block.location)
+  def contains(block: Block): Boolean = {
+    val hasType = blocks.exists { it => block.hasData(it.blockData) }
+    hasType && boundingBox.test(block.location)
+  }
 
   def contains(entityId: UUID): Boolean =
     entityIds.contains(entityId)
+}
+
+object GatheringSpot {
+  type Id = String
 }

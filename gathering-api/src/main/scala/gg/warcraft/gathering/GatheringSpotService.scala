@@ -24,20 +24,43 @@
 
 package gg.warcraft.gathering
 
-class GatheringSpotService {
-  private var _gatheringSpots: List[GatheringSpot] = Nil
+import gg.warcraft.gathering.gatherable.EntityGatherableService
+import gg.warcraft.monolith.api.entity.EntityService
 
+class GatheringSpotService(implicit
+    entityService: EntityService,
+    entityGatherableService: EntityGatherableService
+) {
+  private var _gatheringSpots: List[GatheringSpot] = Nil
   def gatheringSpots: List[GatheringSpot] = _gatheringSpots
+
+  def readConfig(config: GatheringConfig): Unit =
+    config.gatheringSpots.foreach(addGatheringSpot)
+
+  private def initGatheringSpot(spot: GatheringSpot): Unit =
+    spot.entities.foreach { entity =>
+      for (_ <- 1 to entity.entityCount)
+        entityGatherableService.queueEntityRespawn(entity, spot)
+
+      entityService.getEntitiesWithin(spot.boundingBox)
+        .filter { _.typed == entity.entityType }
+        .filter { it => !spot.entityIds.contains(it.id) }
+        .foreach(it => entityService.removeEntity(it.id))
+    }
 
   def addGatheringSpot(spot: GatheringSpot): Boolean =
     if (!_gatheringSpots.exists { _.id == spot.id }) {
       _gatheringSpots ::= spot
+      initGatheringSpot(spot)
       true
     } else false
 
   def removeGatheringSpot(id: String): Boolean =
-    if (_gatheringSpots.contains(id)) {
-      _gatheringSpots = _gatheringSpots.filter { _.id == id }
-      true
-    } else false
+    _gatheringSpots.find { _.id == id } match {
+      case Some(spot) =>
+        _gatheringSpots = _gatheringSpots.filter { _.id != id }
+        spot.entityIds.foreach(entityService.removeEntity)
+        true
+      case None => false
+    }
 }

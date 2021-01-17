@@ -25,7 +25,7 @@
 package gg.warcraft.gathering.spigot
 
 import gg.warcraft.gathering.gatherable.{
-  BlockGatherableService, EntityGatherableRepository, EntityGatherableService
+  BlockGatherableService, EntityGatherableService
 }
 import gg.warcraft.gathering.{GatheringConfig, GatheringSpotService}
 import gg.warcraft.monolith.api.core.command.CommandService
@@ -80,8 +80,6 @@ object implicits {
   // Gathering
   implicit val gatheringSpotService: GatheringSpotService =
     new GatheringSpotService
-  implicit val entityGatherableRepository: EntityGatherableRepository =
-    new EntityGatherableRepository
   implicit val entityGatherableService: EntityGatherableService =
     new EntityGatherableService
   implicit val blockGatherableService: BlockGatherableService =

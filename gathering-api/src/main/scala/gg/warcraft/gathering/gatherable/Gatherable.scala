@@ -24,7 +24,7 @@
 
 package gg.warcraft.gathering.gatherable
 
-import gg.warcraft.monolith.api.block.{Block, BlockTypeVariantOrState}
+import gg.warcraft.monolith.api.block.BlockTypeVariantOrState
 import gg.warcraft.monolith.api.entity.Entity
 import gg.warcraft.monolith.api.item.ItemTypeOrVariant
 
@@ -42,10 +42,7 @@ case class BlockGatherable(
     cooldown: Int,
     cooldownDelta: Int,
     cooldownData: BlockTypeVariantOrState
-) extends Gatherable {
-  def matches(block: Block): Boolean =
-    block.hasData(blockData)
-}
+) extends Gatherable
 
 case class EntityGatherable(
     entityType: Entity.Type,
@@ -54,7 +51,4 @@ case class EntityGatherable(
     dropName: String,
     cooldown: Int,
     cooldownDelta: Int
-) extends Gatherable {
-  def matches(entityType: Entity.Type): Boolean =
-    this.entityType == entityType
-}
+) extends Gatherable

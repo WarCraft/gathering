@@ -47,6 +47,7 @@ class GatheringPlugin extends SpigotMonolithPlugin {
     config.gatheringSpots.foreach(gatheringSpotService.addGatheringSpot)
 
     implicits.configure(config)
+    gatheringSpotService.readConfig(config)
 
     eventService.subscribe(new BlockGatherableEventHandler)
     eventService.subscribe(new EntityGatherableEventHandler)

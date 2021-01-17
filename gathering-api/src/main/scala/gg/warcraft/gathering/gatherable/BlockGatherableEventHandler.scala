@@ -28,29 +28,26 @@ import gg.warcraft.gathering.GatheringSpotService
 import gg.warcraft.monolith.api.block.BlockPreBreakEvent
 import gg.warcraft.monolith.api.core.event.{Event, PreEvent}
 
-class BlockGatherableEventHandler(
-    private implicit val gatheringSpotService: GatheringSpotService,
-    private implicit val gatherableService: BlockGatherableService
+class BlockGatherableEventHandler(implicit
+    gatheringSpotService: GatheringSpotService,
+    gatherableService: BlockGatherableService
 ) extends Event.Handler {
   override def reduce[T <: PreEvent](event: T): T = event match {
-    case it: BlockPreBreakEvent => reducePreBreak(it).asInstanceOf[T]
-    case _                      => event
-  }
+    case it @ BlockPreBreakEvent(block, player, _, _, _) =>
+      val gathered = gatheringSpotService.gatheringSpots
+        .filter { _.contains(block) }
+        .exists { spot =>
+          spot.blocks
+            .find { it => block.hasData(it.blockData) }
+            .exists { gatherableService.gatherBlock(spot, _, block, player) }
+        }
+      if (gathered) {
+        it.copy(
+          alternativeDrops = Some(List()),
+          explicitlyAllowed = true
+        ).asInstanceOf[T]
+      } else event
 
-  private def reducePreBreak(event: BlockPreBreakEvent): BlockPreBreakEvent = {
-    import event.{block, player}
-    gatheringSpotService.gatheringSpots
-      .filter(_.contains(block))
-      .foreach(spot => {
-        spot.blocks
-          .find(_.matches(block))
-          .map(gatherableService.gatherBlock(spot, _, block, player))
-          .map(if (_) {
-            return event
-              .copy(alternativeDrops = Some(List()), explicitlyAllowed = true)
-          })
-      })
-
-    event
+    case _ => event
   }
 }

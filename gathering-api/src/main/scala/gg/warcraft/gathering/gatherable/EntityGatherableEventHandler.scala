@@ -26,7 +26,9 @@ package gg.warcraft.gathering.gatherable
 
 import gg.warcraft.gathering.{GatheringSpot, GatheringSpotService}
 import gg.warcraft.monolith.api.core.event.{Event, PreEvent}
-import gg.warcraft.monolith.api.entity.{EntityDeathEvent, EntityPreFatalDamageEvent}
+import gg.warcraft.monolith.api.entity.{
+  EntityPreDeathEvent, EntityPreFatalDamageEvent
+}
 import gg.warcraft.monolith.api.player.PlayerService
 
 import java.util.UUID
@@ -39,45 +41,35 @@ class EntityGatherableEventHandler(implicit
   private var _gatheredEntityIds: Set[UUID] = Set.empty
 
   override def reduce[T <: PreEvent](event: T): T = event match {
-    case it: EntityPreFatalDamageEvent => reducePreFatal(it).asInstanceOf[T]
-    case it: EntityDeathEvent          => reduceDeath(it).asInstanceOf[T]
-    case _                             => event
-  }
+    case it @ EntityPreFatalDamageEvent(entity, damage, _, _) =>
+      val attackerId = damage.source.entityId
+      if (attackerId.isEmpty) return event
+      val player = playerService.getPlayer(attackerId.get)
+      if (player == null) return event
 
-  private def reducePreFatal(
-      event: EntityPreFatalDamageEvent
-  ): EntityPreFatalDamageEvent = {
-    import event._
+      val gatherEntity = (spot: GatheringSpot, gatherable: EntityGatherable) => {
+        if (gatherableService.gatherEntity(spot, gatherable, entity, player)) {
+          _gatheredEntityIds += entity.id
+          it.copy(explicitlyAllowed = true).asInstanceOf[T]
+        } else event
+      }
 
-    val attackerId = damage.source.entityId
-    if (attackerId.isEmpty) return event
-    val player = playerService.getPlayer(attackerId.get)
-    if (player == null) return event
+      gatheringSpotService.gatheringSpots
+        .find(_.contains(entity.id))
+        .map(spot => {
+          spot.entities
+            .find { _.entityType == entity.typed }
+            .map(gatherEntity(spot, _))
+            .getOrElse(event)
+        })
+        .getOrElse(event)
 
-    val gatherEntity = (spot: GatheringSpot, it: EntityGatherable) => {
-      if (gatherableService.gatherEntity(spot, it, entity, player)) {
-        _gatheredEntityIds += entity.id
-        event.copy(explicitlyAllowed = true)
+    case it @ EntityPreDeathEvent(entity, _) =>
+      if (_gatheredEntityIds.contains(entity.id)) {
+        _gatheredEntityIds -= entity.id
+        it.copy(drops = Nil).asInstanceOf[T]
       } else event
-    }
 
-    gatheringSpotService.gatheringSpots
-      .find(_.contains(entity.id))
-      .map(spot => {
-        spot.entities
-          .find(_.matches(entity.typed))
-          .map(gatherEntity(spot, _))
-          .getOrElse(event)
-      })
-      .getOrElse(event)
-  }
-
-  private def reduceDeath(event: EntityDeathEvent): EntityDeathEvent = {
-    import event.entity
-    // TODO add preDeath event to remove drops
-    if (_gatheredEntityIds.contains(entity.id)) {
-      _gatheredEntityIds -= entity.id
-      event
-    } else event
+    case _ => event
   }
 }

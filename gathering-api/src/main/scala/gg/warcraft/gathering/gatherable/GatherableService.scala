@@ -24,20 +24,30 @@
 
 package gg.warcraft.gathering.gatherable
 
-import gg.warcraft.gathering.ResourceFactory
-import gg.warcraft.monolith.api.item.ItemService
+import gg.warcraft.monolith.api.core.{ColorCode, FormatCode}
+import gg.warcraft.monolith.api.item.{Item, ItemService}
 import gg.warcraft.monolith.api.math.Vector3f
 import gg.warcraft.monolith.api.world.Location
 
 trait GatherableService {
-  protected implicit val itemService: ItemService
+  private final val resourceTooltip =
+    s"${FormatCode.RESET}${ColorCode.GRAY}Resource"
 
-  protected val resourceFactory = new ResourceFactory()
   protected val dropOffset: Vector3f
 
-  def spawnDrops(gatherable: Gatherable, location: Location): Unit = {
-    val drop = resourceFactory.create(gatherable)
+  def spawnDrops(gatherable: Gatherable, location: Location)(implicit
+      itemService: ItemService
+  ): Unit = {
+    val drop = createDrop(gatherable)
     val dropLocation = location + dropOffset
     itemService.dropItems(dropLocation, drop)
   }
+
+  private def createDrop(gatherable: Gatherable)(implicit
+      itemService: ItemService
+  ): Item =
+    itemService
+      .create(gatherable.dropData)
+      .withName(gatherable.dropName)
+      .withTooltip(resourceTooltip)
 }

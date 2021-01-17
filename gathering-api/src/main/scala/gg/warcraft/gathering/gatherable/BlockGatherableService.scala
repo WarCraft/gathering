@@ -37,12 +37,12 @@ import gg.warcraft.monolith.api.world.WorldService
 
 import scala.util.Random
 
-class BlockGatherableService(
-    private implicit val eventService: EventService,
-    private implicit val taskService: TaskService,
-    private implicit val worldService: WorldService,
-    private implicit val blockBackupService: BlockBackupService,
-    protected implicit val itemService: ItemService
+class BlockGatherableService(implicit
+    eventService: EventService,
+    taskService: TaskService,
+    worldService: WorldService,
+    blockBackupService: BlockBackupService,
+   itemService: ItemService
 ) extends GatherableService {
   import blockBackupService.restoreBackup
 
