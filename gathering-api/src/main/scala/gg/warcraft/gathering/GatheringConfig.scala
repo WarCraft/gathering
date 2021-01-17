@@ -24,11 +24,6 @@
 
 package gg.warcraft.gathering
 
-import gg.warcraft.monolith.api.core.DatabaseConfig
-
 case class GatheringConfig(
-    // Core
-    database: DatabaseConfig,
-    // Gathering
     gatheringSpots: List[GatheringSpot]
 )

@@ -46,7 +46,6 @@ class GatheringPlugin extends SpigotMonolithPlugin {
     val config = parseConfig[GatheringConfig](getConfig.saveToString())
     config.gatheringSpots.foreach(gatheringSpotService.addGatheringSpot)
 
-    upgradeDatabase(config.database, getDataFolder, getClassLoader)
     implicits.configure(config)
 
     eventService.subscribe(new BlockGatherableEventHandler)
