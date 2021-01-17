@@ -31,38 +31,59 @@ class GatheringSpotService(implicit
     entityService: EntityService,
     entityGatherableService: EntityGatherableService
 ) {
-  private var _gatheringSpots: List[GatheringSpot] = Nil
-  def gatheringSpots: List[GatheringSpot] = _gatheringSpots
+  private var _blockGatheringSpotsById: Map[String, BlockGatheringSpot] =
+    Map.empty
+  def blockGatheringSpotsById: Map[String, BlockGatheringSpot] =
+    _blockGatheringSpotsById
 
-  def readConfig(config: GatheringConfig): Unit =
-    config.gatheringSpots
-      .map { _.parse() }
-      .foreach(addGatheringSpot)
+  private var _entityGatheringSpotsById: Map[String, EntityGatheringSpot] =
+    Map.empty
+  def entityGatheringSpotsById: Map[String, EntityGatheringSpot] =
+    _entityGatheringSpotsById
 
-  private def initGatheringSpot(spot: GatheringSpot): Unit =
-    spot.entities.foreach { entity =>
-      for (_ <- 1 to entity.entityCount)
-        entityGatherableService.queueEntityRespawn(entity, spot)
-
-      entityService.getEntitiesWithin(spot.boundingBox)
-        .filter { _.typed == entity.entityType }
-        .filter { it => !spot.entityIds.contains(it.id) }
-        .foreach(it => entityService.removeEntity(it.id))
-    }
+  def readConfig(config: GatheringConfig): Unit = {
+    config.blockGatheringSpots.foreach(addGatheringSpot)
+    config.entityGatheringSpot.map { _.parse() }.foreach(addGatheringSpot)
+  }
 
   def addGatheringSpot(spot: GatheringSpot): Boolean =
-    if (!_gatheringSpots.exists { _.id == spot.id }) {
-      _gatheringSpots ::= spot
-      initGatheringSpot(spot)
+    if (
+      !_blockGatheringSpotsById.contains(spot.id)
+      && !_entityGatheringSpotsById.contains(spot.id)
+    ) {
+      spot match {
+        case spot: BlockGatheringSpot =>
+          _blockGatheringSpotsById += (spot.id -> spot)
+        case spot: EntityGatheringSpot =>
+          _entityGatheringSpotsById += (spot.id -> spot)
+          spot.entities.foreach { entity =>
+            for (_ <- 1 to entity.entityCount)
+              entityGatherableService.queueEntityRespawn(entity, spot)
+
+            entityService.getEntitiesWithin(spot.boundingBox)
+              .filter { _.typed == entity.entityType }
+              .filter { it => !spot.entityIds.contains(it.id) }
+              .foreach(it => entityService.removeEntity(it.id))
+          }
+      }
       true
     } else false
 
-  def removeGatheringSpot(id: String): Boolean =
-    _gatheringSpots.find { _.id == id } match {
+  def removeGatheringSpot(id: String): Boolean = {
+    var result = false
+    result = _blockGatheringSpotsById.get(id) match {
+      case Some(_) =>
+        _blockGatheringSpotsById -= id
+        true
+      case None => false
+    }
+    result = _entityGatheringSpotsById.get(id) match {
       case Some(spot) =>
-        _gatheringSpots = _gatheringSpots.filter { _.id != id }
+        _entityGatheringSpotsById -= id
         spot.entityIds.foreach(entityService.removeEntity)
         true
       case None => false
     }
+    result
+  }
 }

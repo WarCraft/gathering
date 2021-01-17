@@ -24,7 +24,7 @@
 
 package gg.warcraft.gathering.gatherable
 
-import gg.warcraft.gathering.GatheringSpot
+import gg.warcraft.gathering.BlockGatheringSpot
 import gg.warcraft.monolith.api.block.Block
 import gg.warcraft.monolith.api.block.backup.BlockBackupService
 import gg.warcraft.monolith.api.core.Duration._
@@ -49,7 +49,7 @@ class BlockGatherableService(implicit
   protected final val dropOffset = Vector3f(0.5f, 0.5f, 0.5f)
 
   def gatherBlock(
-      spot: GatheringSpot,
+      spot: BlockGatheringSpot,
       gatherable: BlockGatherable,
       block: Block,
       player: Player

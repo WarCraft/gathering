@@ -24,7 +24,7 @@
 
 package gg.warcraft.gathering.gatherable
 
-import gg.warcraft.gathering.GatheringSpot
+import gg.warcraft.gathering.EntityGatheringSpot
 import gg.warcraft.monolith.api.core.Duration._
 import gg.warcraft.monolith.api.core.event.EventService
 import gg.warcraft.monolith.api.core.task.TaskService
@@ -44,7 +44,7 @@ class EntityGatherableService(implicit
   protected final val dropOffset = Vector3f(0, 0.5f, 0)
 
   def gatherEntity(
-      spot: GatheringSpot,
+      spot: EntityGatheringSpot,
       gatherable: EntityGatherable,
       entity: Entity,
       player: Player
@@ -61,7 +61,10 @@ class EntityGatherableService(implicit
     } else false
   }
 
-  def queueEntityRespawn(gatherable: EntityGatherable, spot: GatheringSpot): Unit = {
+  def queueEntityRespawn(
+      gatherable: EntityGatherable,
+      spot: EntityGatheringSpot
+  ): Unit = {
     val cooldown = gatherable.cooldown + Random.nextInt(gatherable.cooldownDelta)
     taskService.evalLater(
       cooldown.seconds, {

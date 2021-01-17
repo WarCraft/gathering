@@ -34,7 +34,7 @@ class BlockGatherableEventHandler(implicit
 ) extends Event.Handler {
   override def reduce[T <: PreEvent](event: T): T = event match {
     case it @ BlockPreBreakEvent(block, player, _, _, _) =>
-      val gathered = gatheringSpotService.gatheringSpots
+      val gathered = gatheringSpotService.blockGatheringSpotsById.values
         .filter { _.contains(block) }
         .exists { spot =>
           spot.blocks

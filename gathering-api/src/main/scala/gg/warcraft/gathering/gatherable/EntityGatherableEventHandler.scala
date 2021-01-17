@@ -24,7 +24,7 @@
 
 package gg.warcraft.gathering.gatherable
 
-import gg.warcraft.gathering.{GatheringSpot, GatheringSpotService}
+import gg.warcraft.gathering.{EntityGatheringSpot, GatheringSpotService}
 import gg.warcraft.monolith.api.core.event.{Event, PreEvent}
 import gg.warcraft.monolith.api.entity.{
   EntityPreDeathEvent, EntityPreFatalDamageEvent
@@ -47,14 +47,13 @@ class EntityGatherableEventHandler(implicit
       val player = playerService.getPlayer(attackerId.get)
       if (player == null) return event
 
-      val gatherEntity = (spot: GatheringSpot, gatherable: EntityGatherable) => {
+      val gatherEntity = (spot: EntityGatheringSpot, gatherable: EntityGatherable) =>
         if (gatherableService.gatherEntity(spot, gatherable, entity, player)) {
           _gatheredEntityIds += entity.id
           it.copy(explicitlyAllowed = true).asInstanceOf[T]
         } else event
-      }
 
-      gatheringSpotService.gatheringSpots
+      gatheringSpotService.entityGatheringSpotsById.values
         .find(_.contains(entity.id))
         .map(spot => {
           spot.entities

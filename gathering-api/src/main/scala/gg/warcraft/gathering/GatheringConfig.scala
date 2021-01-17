@@ -25,5 +25,6 @@
 package gg.warcraft.gathering
 
 case class GatheringConfig(
-    gatheringSpots: List[GatheringSpot.Config]
+    blockGatheringSpots: List[BlockGatheringSpot],
+    entityGatheringSpot: List[EntityGatheringSpot.Config]
 )

@@ -31,19 +31,29 @@ import gg.warcraft.monolith.api.world.Location
 
 import java.util.UUID
 
-class GatheringSpot(
+trait GatheringSpot {
+  val id: GatheringSpot.Id
+  val boundingBox: BlockBox
+}
+
+class BlockGatheringSpot(
     val id: GatheringSpot.Id,
     val boundingBox: BlockBox,
-    val spawn: Location,
-    val blocks: List[BlockGatherable],
-    val entities: List[EntityGatherable]
-) {
-  var entityIds: Set[UUID] = Set.empty
-
+    val blocks: List[BlockGatherable]
+) extends GatheringSpot {
   def contains(block: Block): Boolean = {
     val hasType = blocks.exists { it => block.hasData(it.blockData) }
     hasType && boundingBox.test(block.location)
   }
+}
+
+class EntityGatheringSpot(
+    val id: GatheringSpot.Id,
+    val boundingBox: BlockBox,
+    val spawn: Location,
+    val entities: List[EntityGatherable]
+) extends GatheringSpot {
+  var entityIds: Set[UUID] = Set.empty
 
   def contains(entityId: UUID): Boolean =
     entityIds.contains(entityId)
@@ -51,15 +61,16 @@ class GatheringSpot(
 
 object GatheringSpot {
   type Id = String
+}
 
+object EntityGatheringSpot {
   case class Config(
       id: GatheringSpot.Id,
       boundingBox: BlockBox,
       spawn: Location,
-      blocks: List[BlockGatherable],
       entities: List[EntityGatherable]
   ) {
-    def parse(): GatheringSpot =
-      new GatheringSpot(id, boundingBox, spawn, blocks, entities)
+    def parse(): EntityGatheringSpot =
+      new EntityGatheringSpot(id, boundingBox, spawn, entities)
   }
 }
