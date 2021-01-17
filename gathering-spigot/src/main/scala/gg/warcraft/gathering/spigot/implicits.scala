@@ -78,10 +78,10 @@ object implicits {
   private implicit lazy val taskService: TaskService = _taskService
 
   // Gathering
-  implicit val gatheringSpotService: GatheringSpotService =
+  implicit lazy val gatheringSpotService: GatheringSpotService =
     new GatheringSpotService
-  implicit val entityGatherableService: EntityGatherableService =
+  implicit lazy val entityGatherableService: EntityGatherableService =
     new EntityGatherableService
-  implicit val blockGatherableService: BlockGatherableService =
+  implicit lazy val blockGatherableService: BlockGatherableService =
     new BlockGatherableService
 }
