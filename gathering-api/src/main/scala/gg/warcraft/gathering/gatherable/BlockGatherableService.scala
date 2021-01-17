@@ -42,7 +42,7 @@ class BlockGatherableService(implicit
     taskService: TaskService,
     worldService: WorldService,
     blockBackupService: BlockBackupService,
-   itemService: ItemService
+    itemService: ItemService
 ) extends GatherableService {
   import blockBackupService.restoreBackup
 
@@ -59,18 +59,13 @@ class BlockGatherableService(implicit
     if (!preGatherEvent.allowed) return false
 
     spawnDrops(gatherable, block.location.toLocation)
-    queueBlockCooldown(gatherable, block)
     queueBlockRestoration(gatherable, block)
+    queueBlockCooldown(gatherable, block)
 
     val gatherEvent = BlockGatherEvent(block, spot, player)
     eventService.publish(gatherEvent)
     true
   }
-
-  private def queueBlockCooldown(gatherable: BlockGatherable, block: Block): Unit =
-    taskService.evalNextTick {
-      worldService.setBlock(block.location, gatherable.cooldownData)
-    }
 
   private def queueBlockRestoration(
       gatherable: BlockGatherable,
@@ -80,4 +75,9 @@ class BlockGatherableService(implicit
     val cooldown = gatherable.cooldown + Random.nextInt(gatherable.cooldownDelta)
     taskService.evalLater(cooldown.seconds, restoreBackup(backupId))
   }
+
+  private def queueBlockCooldown(gatherable: BlockGatherable, block: Block): Unit =
+    taskService.evalNextTick {
+      worldService.setBlock(block.location, gatherable.cooldownData)
+    }
 }
