@@ -26,14 +26,17 @@ package gg.warcraft.gathering.gatherable
 
 import gg.warcraft.gathering.GatheringSpotService
 import gg.warcraft.monolith.api.block.BlockPreBreakEvent
+import gg.warcraft.monolith.api.core.auth.AuthService
 import gg.warcraft.monolith.api.core.event.{Event, PreEvent}
 
 class BlockGatherableEventHandler(implicit
+    authService: AuthService,
     gatheringSpotService: GatheringSpotService,
     gatherableService: BlockGatherableService
 ) extends Event.Handler {
   override def reduce[T <: PreEvent](event: T): T = event match {
-    case it @ BlockPreBreakEvent(block, player, _, _, _) =>
+    case it @ BlockPreBreakEvent(block, player, _, _, _)
+        if !authService.isBuilding(player) =>
       val gathered = gatheringSpotService.blockGatheringSpotsById.values
         .filter { _.contains(block) }
         .exists { spot =>
