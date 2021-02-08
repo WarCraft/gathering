@@ -60,7 +60,7 @@ class BlockGatherableService(implicit
 
     spawnDrops(gatherable, block.location.toLocation)
     queueBlockRestoration(gatherable, block)
-    queueBlockCooldown(gatherable, block)
+    worldService.setBlock(block.location, gatherable.cooldownData)
 
     val gatherEvent = BlockGatherEvent(block, spot, player)
     eventService.publish(gatherEvent)
@@ -75,9 +75,4 @@ class BlockGatherableService(implicit
     val cooldown = gatherable.cooldown + Random.nextInt(gatherable.cooldownDelta)
     taskService.evalLater(cooldown.seconds, restoreBackup(backupId))
   }
-
-  private def queueBlockCooldown(gatherable: BlockGatherable, block: Block): Unit =
-    taskService.evalNextTick {
-      worldService.setBlock(block.location, gatherable.cooldownData)
-    }
 }

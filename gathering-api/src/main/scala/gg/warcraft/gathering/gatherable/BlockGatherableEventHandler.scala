@@ -44,12 +44,8 @@ class BlockGatherableEventHandler(implicit
             .find { it => block.hasData(it.blockData) }
             .exists { gatherableService.gatherBlock(spot, _, block, player) }
         }
-      if (gathered) {
-        it.copy(
-          alternativeDrops = Some(List()),
-          explicitlyAllowed = true
-        ).asInstanceOf[T]
-      } else event
+      if (gathered) it.copy(cancelled = true).asInstanceOf[T]
+      else event
 
     case _ => event
   }
