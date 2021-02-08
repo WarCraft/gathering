@@ -42,10 +42,11 @@ class EntityGatherableEventHandler(implicit
 
   override def reduce[T <: PreEvent](event: T): T = event match {
     case it @ EntityPreFatalDamageEvent(entity, damage, _, _) =>
-      val attackerId = damage.source.entityId
-      if (attackerId.isEmpty) return event
-      val player = playerService.getPlayer(attackerId.get)
-      if (player == null) return event
+      val player =
+        damage.source.entityId.flatMap(playerService.getPlayerOption) match {
+          case Some(player) => player
+          case None         => return event
+        }
 
       val gatherEntity = (spot: EntityGatheringSpot, gatherable: EntityGatherable) =>
         if (gatherableService.gatherEntity(spot, gatherable, entity, player)) {
