@@ -1,7 +1,7 @@
 lazy val commonSettings = Seq(
   organization := "gg.warcraft",
   version := "16.0.0-SNAPSHOT",
-  scalaVersion := "2.13.4",
+  scalaVersion := "2.13.11",
   scalacOptions ++= Seq(
     // additional scalac options go here
   ),
@@ -11,13 +11,12 @@ lazy val commonSettings = Seq(
 )
 
 lazy val assemblySettings = Seq(
-  assemblyJarName in assembly := s"${name.value}-${version.value}-all.jar",
-  assemblyOption in assembly :=
-    (assemblyOption in assembly).value.copy(includeScala = false),
-  assemblyMergeStrategy in assembly := {
+  assembly / assemblyJarName := s"${name.value}-${version.value}-all.jar",
+  assembly / assemblyOption ~= { _.withIncludeScala(false) },
+  assembly / assemblyMergeStrategy := {
     case PathList("META-INF", _ @_*) => MergeStrategy.discard
     case "module-info.class"         => MergeStrategy.discard
-    case it                          => (assemblyMergeStrategy in assembly).value(it)
+    case it                          => (assembly / assemblyMergeStrategy).value(it)
   }
 )
 
